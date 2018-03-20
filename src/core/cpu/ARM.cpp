@@ -10,8 +10,6 @@
 
 #include <InstructionDecoder.hpp>
 
-#include <Operation.hpp>
-
 ARM::ARM(DS* ds)
 {
 	this->ds = ds;
@@ -28,7 +26,11 @@ void ARM::init()
 {
 	this->registerMap = new uint32_t[this->registerMapSize = 16 + 2]();
 
+	this->processorState = ::ARM;
+
 	Operation::init();
+
+	processInstruction(0xfeffffea); //BLA
 }
 
 void ARM::setRegister(Register reg, uint32_t value)
@@ -43,8 +45,8 @@ uint32_t ARM::getRegisterValue(Register reg)
 
 void ARM::print()
 {
+	Logger::log("");
 	Logger::log("ARM Registers");
-	Logger::log("\n");
 
 	for(uint32_t index = 0; index < this->registerMapSize; index++)
 	{
@@ -53,60 +55,25 @@ void ARM::print()
 		Logger::log("R" + to_string(index) + ": " + to_string(value));
 	}
 
-	Logger::log("\n");
+	Logger::log("");
+}
+
+void ARM::run()
+{
+
+}
+
+void ARM::processPipeline()
+{
+	for(uint32_t index = 0; index < this->pipeline->size(); index++)
+	{
+
+	}
 }
 
 void ARM::tick()
 {
-	Logger::log("T");
-
-	//A0E3 - MOV
-	//80E5 - STR
-
-	/*
-	processInstruction(0x8030A0E3); // mov r3, #0x80
-	processInstruction(0x01CCA0E3); // mov r12, #0x100
-	processInstruction(0x016CA0E3); // mov r6, #0x100
-	processInstruction(0x056100E3); // mov r6, #0x105
-	//processInstruction(0x041380E5); // str r1,[r0, #0x304]
-	//processInstruction(0x0329A0E3); // mov r2, #0xc000
-	processInstruction(0x012052E2); // subs r2, r2, #0x1
-	processInstruction(0x022052E2); // subs r2, r2, #0x2
-	processInstruction(0x063052E2); // subs r3, r2, #6
-	processInstruction(0x06C053E2); // subs r12, r3, #6
-	//processInstruction(0x0000001A); // bne 0x02
-	//processInstruction(0x9184001A); // bne 0x21244
-	*/
-
-	/*
-	processInstruction(0x0103A0E3);
-	processInstruction(0x0310A0E3);
-	processInstruction(0x0228A0E3);
-	processInstruction(0x8030A0E3);
-	processInstruction(0x00000000);
-	processInstruction(0xA0010000);
-	processInstruction(0x041380E5);
-
-	processInstruction(0x04C380E5);
 	
-	processInstruction(0x002080E5);
-	processInstruction(0x403280E5);
-	processInstruction(0x1A05A0E3);
-	processInstruction(0x1F10A0E3);
-	processInstruction(0x0329A0E3);
-	processInstruction(0xB210C0E0);
-	processInstruction(0x012052E2);
-	processInstruction(0xFCFFFF1A);
-	processInstruction(0x50415353);
-	processInstruction(0xFEFFFFEA);
-
-	processInstruction(0x11FF2FE1); // BX r1
-	processInstruction(0x1CFF2FE1); // BX r12
-
-	processInstruction(0x01);
-	*/
-
-	executeAt(0x02);
 }
 
 #include <bitset>
@@ -124,7 +91,7 @@ void ARM::processInstruction(uint32_t instruction)
 	}
 	else
 	{
-		Logger::log("Unknown Processor State: " + this->processorState);
+		Logger::log("Unknown Processor State: " + to_string(this->processorState));
 		exit(0);
 	}
 }
@@ -134,14 +101,20 @@ void ARM::processARMInstruction(uint32_t instruction)
 	// Delete instruction after memory write to free space.
 	Instruction* decodedInstruction = InstructionDecoder::decode(instruction);
 
-	Logger::log(to_string(decodedInstruction->getOpcode()));
+	Operation* operation = NULL;
 
-	Operation* operation = Operation::getOperation((Opcode) decodedInstruction->getOpcode());
+	if(decodedInstruction->getOperation() != NULL)
+	{
+		operation = decodedInstruction->getOperation();
+	}
+	else
+	{
+		Logger::log("Operation Code (OPCODE): " + to_string(decodedInstruction->getOpcode()));
+
+		operation = Operation::getOperation((Opcode) decodedInstruction->getOpcode());
+	}
+
 	operation->set(this, decodedInstruction);
-
-	Logger::log("ARM V: " + to_string(decodedInstruction->getValue()));
-
-	Logger::log(to_string((uint32_t) operation->getOpcode()));
 
 	operation->execute();
 }
@@ -426,4 +399,60 @@ void ARM::executeAt(uint32_t address)
 	this->setRegister(::PC, address);
 
 	this->processInstruction(instruction);
+}
+
+void ARM::onFIQ()
+{
+	uint32_t address = this->getRegisterValue(::PC);
+
+	// Save the address of the next instruction to be executed (plus 4) in R14_fiq
+	this->setRegister(::LR, address + 4);
+
+	uint32_t cpsr = this->getRegisterValue(::CPSR);
+
+	// Save the CPSR in SPSR_fiq
+	this->setRegister(::SPSR, cpsr);
+
+	// Clear bits 0-4 of CPSR (Mode bits) to 00000
+	cpsr &= ~0x11;
+
+	// Set bits 0-4 of CPSR (Mode bits) to 10001
+	cpsr |= 0x11;
+
+	// Set bits 6-7 of CPSR (F and I bits) to 11
+	cpsr |= 0xC0;
+
+	// Update CPSR
+	this->setRegister(::CPSR, cpsr);
+
+	// Set PC to fetch next instruction from memory address 0x1C.
+	this->setRegister(::PC, 0x1C);
+}
+
+void ARM::onIRQ()
+{
+	uint32_t address = this->getRegisterValue(::PC);
+
+	// Save address of next instruction to be executed (plus 4) in R14_irq
+	this->setRegister(::LR, address + 4);
+
+	uint32_t cpsr = this->getRegisterValue(::CPSR);
+
+	// Save CPSR in SPSR_irq
+	this->setRegister(::SPSR, cpsr);
+
+	// Clear bits 0-4 of CPSR (Mode bits) to 00000
+	cpsr &= ~0x12;
+
+	// Set bits 0-4 of CPSR (Mode bits) to 10010
+	cpsr |= 0x12;
+
+	// Set bit 7 of CPSR (I bit) to 1
+	cpsr |= 0x80;
+
+	// Update CPSR
+	this->setRegister(::CPSR, cpsr);
+
+	// Set PC to fetch next instruction from memory address 0x18.
+	this->setRegister(::PC, 0x18);
 }

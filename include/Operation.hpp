@@ -1,8 +1,6 @@
 #ifndef INCLUDE_OPERATION_HPP_
 #define INCLUDE_OPERATION_HPP_
 
-#include "ARM.hpp"
-#include "Instruction.hpp"
 #include "Opcode.hpp"
 
 #include <cstdint>
@@ -15,11 +13,17 @@ using namespace std;
 
 namespace CPU
 {
+	class ARM;
+
+	class Instruction;
+
+	class MOVOperation;
+
 	class Operation
 	{
 	public:
 		Operation();
-		Operation(Opcode opcode, ARM* arm, Instruction* instruction);
+		Operation(Opcode opcode);
 		virtual ~Operation();
 
 		void set(ARM* arm, Instruction* instruction);

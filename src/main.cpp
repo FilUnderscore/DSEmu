@@ -1,7 +1,3 @@
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-
 #include <DSEmu.hpp>
 
 #include <DS.hpp>
@@ -12,12 +8,13 @@
 
 using namespace std;
 
+#include <Logger.hpp>
+
 int main(int argc, char** argv)
 {
 	DSEmu::init();
 
-	printf("DSEmu");
-	printf("\n");
+	Logger::log("DSEmu\n");
 
 	DSCartridge* cartridge = DSCartridgeLoader::loadCartridgeFromFile("TinyFB.nds");
 
@@ -25,7 +22,7 @@ int main(int argc, char** argv)
 
 	ds->loadCartridge(cartridge);
 
-	ds->getRAM()->copy(1, 0x400000, 1);
+	ds->run();
 
 	return 0;
 }

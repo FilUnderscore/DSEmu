@@ -55,8 +55,6 @@ void DS::loadCartridge(DSCartridge* cartridge)
 	this->ram->load(cartridge->getROMData() + this->cartridge->getCartridgeHeader()->getARM7ROMOffset(), this->cartridge->getCartridgeHeader()->getARM7Size(), this->cartridge->getCartridgeHeader()->getARM7RAMAddress());
 
 	this->ram->print();
-
-	this->run();
 }
 
 DSCartridge* DS::getDSCartridge()
@@ -66,7 +64,8 @@ DSCartridge* DS::getDSCartridge()
 
 void DS::run()
 {
-	this->arm9->tick();
+	this->arm9->executeAt(0x02);
+	this->arm9->run();
 
 	this->arm9->print();
 }

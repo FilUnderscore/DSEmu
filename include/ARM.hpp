@@ -7,6 +7,10 @@
 
 #include "ProcessorState.hpp"
 
+#include "Operation.hpp"
+
+#include <vector>
+
 using namespace CPU;
 
 using namespace std;
@@ -29,6 +33,10 @@ namespace CPU
 
 		void print();
 
+		void run();
+
+		void processPipeline();
+
 		void tick();
 
 		void processInstruction(uint32_t instruction);
@@ -40,11 +48,17 @@ namespace CPU
 		ProcessorState getProcessorState();
 
 		void executeAt(uint32_t address);
+
+		void onFIQ();
+
+		void onIRQ();
 	protected:
 		DS* ds;
 
 		uint32_t* registerMap;
 		uint32_t registerMapSize;
+
+		vector<Operation*>* pipeline;
 
 		ProcessorState processorState;
 

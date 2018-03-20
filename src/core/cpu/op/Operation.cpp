@@ -2,7 +2,12 @@
 
 using namespace CPU;
 
+#include <ARM.hpp>
+
 #include <MOVOperation.hpp>
+#include <BOperation.hpp>
+
+#include <Instruction.hpp>
 
 map<Opcode, Operation*(*)()>* Operation::operations;
 
@@ -12,11 +17,9 @@ Operation::Operation()
 	this->instruction = NULL;
 }
 
-Operation::Operation(Opcode opcode, ARM* arm, Instruction* instruction)
+Operation::Operation(Opcode opcode) : Operation()
 {
 	this->opcode = opcode;
-
-	this->set(arm, instruction);
 }
 
 Operation::~Operation()

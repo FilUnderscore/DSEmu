@@ -9,7 +9,6 @@ namespace CPU
 	{
 	public:
 		MOVOperation();
-		MOVOperation(ARM* arm, Instruction* instruction);
 		~MOVOperation();
 
 		void execute();

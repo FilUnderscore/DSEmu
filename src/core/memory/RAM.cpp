@@ -187,9 +187,9 @@ uint8_t* RAM::getRAM()
 
 void RAM::print()
 {
+	Logger::log("");
 	Logger::log("RAM Memory Map");
 	Logger::log("Total RAM: " + to_string(this->getTotalRAMSize()) + "b");
-	Logger::log("\n");
 
 	//Logger::log(String::toHexString((char*) this->memory, this->memorySize));
 
@@ -205,5 +205,5 @@ void RAM::print()
 		Logger::log(to_string(memory.getMemoryType()) + " (Size: " + to_string(memory.getMemorySize()) + "b): " + hex);
 	}
 
-	Logger::log("\n");
+	Logger::log("");
 }

@@ -56,13 +56,31 @@ namespace CPU
 		/*
 		 * Current Processor Status Register
 		 *
-		 * Bit 0 = Negative Flag (The result of the operation is 0, which is considered positive, so the N bit is set to 0.)
-		 * Bit 1 = Zero Flag (The result of the operation is 0, so the Z bit is set to 1.)
-		 * Bit 2 = (Unsigned Overflow) Carry Flag (Data loss because the result did not fit into 32 bits, so the processor indicates this by setting C bit to 1.)
-		 * Bit 3 = (Signed) Overflow Flag (From a signed-artithmetic viewpoint, 0xffffffff really means -1, so the operation was (-1) + 1 = 0. The operation does not overflow, so V bit is set to 0.)
+		 * Bit 31 = Negative Flag (The result of the operation is 0, which is considered positive, so the N bit is set to 0.)
+		 * Bit 30 = Zero Flag (The result of the operation is 0, so the Z bit is set to 1.)
+		 * Bit 29 = (Unsigned Overflow) Carry Flag (Data loss because the result did not fit into 32 bits, so the processor indicates this by setting C bit to 1.)
+		 * Bit 28 = (Signed) Overflow Flag (From a signed-artithmetic viewpoint, 0xffffffff really means -1, so the operation was (-1) + 1 = 0. The operation does not overflow, so V bit is set to 0.)
+		 *
+		 * Bit 7 = IRQ Disable
+		 * Bit 6 = FIQ Disable
+		 *
+		 * Bit 4-0 = Mode bits
+		 * 10000 - User Mode
+		 * 10001 - FIQ Mode
+		 * 10010 - IRQ Mode
+		 * 10011 - Supervisor Mode
+		 * 10111 - Abort Mode
+		 * 11011 - Undefined Mode
 		 */
 		CPSR,
 		
+		/*
+		 * Saved Program Status Register
+		 *
+		 * Loaded when an exception occurs.
+		 *
+		 * Same functionality as CPSR
+		 */
 		SPSR,
 	};
 }

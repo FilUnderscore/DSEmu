@@ -2,15 +2,17 @@
 
 #include <Logger.hpp>
 
-MOVOperation::MOVOperation()
+#include <Register.hpp>
+
+#include <ARM.hpp>
+
+using namespace CPU;
+
+MOVOperation::MOVOperation() : Operation(::MOV)
 {
 
 }
 
-MOVOperation::MOVOperation(ARM* arm, Instruction* instruction) : Operation(::MOV, arm, instruction)
-{
-
-}
 
 MOVOperation::~MOVOperation()
 {
