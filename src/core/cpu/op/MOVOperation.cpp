@@ -1,0 +1,56 @@
+#include <MOVOperation.hpp>
+
+#include <Logger.hpp>
+
+MOVOperation::MOVOperation()
+{
+
+}
+
+MOVOperation::MOVOperation(ARM* arm, Instruction* instruction) : Operation(::MOV, arm, instruction)
+{
+
+}
+
+MOVOperation::~MOVOperation()
+{
+
+}
+
+void MOVOperation::execute()
+{
+	if(this->instruction->getValue() != 0 && this->instruction->getFirstOperandRegister() == 0)
+	{
+		//MOV r1, #0
+
+		Logger::log("MOV r" + to_string(this->instruction->getDestinationRegister()) + ", " + to_string(this->instruction->getValue()));
+
+		this->arm->setRegister((Register) this->instruction->getDestinationRegister(), this->instruction->getValue());
+	}
+	else if(this->instruction->getValue() == 0 && this->instruction->getFirstOperandRegister() != 0)
+	{
+		//MOV r1, r2
+
+		Logger::log("MOV r" + to_string(this->instruction->getDestinationRegister()) + ", " + to_string(this->instruction->getFirstOperandRegister()));
+
+		this->arm->setRegister((Register) this->instruction->getDestinationRegister(), this->arm->getRegisterValue((Register) this->instruction->getFirstOperandRegister()));
+	}
+	else
+	{
+		Logger::log("Invalid MOV instruction!");
+		Logger::log("RD: " + to_string(this->instruction->getDestinationRegister()));
+		Logger::log("RN: " + to_string(this->instruction->getFirstOperandRegister()));
+		Logger::log("VAL: " + to_string(this->instruction->getValue()));
+		exit(0);
+	}
+}
+
+void MOVOperation::memory()
+{
+
+}
+
+void MOVOperation::write()
+{
+
+}

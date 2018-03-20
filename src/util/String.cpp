@@ -12,7 +12,7 @@ string String::toHexString(uint8_t* array, uint32_t size)
 {
 	stringstream ss;
 
-	for(int i = 0; i < size; i++)
+	for(uint32_t i = 0; i < size; i++)
 	{
 		ss << std::hex << setfill('0') << setw(2) << (int) (uint8_t) array[i];
 	}

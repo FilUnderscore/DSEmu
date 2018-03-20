@@ -21,6 +21,8 @@ namespace CPU
 		ARM(DS* ds);
 		virtual ~ARM();
 
+		void init();
+
 		void setRegister(Register register, uint32_t value);
 
 		uint32_t getRegisterValue(Register register);
@@ -42,7 +44,6 @@ namespace CPU
 		DS* ds;
 
 		uint32_t* registerMap;
-
 		uint32_t registerMapSize;
 
 		ProcessorState processorState;

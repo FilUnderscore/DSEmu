@@ -8,16 +8,27 @@
 
 #include <String.hpp>
 
+#include <InstructionDecoder.hpp>
+
+#include <Operation.hpp>
+
 ARM::ARM(DS* ds)
 {
 	this->ds = ds;
 
-	this->registerMap = new uint32_t[this->registerMapSize = 16 + 2]();
+	this->init();
 }
 
 ARM::~ARM()
 {
 
+}
+
+void ARM::init()
+{
+	this->registerMap = new uint32_t[this->registerMapSize = 16 + 2]();
+
+	Operation::init();
 }
 
 void ARM::setRegister(Register reg, uint32_t value)
@@ -118,6 +129,24 @@ void ARM::processInstruction(uint32_t instruction)
 	}
 }
 
+void ARM::processARMInstruction(uint32_t instruction)
+{
+	// Delete instruction after memory write to free space.
+	Instruction* decodedInstruction = InstructionDecoder::decode(instruction);
+
+	Logger::log(to_string(decodedInstruction->getOpcode()));
+
+	Operation* operation = Operation::getOperation((Opcode) decodedInstruction->getOpcode());
+	operation->set(this, decodedInstruction);
+
+	Logger::log("ARM V: " + to_string(decodedInstruction->getValue()));
+
+	Logger::log(to_string((uint32_t) operation->getOpcode()));
+
+	operation->execute();
+}
+
+/*
 void ARM::processARMInstruction(uint32_t instruction)
 {
 	// Little Endian
@@ -314,6 +343,7 @@ void ARM::processARMInstruction(uint32_t instruction)
 
 	this->executeAt(this->getRegisterValue(::PC));
 }
+*/
 
 void ARM::processTHUMBInstruction(uint16_t instruction)
 {
