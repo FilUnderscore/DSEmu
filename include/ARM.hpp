@@ -29,7 +29,9 @@ namespace CPU
 
 		void setRegister(Register register, uint32_t value);
 
-		uint32_t getRegisterValue(Register register);
+		uint32_t getRegister(Register register);
+
+		void setMemoryRegister(Register register, uint32_t value);
 
 		void print();
 
@@ -57,6 +59,10 @@ namespace CPU
 
 		uint32_t* registerMap;
 		uint32_t registerMapSize;
+
+		// Used for MEM and WB pipeline stages
+		uint32_t* memoryRegisterMap;
+		uint32_t memoryRegisterMapSize;
 
 		vector<Operation*>* pipeline;
 

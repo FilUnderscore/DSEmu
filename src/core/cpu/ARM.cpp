@@ -10,6 +10,9 @@
 
 #include <InstructionDecoder.hpp>
 
+#include <BranchInstruction.hpp>
+#include <DataProcessingInstruction.hpp>
+
 ARM::ARM(DS* ds)
 {
 	this->ds = ds;
@@ -26,11 +29,14 @@ void ARM::init()
 {
 	this->registerMap = new uint32_t[this->registerMapSize = 16 + 2]();
 
+	this->memoryRegisterMap = new uint32_t[this->memoryRegisterMapSize = 16 + 2]();
+
 	this->processorState = ::ARM;
 
 	Operation::init();
 
 	processInstruction(0xfeffffea); //BLA
+	processInstruction(0x0C0000EA);
 }
 
 void ARM::setRegister(Register reg, uint32_t value)
@@ -38,9 +44,14 @@ void ARM::setRegister(Register reg, uint32_t value)
 	this->registerMap[reg] = value;
 }
 
-uint32_t ARM::getRegisterValue(Register reg)
+uint32_t ARM::getRegister(Register reg)
 {
 	return this->registerMap[reg];
+}
+
+void ARM::setMemoryRegister(Register reg, uint32_t value)
+{
+	this->memoryRegisterMap[reg] = value;
 }
 
 void ARM::print()
@@ -101,22 +112,32 @@ void ARM::processARMInstruction(uint32_t instruction)
 	// Delete instruction after memory write to free space.
 	Instruction* decodedInstruction = InstructionDecoder::decode(instruction);
 
-	Operation* operation = NULL;
-
-	if(decodedInstruction->getOperation() != NULL)
+	if(dynamic_cast<DataProcessingInstruction*>(decodedInstruction))
 	{
-		operation = decodedInstruction->getOperation();
+		DataProcessingInstruction* dataProcessingInstruction = (DataProcessingInstruction*) decodedInstruction;
+
+		Logger::log("Operation Code (OPCODE): " + to_string(dataProcessingInstruction->getOpcode()));
+
+		Operation* operation = Operation::getOperation((Opcode) dataProcessingInstruction->getOpcode());
+
+		operation->set(this, dataProcessingInstruction);
+
+		operation->execute();
+	}
+	else if(dynamic_cast<BranchInstruction*>(decodedInstruction))
+	{
+		BranchInstruction* branchInstruction = (BranchInstruction*) decodedInstruction;
+
+		Logger::log("Branch (With Link: " + to_string(branchInstruction->isWithLink()) + ")");
 	}
 	else
 	{
-		Logger::log("Operation Code (OPCODE): " + to_string(decodedInstruction->getOpcode()));
+		Logger::log("Unknown Instruction!");
 
-		operation = Operation::getOperation((Opcode) decodedInstruction->getOpcode());
+		exit(0);
+
+		return;
 	}
-
-	operation->set(this, decodedInstruction);
-
-	operation->execute();
 }
 
 /*
@@ -403,12 +424,12 @@ void ARM::executeAt(uint32_t address)
 
 void ARM::onFIQ()
 {
-	uint32_t address = this->getRegisterValue(::PC);
+	uint32_t address = this->getRegister(::PC);
 
 	// Save the address of the next instruction to be executed (plus 4) in R14_fiq
 	this->setRegister(::LR, address + 4);
 
-	uint32_t cpsr = this->getRegisterValue(::CPSR);
+	uint32_t cpsr = this->getRegister(::CPSR);
 
 	// Save the CPSR in SPSR_fiq
 	this->setRegister(::SPSR, cpsr);
@@ -431,12 +452,12 @@ void ARM::onFIQ()
 
 void ARM::onIRQ()
 {
-	uint32_t address = this->getRegisterValue(::PC);
+	uint32_t address = this->getRegister(::PC);
 
 	// Save address of next instruction to be executed (plus 4) in R14_irq
 	this->setRegister(::LR, address + 4);
 
-	uint32_t cpsr = this->getRegisterValue(::CPSR);
+	uint32_t cpsr = this->getRegister(::CPSR);
 
 	// Save CPSR in SPSR_irq
 	this->setRegister(::SPSR, cpsr);

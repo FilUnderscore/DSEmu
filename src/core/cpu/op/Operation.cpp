@@ -7,7 +7,7 @@ using namespace CPU;
 #include <MOVOperation.hpp>
 #include <BOperation.hpp>
 
-#include <Instruction.hpp>
+#include <DataProcessingInstruction.hpp>
 
 map<Opcode, Operation*(*)()>* Operation::operations;
 
@@ -27,7 +27,7 @@ Operation::~Operation()
 
 }
 
-void Operation::set(ARM* arm, Instruction* instruction)
+void Operation::set(ARM* arm, DataProcessingInstruction* instruction)
 {
 	if(this->arm != NULL || this->instruction != NULL)
 	{

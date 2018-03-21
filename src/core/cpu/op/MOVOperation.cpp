@@ -6,6 +6,8 @@
 
 #include <ARM.hpp>
 
+#include <DataProcessingInstruction.hpp>
+
 using namespace CPU;
 
 MOVOperation::MOVOperation() : Operation(::MOV)
@@ -35,7 +37,7 @@ void MOVOperation::execute()
 
 		Logger::log("MOV r" + to_string(this->instruction->getDestinationRegister()) + ", " + to_string(this->instruction->getFirstOperandRegister()));
 
-		this->arm->setRegister((Register) this->instruction->getDestinationRegister(), this->arm->getRegisterValue((Register) this->instruction->getFirstOperandRegister()));
+		this->arm->setRegister((Register) this->instruction->getDestinationRegister(), this->arm->getRegister((Register) this->instruction->getFirstOperandRegister()));
 	}
 	else
 	{

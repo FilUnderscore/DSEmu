@@ -7,7 +7,7 @@
 
 #include <map>
 
-#include <Logger.hpp>
+#include "Logger.hpp"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ namespace CPU
 {
 	class ARM;
 
-	class Instruction;
+	class DataProcessingInstruction;
 
 	class MOVOperation;
 
@@ -26,7 +26,7 @@ namespace CPU
 		Operation(Opcode opcode);
 		virtual ~Operation();
 
-		void set(ARM* arm, Instruction* instruction);
+		void set(ARM* arm, DataProcessingInstruction* instruction);
 
 		virtual void execute();
 
@@ -45,7 +45,7 @@ namespace CPU
 
 		ARM* arm;
 
-		Instruction* instruction;
+		DataProcessingInstruction* instruction;
 
 	private:
 		static map<Opcode, Operation*(*)()>* operations;
