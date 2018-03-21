@@ -63,7 +63,7 @@ namespace CPU
 		 *
 		 * Bit 7 = IRQ Disable
 		 * Bit 6 = FIQ Disable
-		 *
+		 * Bit 5 = Thumb State bit (1 = THUMB, 0 = ARM)
 		 * Bit 4-0 = Mode bits
 		 * 10000 - User Mode
 		 * 10001 - FIQ Mode

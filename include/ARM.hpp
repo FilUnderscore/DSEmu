@@ -11,6 +11,8 @@
 
 #include <vector>
 
+#include "Instruction.hpp"
+
 using namespace CPU;
 
 using namespace std;
@@ -31,8 +33,6 @@ namespace CPU
 
 		uint32_t getRegister(Register register);
 
-		void setMemoryRegister(Register register, uint32_t value);
-
 		void print();
 
 		void run();
@@ -47,26 +47,20 @@ namespace CPU
 
 		void processTHUMBInstruction(uint16_t instruction);
 
-		ProcessorState getProcessorState();
-
 		void executeAt(uint32_t address);
 
 		void onFIQ();
 
 		void onIRQ();
+
+		ProcessorState getProcessorState();
 	protected:
 		DS* ds;
 
 		uint32_t* registerMap;
 		uint32_t registerMapSize;
 
-		// Used for MEM and WB pipeline stages
-		uint32_t* memoryRegisterMap;
-		uint32_t memoryRegisterMapSize;
-
-		vector<Operation*>* pipeline;
-
-		ProcessorState processorState;
+		vector<Instruction*>* pipeline;
 
 		void changeProcessorState(ProcessorState newProcessorState);
 	};

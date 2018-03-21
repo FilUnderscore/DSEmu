@@ -13,6 +13,8 @@ namespace CPU
 
 		void calculate();
 
+		void execute(ARM* arm);
+
 		bool isWithLink();
 
 		uint32_t getOffset();

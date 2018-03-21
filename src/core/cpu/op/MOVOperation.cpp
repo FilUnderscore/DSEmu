@@ -29,7 +29,7 @@ void MOVOperation::execute()
 
 		Logger::log("MOV r" + to_string(this->instruction->getDestinationRegister()) + ", " + to_string(this->instruction->getValue()));
 
-		this->arm->setRegister((Register) this->instruction->getDestinationRegister(), this->instruction->getValue());
+		this->result = this->instruction->getValue();
 	}
 	else if(this->instruction->getValue() == 0 && this->instruction->getFirstOperandRegister() != 0)
 	{
@@ -37,7 +37,7 @@ void MOVOperation::execute()
 
 		Logger::log("MOV r" + to_string(this->instruction->getDestinationRegister()) + ", " + to_string(this->instruction->getFirstOperandRegister()));
 
-		this->arm->setRegister((Register) this->instruction->getDestinationRegister(), this->arm->getRegister((Register) this->instruction->getFirstOperandRegister()));
+		this->result = this->arm->getRegister((Register) this->instruction->getFirstOperandRegister());
 	}
 	else
 	{
@@ -50,11 +50,6 @@ void MOVOperation::execute()
 }
 
 void MOVOperation::memory()
-{
-
-}
-
-void MOVOperation::write()
 {
 
 }

@@ -165,7 +165,7 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	// Software Interrupt
 	if(((instruction >> 24) & 0x0F) == 0x0F)
 	{
-
+		uint32_t immediate24 = instruction & 0xFFFFFF;
 	}
 
 	return NULL;

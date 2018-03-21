@@ -7,6 +7,10 @@ using namespace std;
 
 #include "Operation.hpp"
 
+#include "InstructionExecutionStage.hpp"
+
+#include "Register.hpp"
+
 namespace CPU
 {
 	class Instruction
@@ -15,14 +19,20 @@ namespace CPU
 		Instruction(uint32_t instruction, uint8_t cond);
 		virtual ~Instruction();
 
+		virtual void execute(ARM* arm);
+
 		uint32_t getInstruction();
 
 		uint8_t getCondition();
+
+		InstructionExecutionStage getExecutionStage();
 	
 	protected:
 		uint32_t instruction;
 
 		uint8_t cond;
+
+		InstructionExecutionStage executionStage;
 	};
 }
 

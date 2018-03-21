@@ -5,7 +5,6 @@ using namespace CPU;
 #include <ARM.hpp>
 
 #include <MOVOperation.hpp>
-#include <BOperation.hpp>
 
 #include <DataProcessingInstruction.hpp>
 
@@ -50,14 +49,14 @@ void Operation::memory()
 	Logger::log("Memory access.");
 }
 
-void Operation::write()
-{
-	Logger::log("Write back from memory to register.");
-}
-
 Opcode Operation::getOpcode()
 {
 	return this->opcode;
+}
+
+uint32_t Operation::getResult()
+{
+	return this->result;
 }
 
 void Operation::init()

@@ -23,6 +23,11 @@ void BranchInstruction::calculate()
 	Logger::log("OFFSET: " + to_string(this->offset));
 }
 
+void BranchInstruction::execute(ARM* arm)
+{
+
+}
+
 bool BranchInstruction::isWithLink()
 {
 	return this->l;

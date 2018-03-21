@@ -64,7 +64,6 @@ DSCartridge* DS::getDSCartridge()
 
 void DS::run()
 {
-	this->arm9->executeAt(0x02);
 	this->arm9->run();
 
 	this->arm9->print();

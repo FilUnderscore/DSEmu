@@ -17,6 +17,8 @@ namespace CPU
 
 		void calculate();
 
+		void execute(ARM* arm);
+
 		uint8_t getOpcode();
 
 		uint8_t getDestinationRegister();
@@ -26,6 +28,8 @@ namespace CPU
 		uint32_t getValue();
 	
 	private:
+		Operation* operation;
+
 		uint8_t opcode;
 
 		uint8_t s;

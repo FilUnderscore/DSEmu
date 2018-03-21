@@ -29,14 +29,12 @@ void ARM::init()
 {
 	this->registerMap = new uint32_t[this->registerMapSize = 16 + 2]();
 
-	this->memoryRegisterMap = new uint32_t[this->memoryRegisterMapSize = 16 + 2]();
-
-	this->processorState = ::ARM;
+	this->pipeline = new vector<Instruction*>();
 
 	Operation::init();
 
-	processInstruction(0xfeffffea); //BLA
-	processInstruction(0x0C0000EA);
+	//processInstruction(0xfeffffea); //BLA
+	//processInstruction(0x0C0000EA);
 }
 
 void ARM::setRegister(Register reg, uint32_t value)
@@ -47,11 +45,6 @@ void ARM::setRegister(Register reg, uint32_t value)
 uint32_t ARM::getRegister(Register reg)
 {
 	return this->registerMap[reg];
-}
-
-void ARM::setMemoryRegister(Register reg, uint32_t value)
-{
-	this->memoryRegisterMap[reg] = value;
 }
 
 void ARM::print()
@@ -71,14 +64,38 @@ void ARM::print()
 
 void ARM::run()
 {
+	executeAt(0x02);
 
+	uint32_t l = 0;
+
+	while(l < 5)
+	{
+		l++;
+
+		this->processPipeline();
+	}
 }
 
 void ARM::processPipeline()
 {
 	for(uint32_t index = 0; index < this->pipeline->size(); index++)
 	{
+		Instruction* instruction = this->pipeline->at(index);
 
+		if(instruction->getExecutionStage() == ::ID)
+		{
+			// Begin Instruction Fetch (executeAt(PC + 8))
+			Logger::log("Fetch");
+		}
+		
+		if(instruction->getExecutionStage() != ::WB)
+		{
+			instruction->execute(this);
+		}
+		else
+		{
+			this->pipeline->erase(this->pipeline->begin() + index);
+		}
 	}
 }
 
@@ -92,18 +109,13 @@ void ARM::tick()
 
 void ARM::processInstruction(uint32_t instruction)
 {
-	if(this->processorState == ::ARM)
+	if(this->getProcessorState() == ::ARM)
 	{
 		processARMInstruction(instruction);
 	}	
-	else if(this->processorState == ::THUMB)
+	else if(this->getProcessorState() == ::THUMB)
 	{
 		processTHUMBInstruction((uint16_t) instruction);
-	}
-	else
-	{
-		Logger::log("Unknown Processor State: " + to_string(this->processorState));
-		exit(0);
 	}
 }
 
@@ -118,11 +130,10 @@ void ARM::processARMInstruction(uint32_t instruction)
 
 		Logger::log("Operation Code (OPCODE): " + to_string(dataProcessingInstruction->getOpcode()));
 
-		Operation* operation = Operation::getOperation((Opcode) dataProcessingInstruction->getOpcode());
-
-		operation->set(this, dataProcessingInstruction);
-
-		operation->execute();
+		// TODO: Pipeline (EX)
+		//dataProcessingInstruction->execute(this);
+		//dataProcessingInstruction->execute(this);
+		//dataProcessingInstruction->execute(this);
 	}
 	else if(dynamic_cast<BranchInstruction*>(decodedInstruction))
 	{
@@ -138,6 +149,8 @@ void ARM::processARMInstruction(uint32_t instruction)
 
 		return;
 	}
+
+	this->pipeline->push_back(decodedInstruction);
 }
 
 /*
@@ -377,19 +390,19 @@ void ARM::processTHUMBInstruction(uint16_t instruction)
 
 void ARM::changeProcessorState(ProcessorState newProcessorState)
 {
-	if(this->processorState == newProcessorState)
+	if(this->getProcessorState() == newProcessorState)
 	{
 		return;
 	}
 
-	this->processorState = newProcessorState;
+	uint32_t cpsr = this->getRegister(::CPSR);
+
+	// Toggle T bit in CPSR
+	cpsr ^= 0x20;
+
+	this->setRegister(::CPSR, cpsr);
 
 	Logger::log("Switching to Processor State: " + to_string(newProcessorState));
-}
-
-ProcessorState ARM::getProcessorState()
-{
-	return this->processorState;
 }
 
 #include <cstring>
@@ -476,4 +489,9 @@ void ARM::onIRQ()
 
 	// Set PC to fetch next instruction from memory address 0x18.
 	this->setRegister(::PC, 0x18);
+}
+
+ProcessorState ARM::getProcessorState()
+{
+	return (ProcessorState) ((this->getRegister(::CPSR) >> 5) & 0x01);
 }

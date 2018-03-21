@@ -32,13 +32,13 @@ namespace CPU
 
 		virtual void memory();
 
-		virtual void write();
-
 		Opcode getOpcode();
 
 		static void init();
 
 		static Operation* getOperation(Opcode opcode);
+
+		uint32_t getResult();
 
 	protected:
 		Opcode opcode;
@@ -46,6 +46,8 @@ namespace CPU
 		ARM* arm;
 
 		DataProcessingInstruction* instruction;
+
+		uint32_t result;
 
 	private:
 		static map<Opcode, Operation*(*)()>* operations;
