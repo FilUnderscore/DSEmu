@@ -65,17 +65,20 @@ void ARM::print()
 	Logger::log("");
 }
 
+#include <thread>
+#include <chrono>
+
 void ARM::run()
 {
 	executeAt(0x02);
 
-	uint32_t l = 0;
-
-	while(l < 5)
+	while(true)
 	{
-		l++;
+		this->tick();
 
-		this->processPipeline();
+		// Clock delay = milliseconds / Hz
+		// Clock delay = 1000ms / 66 Hz
+		this_thread::sleep_for(std::chrono::milliseconds(1000 / 66));
 	}
 }
 
@@ -104,7 +107,9 @@ void ARM::processPipeline()
 
 void ARM::tick()
 {
-	
+	this->processPipeline();
+
+	Logger::log("Tick");
 }
 
 #include <bitset>
