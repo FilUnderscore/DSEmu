@@ -70,7 +70,9 @@ void ARM::print()
 
 void ARM::run()
 {
-	executeAt(0x02);
+	//executeAt(0x02);
+	this->setRegister(::PC, 0x02);
+	this->fetchNextInstruction();
 
 	while(true)
 	{
@@ -116,10 +118,10 @@ void ARM::tick()
 void ARM::fetchNextInstruction()
 {
 	uint32_t pc = this->getRegister(::PC);
-	pc += 4;
-	this->setRegister(::PC, pc);
+	this->setRegister(::PC, pc + 4);
 
 	Logger::log("PC: " + String::decToHex(pc));
+	Logger::log("PC exec: " + String::decToHex(pc - 8));
 
 	executeAt(pc);
 }
@@ -439,7 +441,7 @@ void ARM::executeAt(uint32_t address)
 		return;
 	}
 
-	this->setRegister(::PC, address);
+	//this->setRegister(::PC, address);
 
 	address -= memory->getStartAddress();
 
