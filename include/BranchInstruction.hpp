@@ -13,7 +13,7 @@ namespace CPU
 
 		void calculate();
 
-		void execute(ARM* arm);
+		bool execute(ARM* arm);
 
 		bool isWithLink();
 

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+#include "Pointer.hpp"
+
 class Memory
 {
 public:
@@ -23,9 +25,7 @@ public:
 
 	uint32_t getEndAddress();
 
-	uint8_t* getMemory();
-
-	uint32_t getMemorySize();
+	Pointer<uint8_t>* getMemory();
 
 	void clear();
 
@@ -35,9 +35,7 @@ private:
 	uint32_t startAddress;
 	uint32_t endAddress;
 
-	uint8_t* memory;
-
-	uint32_t memorySize;
+	Pointer<uint8_t>* memory;
 };
 
 #endif

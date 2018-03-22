@@ -11,7 +11,7 @@ namespace CPU
 		System,
 
 		/*
-		 * Supervisor Mode
+		 * Supervisor (Protected) Mode
 		 */
 		Supervisor,
 
@@ -26,14 +26,14 @@ namespace CPU
 		Undefined,
 
 		/*
-		 * Interrupt Mode
+		 * InterRupt reQuest Mode (IRQ)
 		 */
 		Interrupt,
 
 		/*
-		 * Fast Interrupt Mode
+		 * Fast Interrupt reQuest Mode (FIQ)
 		 */
-		Fast_Interrupt;
+		Fast_Interrupt
 	};
 }
 

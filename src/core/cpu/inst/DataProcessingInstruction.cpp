@@ -72,9 +72,12 @@ void DataProcessingInstruction::calculate()
 	}
 }
 
-void DataProcessingInstruction::execute(ARM* arm)
+bool DataProcessingInstruction::execute(ARM* arm)
 {
-	Instruction::execute(arm);
+	if(!Instruction::execute(arm))
+	{
+		return false;
+	}
 
 	if(this->executionStage == ::EX)
 	{
@@ -94,6 +97,8 @@ void DataProcessingInstruction::execute(ARM* arm)
 	{
 		arm->setRegister((Register) this->getDestinationRegister(), this->operation->getResult());
 	}
+
+	return true;
 }
 
 uint8_t DataProcessingInstruction::getOpcode()

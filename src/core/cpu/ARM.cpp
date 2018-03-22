@@ -27,7 +27,10 @@ ARM::~ARM()
 
 void ARM::init()
 {
-	this->registerMap = new uint32_t[this->registerMapSize = 16 + 2]();
+	this->registerMap = new Pointer<uint32_t>(16 + 1);
+
+	// (16 + 5) = 21 shadow registers
+	this->registerShadowMap = new map<ProcessorMode, Pointer<uint32_t>*>();
 
 	this->pipeline = new vector<Instruction*>();
 
@@ -39,12 +42,12 @@ void ARM::init()
 
 void ARM::setRegister(Register reg, uint32_t value)
 {
-	this->registerMap[reg] = value;
+	this->registerMap->operator[](reg) = value;
 }
 
 uint32_t ARM::getRegister(Register reg)
 {
-	return this->registerMap[reg];
+	return this->registerMap->operator[](reg);
 }
 
 void ARM::print()
@@ -52,9 +55,9 @@ void ARM::print()
 	Logger::log("");
 	Logger::log("ARM Registers");
 
-	for(uint32_t index = 0; index < this->registerMapSize; index++)
+	for(uint32_t index = 0; index < this->registerMap->getSize(); index++)
 	{
-		uint32_t value = this->registerMap[index];
+		uint32_t value = this->getRegister((Register) index);
 
 		Logger::log("R" + to_string(index) + ": " + to_string(value));
 	}

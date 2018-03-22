@@ -54,7 +54,8 @@ void DS::loadCartridge(DSCartridge* cartridge)
 
 	this->ram->load(cartridge->getROMData() + this->cartridge->getCartridgeHeader()->getARM7ROMOffset(), this->cartridge->getCartridgeHeader()->getARM7Size(), this->cartridge->getCartridgeHeader()->getARM7RAMAddress());
 
-	this->ram->print();
+	// TODO: Throws Segmentation Fault because Memory Size is not exact.
+	// this->ram->print();
 }
 
 DSCartridge* DS::getDSCartridge()

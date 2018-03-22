@@ -15,7 +15,7 @@ public:
 	RAM(DS* ds);
 	~RAM();
 
-	Memory* getMemoryMap();
+	Pointer<Memory>* getMemoryMap();
 
 	bool load(uint8_t* data, uint32_t dataLength, uint32_t destAddress = 0x00);
 
@@ -25,13 +25,12 @@ public:
 
 	uint32_t getTotalRAMSize();
 
-	uint8_t* getRAM();
+	Pointer<uint8_t>* getRAM();
 
 	void print();
 
 private:
-	Memory* memoryMap;
-	uint32_t memoryMapSize;
+	Pointer<Memory>* memoryMap;
 };
 
 #endif

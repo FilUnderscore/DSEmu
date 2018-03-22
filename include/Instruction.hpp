@@ -11,6 +11,8 @@ using namespace std;
 
 #include "Register.hpp"
 
+#include "Condition.hpp"
+
 namespace CPU
 {
 	class Instruction
@@ -19,18 +21,18 @@ namespace CPU
 		Instruction(uint32_t instruction, uint8_t cond);
 		virtual ~Instruction();
 
-		virtual void execute(ARM* arm);
+		virtual bool execute(ARM* arm);
 
 		uint32_t getInstruction();
 
-		uint8_t getCondition();
+		Condition getCondition();
 
 		InstructionExecutionStage getExecutionStage();
 	
 	protected:
 		uint32_t instruction;
 
-		uint8_t cond;
+		Condition cond;
 
 		InstructionExecutionStage executionStage;
 	};

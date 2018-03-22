@@ -13,6 +13,10 @@
 
 #include "Instruction.hpp"
 
+#include "Pointer.hpp"
+
+#include "ProcessorMode.hpp"
+
 using namespace CPU;
 
 using namespace std;
@@ -57,8 +61,9 @@ namespace CPU
 	protected:
 		DS* ds;
 
-		uint32_t* registerMap;
-		uint32_t registerMapSize;
+		Pointer<uint32_t>* registerMap;
+
+		map<ProcessorMode, Pointer<uint32_t>*>* registerShadowMap;
 
 		vector<Instruction*>* pipeline;
 
