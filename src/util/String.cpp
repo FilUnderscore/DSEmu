@@ -29,7 +29,7 @@ string String::decToHex(uint32_t dec)
 {
 	stringstream ss;
 
-	ss << std::hex << dec;
+	ss << std::hex << setfill('0') << setw(2) << dec;
 
 	string str = ss.str();
 

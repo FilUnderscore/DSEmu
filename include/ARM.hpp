@@ -45,6 +45,8 @@ namespace CPU
 
 		void tick();
 
+		void fetchNextInstruction();
+
 		void processInstruction(uint32_t instruction);
 
 		void processARMInstruction(uint32_t instruction);

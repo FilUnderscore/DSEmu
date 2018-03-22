@@ -92,6 +92,7 @@ void ARM::processPipeline()
 		{
 			// Begin Instruction Fetch (executeAt(PC + 8))
 			Logger::log("Fetch");
+			this->fetchNextInstruction();
 		}
 		
 		if(instruction->getExecutionStage() != ::WB)
@@ -110,6 +111,17 @@ void ARM::tick()
 	this->processPipeline();
 
 	Logger::log("Tick");
+}
+
+void ARM::fetchNextInstruction()
+{
+	uint32_t pc = this->getRegister(::PC);
+	pc += 4;
+	this->setRegister(::PC, pc);
+
+	Logger::log("PC: " + String::decToHex(pc));
+
+	executeAt(pc);
 }
 
 #include <bitset>
@@ -427,6 +439,8 @@ void ARM::executeAt(uint32_t address)
 		return;
 	}
 
+	this->setRegister(::PC, address);
+
 	address -= memory->getStartAddress();
 
 	//Logger::log("Mem: " + String::toHexString(memory->getMemory(), memory->getMemorySize()));
@@ -437,8 +451,6 @@ void ARM::executeAt(uint32_t address)
 	Logger::log("Instruction (HEX): " + String::toHexString(data, 4));
 
 	uint32_t instruction = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
-
-	this->setRegister(::PC, address);
 
 	this->processInstruction(instruction);
 }
