@@ -114,6 +114,52 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		}
 	}
 
+	// Branch and Exchange
+	if(((instruction >> 4) & 0x1F) == 0x11)
+	{
+		if(((instruction >> 9) & 0x0F) == 0x0F)
+		{
+			if(((instruction >> 13) & 0x01) == 0x01)
+			{
+				if(((instruction >> 14) & 0x0F) == 0x0F)
+				{
+					if(((instruction >> 18) & 0x01) == 0x01)
+					{
+						if(((instruction >> 19) & 0x07) == 0x05)
+						{
+							if(((instruction >> 22) & 0x01) == 0x00)
+							{
+								if(((instruction >> 23) & 0x01) == 0x00)
+								{
+									if(((instruction >> 24) & 0x0F) == 0x01)
+									{
+										// BX (switch processor state)
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// Halfword Data Transfer
+	if(((instruction >> 25) & 0x07) == 0x00)
+	{
+		if(((instruction >> 4) & 0x01) == 0x01)
+		{
+			if(((instruction >> 7) & 0x01) == 0x01)
+			{
+				if(((instruction >> 8) & 0x0F) == 0x00)
+				{
+					// Halfword and Signed Data Transfer
+					// (LDRH/STRH/LDRSB/LDRSH)
+				}
+			}
+		}
+	}
+
 	// Single Data Transfer
 	if(((instruction >> 26) & 0x03)  == 0x01)
 	{
