@@ -53,3 +53,8 @@ void MOVOperation::memory()
 {
 
 }
+
+void MOVOperation::write()
+{
+	
+}

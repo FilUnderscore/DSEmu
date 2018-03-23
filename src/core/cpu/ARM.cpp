@@ -12,6 +12,7 @@
 
 #include <BranchInstruction.hpp>
 #include <DataProcessingInstruction.hpp>
+#include <SingleDataTransferInstruction.hpp>
 
 ARM::ARM(DS* ds)
 {
@@ -86,7 +87,9 @@ void ARM::run()
 
 void ARM::processPipeline()
 {
-	for(uint32_t index = 0; index < this->pipeline->size(); index++)
+	uint32_t size = this->pipeline->size();
+
+	for(uint32_t index = 0; index < size; index++)
 	{
 		Instruction* instruction = this->pipeline->at(index);
 
@@ -99,7 +102,10 @@ void ARM::processPipeline()
 		
 		if(instruction->getExecutionStage() != ::WB)
 		{
-			instruction->execute(this);
+			if(!instruction->execute(this))
+			{
+				this->pipeline->erase(this->pipeline->begin() + index);		
+			}
 		}
 		else
 		{
@@ -146,6 +152,8 @@ void ARM::processARMInstruction(uint32_t instruction)
 	// Delete instruction after memory write to free space.
 	Instruction* decodedInstruction = InstructionDecoder::decode(instruction);
 
+		this->print();
+
 	if(dynamic_cast<DataProcessingInstruction*>(decodedInstruction))
 	{
 		DataProcessingInstruction* dataProcessingInstruction = (DataProcessingInstruction*) decodedInstruction;
@@ -162,6 +170,10 @@ void ARM::processARMInstruction(uint32_t instruction)
 		BranchInstruction* branchInstruction = (BranchInstruction*) decodedInstruction;
 
 		Logger::log("Branch (With Link: " + to_string(branchInstruction->isWithLink()) + ")");
+	}
+	else if(dynamic_cast<SingleDataTransferInstruction*>(decodedInstruction))
+	{
+		SingleDataTransferInstruction* singleDataTransferInstruction = (SingleDataTransferInstruction*) decodedInstruction;
 	}
 	else
 	{

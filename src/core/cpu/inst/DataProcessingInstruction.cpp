@@ -76,6 +76,8 @@ bool DataProcessingInstruction::execute(ARM* arm)
 {
 	if(!Instruction::execute(arm))
 	{
+		Logger::log("No exec");
+
 		return false;
 	}
 

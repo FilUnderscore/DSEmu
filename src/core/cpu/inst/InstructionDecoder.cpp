@@ -13,6 +13,7 @@ using namespace std;
 
 #include <BranchInstruction.hpp>
 #include <DataProcessingInstruction.hpp>
+#include <SingleDataTransferInstruction.hpp>
 
 Instruction* InstructionDecoder::decode(uint32_t instruction)
 {
@@ -116,7 +117,34 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	// Single Data Transfer
 	if(((instruction >> 26) & 0x03)  == 0x01)
 	{
+		uint8_t i = (instruction >> 25) & 0x01;
+		uint8_t p = (instruction >> 24) & 0x01;
+		uint8_t u = (instruction >> 23) & 0x01;
+		uint8_t b = (instruction >> 22) & 0x01;
+		uint8_t w = (instruction >> 21) & 0x01;
+		uint8_t l = (instruction >> 20) & 0x01;
 
+		uint8_t rn = (instruction >> 16) & 0x0F;
+		uint8_t rd = (instruction >> 12) & 0x0F;
+
+		uint8_t immediate12;
+
+		uint8_t shift;
+		uint8_t rm;
+
+		if(i == 0x00)
+		{
+			immediate12 = instruction & 0x0FFF;
+		}
+		else if(i == 0x01)
+		{
+			shift = (instruction >> 4) & 0xFF;
+			rm = instruction & 0x0F;
+		}
+
+		SingleDataTransferInstruction* singleDataTransferInstruction = new SingleDataTransferInstruction(instruction, cond, i, p, u, b, w, l, rn, rd , immediate12, shift, rm);
+
+		return singleDataTransferInstruction;
 	}
 
 	// Undefined
