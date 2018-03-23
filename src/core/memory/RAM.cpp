@@ -90,7 +90,9 @@ bool RAM::load(uint8_t* data, uint32_t dataLength, uint32_t destAddress)
 		return false;
 	}
 
-	memcpy(memory->getMemory() + destAddress, data, dataLength);
+	Logger::log("Dest Addr: " + to_string(destAddress));
+
+	memcpy(memory->getMemory()->get() + destAddress, data, dataLength);
 
 	return true;
 }

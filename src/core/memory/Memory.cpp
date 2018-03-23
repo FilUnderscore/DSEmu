@@ -5,15 +5,9 @@
 #include <Logger.hpp>
 #include <String.hpp>
 
-Memory::Memory()
+Memory::Memory() : Memory(::UNDEFINED, 0, 0)
 {
-	this->memoryType = MemoryType::UNDEFINED;
-
-	this->startAddress = 0x00;
-
-	this->endAddress = 0x00;
-
-	this->memory = NULL;
+	
 }
 
 Memory::Memory(uint32_t startAddress, uint32_t endAddress) : Memory(MemoryType::UNDEFINED, startAddress, endAddress)

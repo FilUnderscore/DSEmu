@@ -445,10 +445,10 @@ void ARM::executeAt(uint32_t address)
 
 	address -= memory->getStartAddress();
 
-	//Logger::log("Mem: " + String::toHexString(memory->getMemory(), memory->getMemorySize()));
+	//Logger::log("Mem: " + String::toHexString(memory->getMemory()->get(), memory->getMemory()->getSize()));
 
 	uint8_t data[4];
-	memcpy(data, memory->getMemory() + address, 4);
+	memcpy(data, memory->getMemory()->get() + address, 4);
 
 	Logger::log("Instruction (HEX): " + String::toHexString(data, 4));
 
