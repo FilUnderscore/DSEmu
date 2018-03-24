@@ -23,7 +23,7 @@ uint64_t Bits::to64UBits(uint8_t* array)
 
 uint8_t* Bits::from8UBits(uint8_t ubits8)
 {
-	uint8_t* array = new uint8_t[sizeof(uint8_t)];
+	uint8_t* array = new uint8_t[sizeof(uint8_t)]();
 
 	array[0] = ubits8 & 0xFF;
 
@@ -32,7 +32,7 @@ uint8_t* Bits::from8UBits(uint8_t ubits8)
 
 uint8_t* Bits::from16UBits(uint16_t ubits16)
 {
-	uint8_t* array = new uint8_t[sizeof(uint16_t)];
+	uint8_t* array = new uint8_t[sizeof(uint16_t)]();
 
 	array[0] = (ubits16 >> 8) & 0xFF;
 	array[1] = ubits16 & 0xFF;
