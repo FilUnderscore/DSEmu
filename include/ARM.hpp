@@ -17,6 +17,8 @@
 
 #include "ProcessorMode.hpp"
 
+#include "RAM.hpp"
+
 using namespace CPU;
 
 using namespace std;
@@ -60,6 +62,8 @@ namespace CPU
 		void onIRQ();
 
 		ProcessorState getProcessorState();
+
+		RAM* getRAM();
 	protected:
 		DS* ds;
 

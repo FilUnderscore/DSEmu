@@ -81,23 +81,39 @@ bool DataProcessingInstruction::execute(ARM* arm)
 		return false;
 	}
 
-	if(this->executionStage == ::EX)
+	switch(this->executionStage)
 	{
-		this->calculate();
+		case ::EX:
+		{
+			this->calculate();
 
-		this->operation = Operation::getOperation((Opcode) this->opcode);
+			this->operation = Operation::getOperation((Opcode) this->opcode);
 
-		this->operation->set(arm, this);
+			this->operation->set(arm, this);
 
-		this->operation->execute();
-	}
-	else if(this->executionStage == ::MEM)
-	{
-		this->operation->memory();
-	}
-	else if(this->executionStage == ::WB)
-	{
-		arm->setRegister((Register) this->getDestinationRegister(), this->operation->getResult());
+			this->operation->execute();
+		
+			break;
+		}
+
+		case ::MEM:
+		{
+			this->operation->memory();
+		
+			break;
+		}
+
+		case ::WB:
+		{
+			arm->setRegister((Register) this->getDestinationRegister(), this->operation->getResult());
+		
+			break;
+		}
+
+		default:
+		{
+			return false;
+		}
 	}
 
 	return true;

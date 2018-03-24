@@ -290,3 +290,8 @@ ProcessorState ARM::getProcessorState()
 {
 	return (ProcessorState) ((this->getRegister(::CPSR) >> 5) & 0x01);
 }
+
+RAM* ARM::getRAM()
+{
+	return this->ds->getRAM();
+}

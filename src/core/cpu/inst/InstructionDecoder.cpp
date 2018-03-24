@@ -15,13 +15,16 @@ using namespace std;
 #include <DataProcessingInstruction.hpp>
 #include <SingleDataTransferInstruction.hpp>
 
+#include <String.hpp>
+
 Instruction* InstructionDecoder::decode(uint32_t instruction)
 {
 	// Convert Instruction to Little Endian (ARM native endianness)
 	instruction = ((instruction << 8) & 0xFF00FF00) | ((instruction >> 8) & 0xFF00FF);
 	instruction = (instruction << 16) | (instruction >> 16);
 
-	std::cout << "Instruction (BINARY): " << std::bitset<32>(instruction) << endl;
+	std::cout << "Instruction [LE] (HEX): " << String::decToHex(instruction) << endl;
+	std::cout << "Instruction [LE] (BINARY): " << std::bitset<32>(instruction) << endl;
 
 	// Bits 31-28 are condition.
 	uint8_t cond = (instruction >> 28) & 0x0F;
@@ -29,32 +32,25 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	// Data Processing / PSR Transfer
 	if(((instruction >> 26) & 0x03) == 0x00)
 	{
-		uint8_t opcode = 0;
-	
-		uint8_t s = 0;
+		uint8_t rotate4;
+		uint8_t immediate8;
 
-		uint8_t rd = 0;
-		uint8_t rn = 0;
-
-		uint8_t rotate4 = 0;
-		uint8_t immediate8 = 0;
-
-		uint8_t shift = 0;
-		uint8_t rs = 0;
-		uint8_t sh = 0;
-		uint8_t rm = 0;
+		uint8_t shift;
+		uint8_t rs;
+		uint8_t sh;
+		uint8_t rm;
 
 		// Bits 21-24 are opcode.
-		opcode = (instruction >> 21) & 0x0F;
+		uint8_t opcode = (instruction >> 21) & 0x0F;
 
 		// Bit 20 is the set condition codes bit.	
-		s = (instruction >> 20) & 0x01;
+		uint8_t s = (instruction >> 20) & 0x01;
 
 		// Bits 16-19 are 1st operand register.
-		rn = (instruction >> 16) & 0x0F;
+		uint8_t rn = (instruction >> 16) & 0x0F;
 
 		// Bits 12-15 are destination register.
-		rd = (instruction >> 12) & 0x0F;
+		uint8_t rd = (instruction >> 12) & 0x0F;
 	
 		// Check if there is an immediate value or shift
 		if(((instruction >> 25) & 0x0F) == 0x01)
@@ -173,7 +169,7 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		uint8_t rn = (instruction >> 16) & 0x0F;
 		uint8_t rd = (instruction >> 12) & 0x0F;
 
-		uint8_t immediate12;
+		uint16_t immediate12;
 
 		uint8_t shift;
 		uint8_t rm;
