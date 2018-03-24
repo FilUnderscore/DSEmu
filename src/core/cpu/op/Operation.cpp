@@ -5,6 +5,7 @@ using namespace CPU;
 #include <ARM.hpp>
 
 #include <MOVOperation.hpp>
+#include <SUBOperation.hpp>
 
 #include <DataProcessingInstruction.hpp>
 
@@ -69,6 +70,7 @@ void Operation::init()
 	operations = new map<Opcode, Operation*(*)()>;
 
 	operations->insert(make_pair(::MOV, &createInstance<MOVOperation>));
+	operations->insert(make_pair(::SUB, &createInstance<SUBOperation>));
 }
 
 Operation* Operation::getOperation(Opcode opcode)

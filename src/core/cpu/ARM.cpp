@@ -12,6 +12,7 @@
 
 #include <BranchInstruction.hpp>
 #include <DataProcessingInstruction.hpp>
+#include <HalfwordDataTransferInstruction.hpp>
 #include <SingleDataTransferInstruction.hpp>
 
 ARM::ARM(DS* ds)
@@ -70,9 +71,8 @@ void ARM::run()
 {
 	// executeAt(0x02);
 	this->setRegister(::PC, 0x02);
-	this->fetchNextInstruction();
 
-	while(true)
+	while(this->fetchNextInstruction())
 	{
 		this->tick();
 
@@ -93,19 +93,22 @@ void ARM::processPipeline()
 		if(instruction->getExecutionStage() == ::ID)
 		{
 			// Begin Instruction Fetch (executeAt(PC + 8))
-			this->fetchNextInstruction();
 		}
 		
 		if(instruction->getExecutionStage() != ::WB)
 		{
 			if(!instruction->execute(this))
 			{
-				this->pipeline->erase(this->pipeline->begin() + index);		
+				this->pipeline->erase(this->pipeline->begin() + index);	
+
+				size -= 1;	
 			}
 		}
 		else
 		{
 			this->pipeline->erase(this->pipeline->begin() + index);
+
+			size -= 1;
 		}
 	}
 }
@@ -113,11 +116,9 @@ void ARM::processPipeline()
 void ARM::tick()
 {
 	this->processPipeline();
-
-	Logger::log("Tick");
 }
 
-void ARM::fetchNextInstruction()
+bool ARM::fetchNextInstruction()
 {
 	uint32_t pc = this->getRegister(::PC);
 	this->setRegister(::PC, pc + 4);
@@ -125,7 +126,7 @@ void ARM::fetchNextInstruction()
 	Logger::log("PC: " + String::decToHex(pc));
 	Logger::log("PC exec: " + String::decToHex(pc - 8));
 
-	executeAt(pc);
+	return executeAt(pc);
 }
 
 #include <bitset>
@@ -162,6 +163,10 @@ void ARM::processARMInstruction(uint32_t instruction)
 		BranchInstruction* branchInstruction = (BranchInstruction*) decodedInstruction;
 
 		Logger::log("Branch (With Link: " + to_string(branchInstruction->isWithLink()) + ")");
+	}
+	else if(dynamic_cast<HalfwordDataTransferInstruction*>(decodedInstruction))
+	{
+		HalfwordDataTransferInstruction* halfwordDataTransferInstruction = (HalfwordDataTransferInstruction*) decodedInstruction;
 	}
 	else if(dynamic_cast<SingleDataTransferInstruction*>(decodedInstruction))
 	{
@@ -206,7 +211,7 @@ void ARM::changeProcessorState(ProcessorState newProcessorState)
 
 #include <cstring>
 
-void ARM::executeAt(uint32_t address)
+bool ARM::executeAt(uint32_t address)
 {
 	Memory* memory = this->ds->getRAM()->getMemory(address);
 
@@ -215,7 +220,7 @@ void ARM::executeAt(uint32_t address)
 		Logger::log("Memory address " + String::decToHex(address) + " out of range!");
 		exit(0);
 
-		return;
+		return false;
 	}
 
 	address -= memory->getStartAddress();

@@ -47,7 +47,7 @@ namespace CPU
 
 		void tick();
 
-		void fetchNextInstruction();
+		bool fetchNextInstruction();
 
 		void processInstruction(uint32_t instruction);
 
@@ -55,7 +55,7 @@ namespace CPU
 
 		void processTHUMBInstruction(uint16_t instruction);
 
-		void executeAt(uint32_t address);
+		bool executeAt(uint32_t address);
 
 		void onFIQ();
 

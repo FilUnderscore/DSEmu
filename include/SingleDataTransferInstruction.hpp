@@ -15,6 +15,8 @@ namespace CPU
 
 		void calculateOffset();
 
+		void addOffset(ARM* arm);
+
 		bool execute(ARM* arm);
 
 		uint8_t getImmediateOffset();

@@ -18,6 +18,7 @@ namespace CPU
 	class DataProcessingInstruction;
 
 	class MOVOperation;
+	class SUBOperation;
 
 	class Operation
 	{

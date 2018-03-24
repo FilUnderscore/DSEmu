@@ -25,7 +25,10 @@ void BranchInstruction::calculate()
 
 bool BranchInstruction::execute(ARM* arm)
 {
-	return true;
+	Logger::log("Branch not implemented.");
+	exit(0);
+
+	return false;
 }
 
 bool BranchInstruction::isWithLink()

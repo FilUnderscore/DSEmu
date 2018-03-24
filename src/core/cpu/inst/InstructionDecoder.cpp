@@ -13,6 +13,7 @@ using namespace std;
 
 #include <BranchInstruction.hpp>
 #include <DataProcessingInstruction.hpp>
+#include <HalfwordDataTransferInstruction.hpp>
 #include <SingleDataTransferInstruction.hpp>
 
 #include <String.hpp>
@@ -28,6 +29,29 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 
 	// Bits 31-28 are condition.
 	uint8_t cond = (instruction >> 28) & 0x0F;
+
+	// Halfword Data Transfer
+	if(((instruction >> 25) & 0x07) == 0x00)
+	{
+		if(((instruction >> 4) & 0x01) == 0x01)
+		{
+			if(((instruction >> 7) & 0x01) == 0x01)
+			{
+				if(((instruction >> 8) & 0x0F) == 0x00)
+				{
+					// Halfword and Signed Data Transfer
+					// (LDRH/STRH/LDRSB/LDRSH)
+
+					HalfwordDataTransferInstruction* halfwordDataTransferInstruction = new HalfwordDataTransferInstruction(instruction, cond, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+					Logger::log("HDT");
+
+					return halfwordDataTransferInstruction;
+				}
+			}
+		}
+	}
+
 
 	// Data Processing / PSR Transfer
 	if(((instruction >> 26) & 0x03) == 0x00)
@@ -90,11 +114,13 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	{
 		if(((instruction >> 4) & 0x0F) == 0x09)
 		{
-
+			return NULL;
 		}
 		else
 		{
 			// Undefined Instruction trap
+
+			return NULL;
 		}
 	}
 
@@ -106,6 +132,8 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 			if(((instruction >> 8) & 0x0F) == 0x00)
 			{
 				// Single Data Swap
+
+				return NULL;
 			}
 		}
 	}
@@ -130,27 +158,13 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 									if(((instruction >> 24) & 0x0F) == 0x01)
 									{
 										// BX (switch processor state)
+
+										return NULL;
 									}
 								}
 							}
 						}
 					}
-				}
-			}
-		}
-	}
-
-	// Halfword Data Transfer
-	if(((instruction >> 25) & 0x07) == 0x00)
-	{
-		if(((instruction >> 4) & 0x01) == 0x01)
-		{
-			if(((instruction >> 7) & 0x01) == 0x01)
-			{
-				if(((instruction >> 8) & 0x0F) == 0x00)
-				{
-					// Halfword and Signed Data Transfer
-					// (LDRH/STRH/LDRSB/LDRSH)
 				}
 			}
 		}
@@ -192,12 +206,14 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	// Undefined
 	if(((instruction >> 25) & 0x07) == 0x03)
 	{
-
+		return NULL;
 	}
 	// Block Data Transfer
 	else if(((instruction >> 25) & 0x07) == 0x04)
 	{
+		Logger::log("BDT");
 
+		return NULL;
 	}
 	// Branch
 	else if(((instruction >> 25) & 0x07) == 0x05)
@@ -215,7 +231,7 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	// Co-processor Data Transfer
 	else if(((instruction >> 25) & 0x07) == 0x06)
 	{
-
+		return NULL;
 	}
 
 	if(((instruction >> 24) & 0x0F) == 0x0E)
@@ -223,12 +239,12 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		// Co-processor Data Operation
 		if(((instruction >> 4) & 0x01) == 0x00)
 		{
-
+			return NULL;
 		}
 		// Co-processor Register Transfer
 		else
 		{
-
+			return NULL;
 		}
 	}
 
@@ -236,6 +252,8 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	if(((instruction >> 24) & 0x0F) == 0x0F)
 	{
 		uint32_t immediate24 = instruction & 0xFFFFFF;
+
+		return NULL;
 	}
 
 	return NULL;

@@ -14,8 +14,6 @@ namespace CPU
 		void execute();
 
 		void memory();
-
-		void write();
 	};
 }
 
