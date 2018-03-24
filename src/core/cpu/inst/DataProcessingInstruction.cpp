@@ -29,7 +29,7 @@ DataProcessingInstruction::~DataProcessingInstruction()
 
 }
 
-void DataProcessingInstruction::calculate()
+void DataProcessingInstruction::calculate(ARM* arm)
 {
 	if(((this->instruction >> 25) & 0x01) == 0x00)
 	{
@@ -45,15 +45,17 @@ void DataProcessingInstruction::calculate()
 			shiftValue = this->rs & 0x0F;
 		}
 
+		uint32_t rm = arm->getRegister((Register) this->rm);
+
 		// Logical Left
 		if(this->sh == 0x00)
 		{
-			this->value = (this->rm << shiftValue);
+			this->value = (rm << shiftValue);
 		}
 		// Logical Right
 		else if(this->sh == 0x01)
 		{
-			this->value = (this->rm >> shiftValue);
+			this->value = (rm >> shiftValue);
 		}
 		// Arithmetic Right
 		else if(this->sh == 0x02)
@@ -85,7 +87,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 	{
 		case ::EX:
 		{
-			this->calculate();
+			this->calculate(arm);
 
 			this->operation = Operation::getOperation((Opcode) this->opcode);
 
@@ -105,8 +107,31 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 		case ::WB:
 		{
-			arm->setRegister((Register) this->getDestinationRegister(), this->operation->getResult());
+			uint32_t result = this->operation->getResult();
+
+			arm->setRegister((Register) this->getDestinationRegister(), result);
 		
+			if(this->s == 0x01)
+			{
+				// Set condition codes in CPSR
+
+				uint32_t cpsr = arm->getRegister(::CPSR);
+
+				// Bit 30 (Zero flag)
+				if(result == 0x00)
+				{
+					// Set Bit 30 to 1
+					cpsr |= 1 << 0x40000000;
+				}
+				else
+				{
+					// Set Bit 30 to 0
+					cpsr |= 0 << 0x40000000;
+				}
+
+				arm->setRegister(::CPSR, cpsr);
+			}
+
 			break;
 		}
 

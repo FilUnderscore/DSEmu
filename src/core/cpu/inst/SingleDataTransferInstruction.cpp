@@ -74,8 +74,6 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 		return false;
 	}
 
-	Logger::log("SDTI");
-
 	switch(this->executionStage)
 	{
 		case ::EX:
@@ -92,8 +90,6 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 				uint32_t rn = arm->getRegister((Register) this->rn);
 
 				this->address = rn;
-
-				Logger::log("Store");
 			}
 			else
 			{
@@ -104,8 +100,6 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 					this->addOffset(arm);
 				}
 			}
-
-			Logger::log("WO");
 		}
 
 		case ::MEM:

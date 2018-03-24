@@ -84,31 +84,20 @@ void ARM::run()
 
 void ARM::processPipeline()
 {
-	uint32_t size = this->pipeline->size();
-
-	for(uint32_t index = 0; index < size; index++)
+	for(uint32_t index = 0; index < this->pipeline->size(); index++)
 	{
 		Instruction* instruction = this->pipeline->at(index);
 
-		if(instruction->getExecutionStage() == ::ID)
-		{
-			// Begin Instruction Fetch (executeAt(PC + 8))
-		}
-		
 		if(instruction->getExecutionStage() != ::WB)
 		{
 			if(!instruction->execute(this))
 			{
 				this->pipeline->erase(this->pipeline->begin() + index);	
-
-				size -= 1;	
 			}
 		}
 		else
 		{
 			this->pipeline->erase(this->pipeline->begin() + index);
-
-			size -= 1;
 		}
 	}
 }
