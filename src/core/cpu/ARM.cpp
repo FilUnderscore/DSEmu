@@ -1,21 +1,16 @@
 #include <ARM.hpp>
 
-#include <DS.hpp>
-
+#include <DSSystem.hpp>
 #include <Logger.hpp>
-
 #include <Bits.hpp>
-
 #include <String.hpp>
-
 #include <InstructionDecoder.hpp>
-
 #include <BranchInstruction.hpp>
 #include <DataProcessingInstruction.hpp>
 #include <HalfwordDataTransferInstruction.hpp>
 #include <SingleDataTransferInstruction.hpp>
 
-ARM::ARM(DS* ds)
+ARM::ARM(DSSystem* ds)
 {
 	this->ds = ds;
 

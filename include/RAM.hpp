@@ -7,12 +7,17 @@
 
 using namespace std;
 
-class DS;
+namespace DS
+{
+	class DSSystem;
+}
+
+using DS::DSSystem;
 
 class RAM
 {
 public:
-	RAM(DS* ds);
+	RAM(DSSystem* ds);
 	~RAM();
 
 	Pointer<Memory>* getMemoryMap();

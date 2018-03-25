@@ -1,9 +1,8 @@
 #include <Memory.hpp>
 
-#include <cstring>
-
 #include <Logger.hpp>
 #include <String.hpp>
+#include <cstring>
 
 Memory::Memory() : Memory(::UNDEFINED, 0, 0)
 {

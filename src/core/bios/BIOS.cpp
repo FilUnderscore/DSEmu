@@ -1,8 +1,8 @@
 #include <BIOS.hpp>
 
-#include <DS.hpp>
+#include <DSSystem.hpp>
 
-BIOS::BIOS(DS* ds)
+BIOS::BIOS(DSSystem* ds)
 {
 	
 }

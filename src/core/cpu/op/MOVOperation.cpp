@@ -1,11 +1,8 @@
 #include <MOVOperation.hpp>
 
 #include <Logger.hpp>
-
 #include <Register.hpp>
-
 #include <ARM.hpp>
-
 #include <DataProcessingInstruction.hpp>
 
 using namespace CPU;

@@ -1,10 +1,9 @@
 #include <Instruction.hpp>
 
-using namespace CPU;
-
 #include <Bits.hpp>
-
 #include <ARM.hpp>
+
+using namespace CPU;
 
 Instruction::Instruction(uint32_t instruction, uint8_t cond)
 {

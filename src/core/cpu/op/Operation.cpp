@@ -1,13 +1,11 @@
 #include <Operation.hpp>
 
-using namespace CPU;
-
 #include <ARM.hpp>
-
 #include <MOVOperation.hpp>
 #include <SUBOperation.hpp>
-
 #include <DataProcessingInstruction.hpp>
+
+using namespace CPU;
 
 map<Opcode, Operation*(*)()>* Operation::operations;
 

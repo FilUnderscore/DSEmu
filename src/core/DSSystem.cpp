@@ -1,10 +1,11 @@
-#include <DS.hpp>
+#include <DSSystem.hpp>
 
 #include <Logger.hpp>
-
 #include <String.hpp>
 
-DS::DS()
+using DS::DSSystem;
+
+DSSystem::DSSystem()
 {
 	this->bios = new BIOS(this);
 
@@ -15,35 +16,34 @@ DS::DS()
 	this->ram = new RAM(this);
 }
 
-DS::~DS()
+DSSystem::~DSSystem()
 {
 
 }
 
-BIOS* DS::getBIOS()
+BIOS* DSSystem::getBIOS()
 {
 	return this->bios;
 }
 
-ARM9* DS::getARM9()
+ARM9* DSSystem::getARM9()
 {
 	return this->arm9;
 }
 
-ARM7* DS::getARM7()
+ARM7* DSSystem::getARM7()
 {
 	return this->arm7;
 }
 
-RAM* DS::getRAM()
+RAM* DSSystem::getRAM()
 {
 	return this->ram;
 }
 
-void DS::loadCartridge(DSCartridge* cartridge)
+void DSSystem::loadCartridge(DSCartridge* cartridge)
 {
 	this->cartridge = cartridge;
-
 	this->cartridge->getCartridgeHeader()->print();
 
 	Logger::log("Loading ARM9 into Virtual RAM");
@@ -53,19 +53,16 @@ void DS::loadCartridge(DSCartridge* cartridge)
 	Logger::log("Loading ARM7 into Virtual RAM");
 
 	this->ram->load(cartridge->getROMData() + this->cartridge->getCartridgeHeader()->getARM7ROMOffset(), this->cartridge->getCartridgeHeader()->getARM7Size(), this->cartridge->getCartridgeHeader()->getARM7RAMAddress());
-
-	// TODO: Throws Segmentation Fault because Memory Size is not exact.
 	this->ram->print();
 }
 
-DSCartridge* DS::getDSCartridge()
+DSCartridge* DSSystem::getDSCartridge()
 {
 	return this->cartridge;
 }
 
-void DS::run()
+void DSSystem::run()
 {
 	this->arm9->run();
-
 	this->arm9->print();
 }

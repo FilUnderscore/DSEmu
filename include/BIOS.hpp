@@ -1,12 +1,17 @@
 #ifndef INCLUDE_BIOS_HPP_
 #define INCLUDE_BIOS_HPP_
 
-class DS;
+namespace DS
+{
+	class DSSystem;
+}
+
+using DS::DSSystem;
 
 class BIOS
 {
 public:
-	BIOS(DS* ds);
+	BIOS(DSSystem* ds);
 	~BIOS();
 };
 

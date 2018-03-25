@@ -14,14 +14,12 @@
 
 using namespace CPU;
 
-class DS;
-
 namespace CPU
 {
 	class ARM7 : public ARM
 	{
 	public:
-		ARM7(DS* ds);
+		ARM7(DSSystem* ds);
 		~ARM7();
 
 	private:

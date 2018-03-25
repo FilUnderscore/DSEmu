@@ -1,14 +1,11 @@
 #include <DSCartridgeLoader.hpp>
 
+#include <Logger.hpp>
+#include <String.hpp>
+#include <vector>
 #include <fstream>
 
-#include <Logger.hpp>
-
-#include <String.hpp>
-
 using namespace Cartridge;
-
-#include <vector>
 
 DSCartridge* DSCartridgeLoader::loadCartridgeFromFile(string filePath)
 {

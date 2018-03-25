@@ -1,22 +1,17 @@
 #include <InstructionDecoder.hpp>
 
-#include <Logger.hpp>
-
-#include <string>
-
-using namespace std;
-
-#include <iostream>
-#include <bitset>
-
 #include <Opcode.hpp>
-
 #include <BranchInstruction.hpp>
 #include <DataProcessingInstruction.hpp>
 #include <HalfwordDataTransferInstruction.hpp>
 #include <SingleDataTransferInstruction.hpp>
-
 #include <String.hpp>
+#include <Logger.hpp>
+#include <string>
+#include <iostream>
+#include <bitset>
+
+using namespace std;
 
 Instruction* InstructionDecoder::decode(uint32_t instruction)
 {

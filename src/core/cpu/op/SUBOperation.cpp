@@ -1,7 +1,6 @@
 #include <SUBOperation.hpp>
 
 #include <ARM.hpp>
-
 #include <DataProcessingInstruction.hpp>
 
 using namespace CPU;

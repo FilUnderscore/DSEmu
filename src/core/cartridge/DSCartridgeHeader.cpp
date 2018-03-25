@@ -1,12 +1,10 @@
 #include <DSCartridgeHeader.hpp>
 
 #include <Logger.hpp>
-
 #include <Bits.hpp>
+#include <String.hpp>
 
 #include <cstring>
-
-#include <String.hpp>
 
 using namespace Cartridge;
 

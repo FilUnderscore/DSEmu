@@ -1,8 +1,8 @@
 #include <ARM7.hpp>
 
-#include <DS.hpp>
+#include <DSSystem.hpp>
 
-ARM7::ARM7(DS* ds) : ARM(ds)
+ARM7::ARM7(DSSystem* ds) : ARM(ds)
 {
 
 }

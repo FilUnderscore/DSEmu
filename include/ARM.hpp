@@ -23,14 +23,19 @@ using namespace CPU;
 
 using namespace std;
 
-class DS;
+namespace DS
+{
+	class DSSystem;
+}
+
+using DS::DSSystem;
 
 namespace CPU
 {
 	class ARM
 	{
 	public:
-		ARM(DS* ds);
+		ARM(DSSystem* ds);
 		virtual ~ARM();
 
 		void init();
@@ -65,7 +70,7 @@ namespace CPU
 
 		RAM* getRAM();
 	protected:
-		DS* ds;
+		DSSystem* ds;
 
 		Pointer<uint32_t>* registerMap;
 

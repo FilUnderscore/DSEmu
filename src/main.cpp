@@ -1,14 +1,13 @@
 #include <DSEmu.hpp>
 
-#include <DS.hpp>
-
+#include <DSSystem.hpp>
 #include <DSCartridgeLoader.hpp>
-
+#include <Logger.hpp>
 #include <string>
 
 using namespace std;
 
-#include <Logger.hpp>
+using DS::DSSystem;
 
 int main(int argc, char** argv)
 {
@@ -18,7 +17,7 @@ int main(int argc, char** argv)
 
 	DSCartridge* cartridge = DSCartridgeLoader::loadCartridgeFromFile("TinyFB.nds");
 
-	DS* ds = new DS();
+	DSSystem* ds = new DSSystem();
 
 	ds->loadCartridge(cartridge);
 

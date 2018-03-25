@@ -1,16 +1,13 @@
 #include <RAM.hpp>
 
 #include <Logger.hpp>
-
-#include <cstring>
-
 #include <String.hpp>
-
-#include <DS.hpp>
+#include <DSSystem.hpp>
+#include <cstring>
 
 using namespace std;
 
-RAM::RAM(DS* ds)
+RAM::RAM(DSSystem* ds)
 {
 	// 4194304 bits
 	//this->memory = new uint8_t[this->memorySize = 0x400000];

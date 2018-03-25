@@ -1,12 +1,9 @@
 #include <SingleDataTransferInstruction.hpp>
 
 #include <ARM.hpp>
-
 #include <Bits.hpp>
-
-#include <cstring>
-
 #include <String.hpp>
+#include <cstring>
 
 using namespace std;
 
@@ -112,27 +109,84 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 
 				// Load value into memory
 
-				uint8_t* valueBits = Bits::from32UBits(value); 
-
-				if(!arm->getRAM()->load(valueBits, 4, this->address))
+				if(this->b == 0x00)
 				{
-					Logger::log("Instruction cancelled because memory address out of range! " + String::decToHex(this->address));
+					// Transfer word quantity (32 bits)
 
-					return false;
+					uint8_t* valueBits = Bits::from32UBits(value); 
+
+					if(!arm->getRAM()->load(valueBits, sizeof(uint32_t), this->address))
+					{
+						Logger::log("Failed to transfer word (Single Data Transfer) to out of range memory address: " + String::decToHex(this->address));
+
+						return false;
+					}
+
+					// Free memory
+					delete valueBits;
 				}
+				else if(this->b == 0x01)
+				{
+					// Transfer byte quantity (8 bits)
 
-				// Free memory
-				delete valueBits;
+					uint8_t* valueBits = Bits::from8UBits(value);
+
+					if(!arm->getRAM()->load(valueBits, sizeof(uint8_t), this->address))
+					{
+						Logger::log("Failed to transfer byte (Single Data Transfer) to out of range memory address: " + String::decToHex(this->address));
+
+						return false;
+					}
+
+					delete valueBits;
+				}
 			}
 			else if(this->l == 0x01)
 			{
 				// Load from memory
 
-				uint8_t valueBits[4] = {};
+				if(this->b == 0x00)
+				{
+					// Transfer word quantity (32 bits)
 
-				memcpy(valueBits, arm->getRAM()->getRAM() + this->address, sizeof(valueBits));
+					Memory* memory = arm->getRAM()->getMemory(this->address);
 
-				this->value = Bits::to32UBits(valueBits);
+					if(memory == NULL)
+					{
+						Logger::log("Failed to transfer word (Single Data Transfer) from out of range memory address: " + String::decToHex(this->address));
+
+						return false;
+					}
+
+					uint32_t address = this->address - memory->getStartAddress();
+
+					uint8_t valueBits[sizeof(uint32_t)] = {};
+
+					memcpy(valueBits, memory->getMemory()->get() + address, sizeof(valueBits));
+
+					this->value = Bits::to32UBits(valueBits);
+				}
+				else if(this->b == 0x01)
+				{
+					// Transfer byte quantity (8 bits)
+
+					Memory* memory = arm->getRAM()->getMemory(this->address);
+
+					if(memory == NULL)
+					{
+						Logger::log("Failed to transfer byte (Single Data Transfer) from out of range memory address: " + String::decToHex(this->address));
+
+						return false;
+					}
+
+					uint32_t address = this->address - memory->getStartAddress();
+
+					uint8_t valueBits[sizeof(uint8_t)] = {};
+
+					memcpy(valueBits, memory->getMemory()->get() + address, sizeof(valueBits));
+
+					this->value = Bits::to8UBits(valueBits);
+				}
 			}
 		}
 
@@ -148,6 +202,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 			if(this->l == 0x01)
 			{
 				// Write back value loaded from memory into destination register.
+
 				arm->setRegister((Register) this->rd, this->value);
 			}
 

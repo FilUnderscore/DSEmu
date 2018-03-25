@@ -1,10 +1,9 @@
 #include <DataProcessingInstruction.hpp>
 
-using namespace CPU;
-
 #include <Bits.hpp>
-
 #include <ARM.hpp>
+
+using namespace CPU;
 
 DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8_t cond, uint8_t opcode, uint8_t s, uint8_t rd, uint8_t rn, uint8_t rotate4, uint8_t immediate8, uint8_t shift, uint8_t rs, uint8_t sh, uint8_t rm) : Instruction(instruction, cond)
 {

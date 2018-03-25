@@ -1,7 +1,7 @@
 CC = gcc
 CXX = g++
 
-CXX_FLAGS = -Wall -g
+CXX_FLAGS = -Wall -g -Wextra
 
 MACRO_FLAGS = -DOPENGL=1
 
