@@ -4,20 +4,13 @@
 #include <String.hpp>
 #include <cstring>
 
-Memory::Memory() : Memory(::UNDEFINED, 0, 0)
+Memory::Memory() : Memory(0, 0)
 {
 	
 }
 
-Memory::Memory(uint32_t startAddress, uint32_t endAddress) : Memory(MemoryType::UNDEFINED, startAddress, endAddress)
+Memory::Memory(uint32_t startAddress, uint32_t endAddress)
 {
-
-}
-
-Memory::Memory(MemoryType type, uint32_t startAddress, uint32_t endAddress)
-{
-	this->memoryType = type;
-
 	this->startAddress = startAddress;
 
 	this->endAddress = endAddress;
@@ -27,12 +20,7 @@ Memory::Memory(MemoryType type, uint32_t startAddress, uint32_t endAddress)
 
 Memory::~Memory()
 {
-
-}
-
-MemoryType Memory::getMemoryType()
-{
-	return this->memoryType;
+	Logger::log("Memory destroyed.");
 }
 
 uint32_t Memory::getStartAddress()

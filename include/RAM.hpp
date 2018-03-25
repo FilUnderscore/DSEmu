@@ -1,11 +1,8 @@
 #ifndef INCLUDE_RAM_HPP_
 #define INCLUDE_RAM_HPP_
 
-#include <cstdint>
-
 #include <Memory.hpp>
-
-using namespace std;
+#include <cstdint>
 
 namespace DS
 {

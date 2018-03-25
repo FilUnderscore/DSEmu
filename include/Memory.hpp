@@ -1,13 +1,8 @@
 #ifndef INCLUDE_MEMORY_HPP_
 #define INCLUDE_MEMORY_HPP_
 
-#include "MemoryType.hpp"
-
-#include <cstdint>
-
-using namespace std;
-
 #include "Pointer.hpp"
+#include <cstdint>
 
 class Memory
 {
@@ -15,11 +10,8 @@ public:
 	Memory();
 
 	Memory(uint32_t startAddress, uint32_t endAddress);
-	Memory(MemoryType type, uint32_t startAddress, uint32_t endAddress);
 	
 	~Memory();
-
-	MemoryType getMemoryType();
 
 	uint32_t getStartAddress();
 
@@ -30,8 +22,6 @@ public:
 	void clear();
 
 private:
-	MemoryType memoryType;
-
 	uint32_t startAddress;
 	uint32_t endAddress;
 
