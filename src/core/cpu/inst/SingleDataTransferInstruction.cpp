@@ -68,6 +68,8 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 {
 	if(!Instruction::execute(arm))
 	{
+		Logger::log("SingleDataTransferInstruction cancelled.");
+
 		return false;
 	}
 

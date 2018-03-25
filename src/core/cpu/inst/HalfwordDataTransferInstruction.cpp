@@ -23,5 +23,10 @@ HalfwordDataTransferInstruction::~HalfwordDataTransferInstruction()
 
 bool HalfwordDataTransferInstruction::execute(ARM* arm)
 {
-	
+	if(!Instruction::execute(arm))
+	{
+		Logger::log("HalfwordDataTransferInstruction cancelled.");
+
+		return false;
+	}
 }

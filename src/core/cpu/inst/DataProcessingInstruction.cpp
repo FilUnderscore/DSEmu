@@ -2,8 +2,11 @@
 
 #include <Bits.hpp>
 #include <ARM.hpp>
+#include <limits>
 
 using namespace CPU;
+
+using std::numeric_limits;
 
 DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8_t cond, uint8_t opcode, uint8_t s, uint8_t rd, uint8_t rn, uint8_t rotate4, uint8_t immediate8, uint8_t shift, uint8_t rs, uint8_t sh, uint8_t rm) : Instruction(instruction, cond)
 {
@@ -77,7 +80,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 {
 	if(!Instruction::execute(arm))
 	{
-		Logger::log("No exec");
+		Logger::log("DataProcessingInstruction cancelled.");
 
 		return false;
 	}
@@ -106,7 +109,9 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 		case ::WB:
 		{
-			uint32_t result = this->operation->getResult();
+			// Converted to uint32_t, int64_t is used for flag setting and it has a higher max value than an int32_t.
+			int64_t opResult = this->operation->getResult();
+			uint32_t result = (uint32_t) opResult;
 
 			arm->setRegister((Register) this->getDestinationRegister(), result);
 		
@@ -116,19 +121,58 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 				uint32_t cpsr = arm->getRegister(::CPSR);
 
+				// Bit 31 (Negative flag)
+				if(opResult < 0)
+				{
+					// Set Bit 31 to 1
+					cpsr |= (1 << 31);
+				}
+				else
+				{
+					// Set Bit 31 to 0
+					cpsr |= (0 << 31);
+				}
+
 				// Bit 30 (Zero flag)
 				if(result == 0x00)
 				{
 					// Set Bit 30 to 1
-					cpsr |= (1 << 0x40000000);
+					cpsr |= (1 << 30);
 				}
 				else
 				{
 					// Set Bit 30 to 0
-					cpsr |= (0 << 0x40000000);
+					cpsr |= (0 << 30);
 				}
 
-				Logger::log("SET CPSR");
+				/*
+				 * TODO: Proper implementation
+				 *
+				// Bit 29 (Unsigned Overflow) Carry Flag
+				if(opResult > numeric_limits<uint32_t>::max())
+				{
+					// Set Bit 29 to 1
+					cpsr |= (1 << 29);
+				}
+				else
+				{
+					// Bit 28 (Signed) Overflow Flag
+					// Inside Carry Flag if statement, because max value of uint32_t is greater than int32_t.
+					if(opResult > numeric_limits<int32_t>::max())
+					{
+						// Set Bit 28 to 1
+						cpsr |= (1 << 28);
+					}
+					else
+					{
+						// Set Bit 28 to 0
+						cpsr |= (0 << 28);
+					}
+
+					// Set Bit 29 to 0
+					cpsr |= (0 << 29);
+				}
+				*/
 
 				arm->setRegister(::CPSR, cpsr);
 			}

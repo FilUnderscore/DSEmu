@@ -54,7 +54,7 @@ Opcode Operation::getOpcode()
 	return this->opcode;
 }
 
-uint32_t Operation::getResult()
+int64_t Operation::getResult()
 {
 	return this->result;
 }

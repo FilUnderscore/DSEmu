@@ -17,7 +17,7 @@ CMPOperation::~CMPOperation()
 
 void CMPOperation::execute()
 {
-
+	this->result = 0;
 }
 
 void CMPOperation::memory()

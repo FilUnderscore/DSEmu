@@ -39,7 +39,7 @@ namespace CPU
 
 		static Operation* getOperation(Opcode opcode);
 
-		uint32_t getResult();
+		int64_t getResult();
 
 	protected:
 		Opcode opcode;
@@ -48,7 +48,7 @@ namespace CPU
 
 		DataProcessingInstruction* instruction;
 
-		uint32_t result;
+		int64_t result;
 
 	private:
 		static map<Opcode, Operation*(*)()>* operations;

@@ -31,7 +31,7 @@ bool BranchInstruction::execute(ARM* arm)
 {
 	if(!Instruction::execute(arm))
 	{
-		Logger::log("Branch cancelled");
+		Logger::log("BranchInstruction cancelled.");
 
 		return false;
 	}
