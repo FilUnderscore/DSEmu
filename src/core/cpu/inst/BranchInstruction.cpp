@@ -70,6 +70,11 @@ bool BranchInstruction::execute(ARM* arm)
 
 			break;
 		}
+
+		default:
+		{
+			return false;
+		}
 	}
 
 	return true;

@@ -121,6 +121,9 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 					{
 						Logger::log("Failed to transfer word (Single Data Transfer) to out of range memory address: " + String::decToHex(this->address));
 
+						// Free memory
+						delete valueBits;
+
 						return false;
 					}
 
@@ -136,6 +139,9 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 					if(!arm->getRAM()->load(valueBits, sizeof(uint8_t), this->address))
 					{
 						Logger::log("Failed to transfer byte (Single Data Transfer) to out of range memory address: " + String::decToHex(this->address));
+
+						// Free memory
+						delete valueBits;
 
 						return false;
 					}
@@ -223,6 +229,11 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 			}
 
 			break;
+		}
+
+		default:
+		{
+			return false;
 		}
 	}
 
