@@ -45,6 +45,7 @@ bool BranchInstruction::execute(ARM* arm)
 			Logger::log("PROGRAM COUNT: " + to_string(pc));
 
 			// Increment due to pre-fetch
+			pc += 4;
 			pc += this->offset;
 
 			this->offset = pc;
@@ -63,7 +64,6 @@ bool BranchInstruction::execute(ARM* arm)
 
 			Logger::log("OFF: " + to_string(this->offset));
 
-			this->offset += 4;
 			arm->setRegister(::PC, this->offset);
 
 			Logger::log("OFF2: " + to_string(this->offset));
