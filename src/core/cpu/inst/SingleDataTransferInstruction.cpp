@@ -97,6 +97,8 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 					this->addOffset(arm);
 				}
 			}
+
+			break;
 		}
 
 		case ::MEM:
@@ -188,6 +190,8 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 					this->value = Bits::to8UBits(valueBits);
 				}
 			}
+
+			break;
 		}
 
 		case ::WB:
@@ -217,6 +221,8 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 				// Write back address into Base register (RN)
 				arm->setRegister((Register) this->rn, this->address);
 			}
+
+			break;
 		}
 	}
 
