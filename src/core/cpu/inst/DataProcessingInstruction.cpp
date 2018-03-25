@@ -67,7 +67,7 @@ void DataProcessingInstruction::calculate(ARM* arm)
 		//Rotate Right
 		else if(this->sh == 0x03)
 		{
-
+			this->value = Bits::ror32UBits(rm, shiftValue);
 		}
 	}
 	else
