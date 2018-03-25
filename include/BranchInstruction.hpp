@@ -8,7 +8,7 @@ namespace CPU
 	class BranchInstruction : public Instruction
 	{
 	public:
-		BranchInstruction(uint32_t instruction, uint8_t cond, uint8_t l, uint32_t offset);
+		BranchInstruction(uint32_t instruction, uint8_t cond, uint8_t l, int32_t offset);
 		~BranchInstruction();
 
 		void calculate();
@@ -17,12 +17,12 @@ namespace CPU
 
 		bool isWithLink();
 
-		uint32_t getOffset();
+		int32_t getOffset();
 
 	private:
 		uint8_t l;
 
-		uint32_t offset;
+		int32_t offset;
 	};
 }
 

@@ -3,6 +3,7 @@
 #include <ARM.hpp>
 #include <MOVOperation.hpp>
 #include <SUBOperation.hpp>
+#include <CMPOperation.hpp>
 #include <DataProcessingInstruction.hpp>
 
 using namespace CPU;
@@ -69,6 +70,7 @@ void Operation::init()
 
 	operations->insert(make_pair(::MOV, &createInstance<MOVOperation>));
 	operations->insert(make_pair(::SUB, &createInstance<SUBOperation>));
+	operations->insert(make_pair(::CMP, &createInstance<CMPOperation>));
 }
 
 Operation* Operation::getOperation(Opcode opcode)

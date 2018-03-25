@@ -32,6 +32,8 @@ bool Instruction::execute(ARM* arm)
 		uint8_t carry_flag = (cpsr >> 29) & 0x01;
 		uint8_t overflow_flag = (cpsr >> 28) & 0x01;
 
+		Logger::log("COND: " + to_string(cond));
+
 		// Check conditions
 		switch(this->cond)
 		{
@@ -42,6 +44,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::NE:
@@ -51,6 +55,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::CS:
@@ -60,6 +66,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::CC:
@@ -69,6 +77,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::MI:
@@ -78,6 +88,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::PL:
@@ -87,6 +99,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::VS:
@@ -96,6 +110,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::VC:
@@ -105,6 +121,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::HI:
@@ -114,6 +132,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::LS:
@@ -142,6 +162,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::LT:
@@ -151,6 +173,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::GT:
@@ -160,6 +184,8 @@ bool Instruction::execute(ARM* arm)
 				{
 					return false;
 				}
+
+				break;
 			}
 
 			case ::LE:

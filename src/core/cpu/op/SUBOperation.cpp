@@ -21,6 +21,9 @@ void SUBOperation::execute()
 
 	uint32_t op2 = this->instruction->getValue();
 
+	Logger::log("RN: " + to_string(rn));
+	Logger::log("OP2: " + to_string(op2));
+
 	this->result = rn - op2;
 }
 

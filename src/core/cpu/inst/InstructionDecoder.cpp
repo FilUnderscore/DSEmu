@@ -217,7 +217,7 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 
 		uint8_t l = (instruction >> 24) & 0x01;
 
-		uint32_t offset = instruction & 0xFFFFFF;
+		int32_t offset = instruction & 0xFFFFFF;
 
 		BranchInstruction* branchInstruction = new BranchInstruction(instruction, cond, l, offset);
 

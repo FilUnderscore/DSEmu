@@ -120,13 +120,15 @@ bool DataProcessingInstruction::execute(ARM* arm)
 				if(result == 0x00)
 				{
 					// Set Bit 30 to 1
-					cpsr |= 1 << 0x40000000;
+					cpsr |= (1 << 0x40000000);
 				}
 				else
 				{
 					// Set Bit 30 to 0
-					cpsr |= 0 << 0x40000000;
+					cpsr |= (0 << 0x40000000);
 				}
+
+				Logger::log("SET CPSR");
 
 				arm->setRegister(::CPSR, cpsr);
 			}
