@@ -23,5 +23,11 @@ int main(int argc, char** argv)
 
 	ds->run();
 
+	delete ds;
+	ds = NULL;
+
+	delete cartridge;
+	cartridge = NULL;
+
 	return 0;
 }

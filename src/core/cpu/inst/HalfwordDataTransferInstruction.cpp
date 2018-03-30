@@ -21,6 +21,22 @@ HalfwordDataTransferInstruction::~HalfwordDataTransferInstruction()
 
 }
 
+void HalfwordDataTransferInstruction::calculate(ARM* arm)
+{
+	if(((this->instruction >> 22) & 0x01) == 0x00)
+	{
+		// Register Offset
+
+		this->offset = 0;
+	}
+	else if(((this->instruction >> 22) & 0x01) == 0x01)
+	{
+		// Immediate Offset
+
+		this->offset = 0;
+	}
+}
+
 bool HalfwordDataTransferInstruction::execute(ARM* arm)
 {
 	if(!Instruction::execute(arm))
@@ -29,4 +45,31 @@ bool HalfwordDataTransferInstruction::execute(ARM* arm)
 
 		return false;
 	}
+
+	switch(this->executionStage)
+	{
+		case ::EX:
+		{
+			this->calculate(arm);
+
+			break;
+		}
+
+		case ::MEM:
+		{
+			break;
+		}
+
+		case ::WB:
+		{
+			break;
+		}
+
+		default:
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

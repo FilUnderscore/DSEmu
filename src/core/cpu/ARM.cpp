@@ -90,6 +90,7 @@ void ARM::processPipeline()
 				this->pipeline->erase(this->pipeline->begin() + index);
 
 				delete instruction;
+				instruction = NULL;
 			}
 		}
 		else
@@ -97,6 +98,7 @@ void ARM::processPipeline()
 			this->pipeline->erase(this->pipeline->begin() + index);
 
 			delete instruction;
+			instruction = NULL;
 		}
 	}
 }

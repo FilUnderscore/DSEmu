@@ -42,8 +42,6 @@ bool BranchInstruction::execute(ARM* arm)
 		{	
 			uint32_t pc = arm->getRegister(::PC);
 
-			Logger::log("PROGRAM COUNT: " + to_string(pc));
-
 			// Increment due to pre-fetch
 			pc += 4;
 			pc += this->offset;
@@ -63,13 +61,7 @@ bool BranchInstruction::execute(ARM* arm)
 
 		case ::WB:
 		{
-			// TODO: Hold CPU for Branch instruction to occur, 3 cycles.
-
-			Logger::log("OFF: " + to_string(this->offset));
-
 			arm->setRegister(::PC, this->offset);
-
-			Logger::log("OFF2: " + to_string(this->offset));
 
 			// Allow pipeline to continue.
 			arm->lockPipeline(false);

@@ -31,7 +31,7 @@ DSCartridge* DSCartridgeLoader::loadCartridgeFromFile(string filePath)
 		Logger::log("ROM HEX: " + String::toHexString(data, fileLength));
 
 		DSCartridgeHeader* header = new DSCartridgeHeader(data);
-
+		
 		DSCartridge* cartridge = new DSCartridge(header, data);
 
 		return cartridge;
