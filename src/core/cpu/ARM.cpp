@@ -87,24 +87,23 @@ void ARM::processPipeline()
 		{
 			if(!instruction->execute(this))
 			{
-				this->pipeline->erase(this->pipeline->begin() + index);	
+				this->pipeline->erase(this->pipeline->begin() + index);
+
+				delete instruction;
 			}
 		}
 		else
 		{
 			this->pipeline->erase(this->pipeline->begin() + index);
+
+			delete instruction;
 		}
 	}
 }
 
-void ARM::lockPipeline()
+void ARM::lockPipeline(bool lock)
 {
-	this->pipelineLocked = true;
-}
-
-void ARM::unlockPipeline()
-{
-	this->pipelineLocked = false;
+	this->pipelineLocked = lock;
 }
 
 void ARM::tick()

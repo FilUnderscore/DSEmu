@@ -50,9 +50,7 @@ namespace CPU
 
 		void processPipeline();
 
-		void lockPipeline();
-
-		void unlockPipeline();
+		void lockPipeline(bool lock);
 
 		void tick();
 

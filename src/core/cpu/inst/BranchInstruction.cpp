@@ -51,7 +51,7 @@ bool BranchInstruction::execute(ARM* arm)
 			this->offset = pc;
 
 			// Cause delay in Pipeline until Branch occurs
-			arm->lockPipeline();
+			arm->lockPipeline(true);
 
 			break;
 		}
@@ -72,7 +72,7 @@ bool BranchInstruction::execute(ARM* arm)
 			Logger::log("OFF2: " + to_string(this->offset));
 
 			// Allow pipeline to continue.
-			arm->unlockPipeline();
+			arm->lockPipeline(false);
 
 			break;
 		}
