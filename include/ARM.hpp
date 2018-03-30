@@ -48,7 +48,7 @@ namespace CPU
 
 		void run();
 
-		void processPipeline();
+		virtual void processPipeline();
 
 		void lockPipeline(bool lock);
 

@@ -22,6 +22,8 @@ namespace CPU
 		ARM7(DSSystem* ds);
 		~ARM7();
 
+		void processPipeline();
+
 	private:
 		CP14 cp14;
 	};

@@ -125,12 +125,14 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 
 						// Free memory
 						delete valueBits;
+						valueBits = NULL;
 
 						return false;
 					}
 
 					// Free memory
 					delete valueBits;
+					valueBits = NULL;
 				}
 				else if(this->b == 0x01)
 				{
@@ -144,11 +146,14 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 
 						// Free memory
 						delete valueBits;
+						valueBits = NULL;
 
 						return false;
 					}
 
+					// Free memory
 					delete valueBits;
+					valueBits = NULL;
 				}
 			}
 			else if(this->l == 0x01)

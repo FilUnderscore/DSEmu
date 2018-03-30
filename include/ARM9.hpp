@@ -22,6 +22,8 @@ namespace CPU
 		ARM9(DSSystem* ds);
 		~ARM9();
 
+		void processPipeline();
+
 	private:
 		CP15 cp15;
 	};

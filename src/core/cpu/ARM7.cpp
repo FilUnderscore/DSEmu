@@ -11,3 +11,25 @@ ARM7::~ARM7()
 {
 
 }
+
+void ARM7::processPipeline()
+{
+	for(uint32_t index = 0; index < this->pipeline->size(); index++)
+	{
+		Instruction* instruction = this->pipeline->at(index);
+
+		// ARM7 has 3 stage pipeline, so after execute in same cycle - call MEM and WB stages to support instructions with ARM9.
+		while(instruction->getExecutionStage() != ::WB)
+		{
+			if(!instruction->execute(this))
+			{
+				break;
+			}	
+		}
+
+		this->pipeline->erase(this->pipeline->begin() + index);
+
+		delete instruction;
+		instruction = NULL;
+	}
+}
