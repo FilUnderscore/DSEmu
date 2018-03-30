@@ -33,7 +33,13 @@ void HalfwordDataTransferInstruction::calculate(ARM* arm)
 	{
 		// Immediate Offset
 
-		this->offset = 0;
+		// this->offset is Immediate Offset (low nibble)
+
+		// Immediate Offset (high nibble)
+		uint32_t hiImmediateOffset = ((this->instruction >> 8) & 0x0F);
+
+		// Concatenate bits 11-8 and 3-0 (bit 11 = MSB, bit 0 = LSB)
+		this->offset = hiImmediateOffset | this->offset;
 	}
 }
 
