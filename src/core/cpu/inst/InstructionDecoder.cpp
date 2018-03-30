@@ -19,8 +19,8 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	instruction = ((instruction << 8) & 0xFF00FF00) | ((instruction >> 8) & 0xFF00FF);
 	instruction = (instruction << 16) | (instruction >> 16);
 
-	std::cout << "Instruction [LE] (HEX): " << String::decToHex(instruction) << endl;
-	std::cout << "Instruction [LE] (BINARY): " << std::bitset<32>(instruction) << endl;
+	Logger::log("Instruction [LE] (HEX): " + String::decToHex(instruction));
+	Logger::log("Instruction [LE] (BINARY): " + std::bitset<32>(instruction).to_string());
 
 	// Bits 31-28 are condition.
 	uint8_t cond = (instruction >> 28) & 0x0F;

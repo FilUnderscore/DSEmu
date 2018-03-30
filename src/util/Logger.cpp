@@ -4,5 +4,5 @@
 
 void Logger::log(string string)
 {
-	cout << string << endl;
+	printf("%s\n", string.c_str());
 }
