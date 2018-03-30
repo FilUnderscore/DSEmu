@@ -7,7 +7,7 @@ main:
 	andeq r0, r0, r0 
 	andeq r0, r0, r0, lsr #3
 
-	str r1, [r0, #0x304] 			; Set POWERCNT
+	str r1, [r0, #0x304] 			; Set POWERCNT (POWCNT1/POWCNT2)
 	str r2, [r0] 					; 	  DISPCNT
 	str r3, [r0, #0x240] 			; 	  VRAMCNT_A
 

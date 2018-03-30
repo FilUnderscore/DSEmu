@@ -94,6 +94,13 @@ bool RAM::load(uint8_t* data, uint32_t dataLength, uint32_t destAddress)
 	return true;
 }
 
+bool RAM::write(uint32_t destAddress, uint8_t* data)
+{
+	// Handle any I/O at address (eg. video)
+
+	return true;
+}
+
 bool RAM::copy(uint32_t sourceAddress, uint32_t destAddress, uint32_t length)
 {
 	if(length == 0)
