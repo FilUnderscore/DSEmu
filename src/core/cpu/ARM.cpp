@@ -97,6 +97,16 @@ void ARM::processPipeline()
 	}
 }
 
+void ARM::lockPipeline()
+{
+	this->pipelineLocked = true;
+}
+
+void ARM::unlockPipeline()
+{
+	this->pipelineLocked = false;
+}
+
 void ARM::tick()
 {
 	this->processPipeline();
@@ -104,6 +114,9 @@ void ARM::tick()
 
 bool ARM::fetchNextInstruction()
 {
+	if(this->pipelineLocked)
+		return true;
+
 	uint32_t pc = this->getRegister(::PC);
 	this->setRegister(::PC, pc + 4);
 

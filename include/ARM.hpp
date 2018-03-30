@@ -50,6 +50,10 @@ namespace CPU
 
 		void processPipeline();
 
+		void lockPipeline();
+
+		void unlockPipeline();
+
 		void tick();
 
 		bool fetchNextInstruction();
@@ -77,6 +81,8 @@ namespace CPU
 		map<ProcessorMode, Pointer<uint32_t>*>* registerShadowMap;
 
 		vector<Instruction*>* pipeline;
+
+		bool pipelineLocked = false;
 
 		void changeProcessorState(ProcessorState newProcessorState);
 	};

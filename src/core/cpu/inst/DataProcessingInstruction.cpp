@@ -111,6 +111,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 		{
 			// Converted to uint32_t, int64_t is used for flag setting and it has a higher max value than an int32_t.
 			int64_t opResult = this->operation->getResult();
+
 			uint32_t result = (uint32_t) opResult;
 
 			arm->setRegister((Register) this->getDestinationRegister(), result);
@@ -118,7 +119,6 @@ bool DataProcessingInstruction::execute(ARM* arm)
 			if(this->s == 0x01)
 			{
 				// Set condition codes in CPSR
-
 				uint32_t cpsr = arm->getRegister(::CPSR);
 
 				// Bit 31 (Negative flag)
