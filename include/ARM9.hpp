@@ -22,6 +22,8 @@ namespace CPU
 		ARM9(DSSystem* ds);
 		~ARM9();
 
+		void init();
+
 		void processPipeline();
 
 	private:

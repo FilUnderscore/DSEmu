@@ -17,7 +17,7 @@
 
 #include "ProcessorMode.hpp"
 
-#include "RAM.hpp"
+#include "MemoryMap.hpp"
 
 using namespace CPU;
 
@@ -38,7 +38,7 @@ namespace CPU
 		ARM(DSSystem* ds);
 		virtual ~ARM();
 
-		void init();
+		virtual void init();
 
 		void setRegister(Register register, uint32_t value);
 
@@ -70,9 +70,11 @@ namespace CPU
 
 		ProcessorState getProcessorState();
 
-		RAM* getRAM();
+		MemoryMap* getMemory();
 	protected:
 		DSSystem* ds;
+
+		MemoryMap* memoryMap;
 
 		Pointer<uint32_t>* registerMap;
 

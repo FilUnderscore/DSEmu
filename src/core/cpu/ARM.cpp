@@ -10,6 +10,10 @@
 #include <HalfwordDataTransferInstruction.hpp>
 #include <SingleDataTransferInstruction.hpp>
 
+#include <thread>
+#include <chrono>
+#include <cstring>
+
 ARM::ARM(DSSystem* ds)
 {
 	this->ds = ds;
@@ -24,6 +28,8 @@ ARM::~ARM()
 
 void ARM::init()
 {
+	this->memoryMap = new MemoryMap();
+
 	this->registerMap = new Pointer<uint32_t>(16 + 1);
 
 	// (16 + 5) = 21 shadow registers
@@ -59,9 +65,6 @@ void ARM::print()
 	Logger::log("");
 }
 
-#include <thread>
-#include <chrono>
-
 void ARM::run()
 {
 	// executeAt(0x02);
@@ -79,7 +82,7 @@ void ARM::run()
 
 void ARM::processPipeline()
 {
-	
+
 }
 
 void ARM::lockPipeline(bool lock)
@@ -105,9 +108,6 @@ bool ARM::fetchNextInstruction()
 
 	return executeAt(pc);
 }
-
-#include <bitset>
-#include <iostream>
 
 void ARM::processInstruction(uint32_t instruction)
 {
@@ -186,11 +186,9 @@ void ARM::changeProcessorState(ProcessorState newProcessorState)
 	Logger::log("Switching to Processor State: " + to_string(newProcessorState));
 }
 
-#include <cstring>
-
 bool ARM::executeAt(uint32_t address)
 {
-	Memory* memory = this->ds->getRAM()->getMemory(address);
+	Memory* memory = this->getMemory()->getMemory(address);
 
 	if(memory == NULL)
 	{
@@ -210,6 +208,8 @@ bool ARM::executeAt(uint32_t address)
 	uint32_t instruction = (data[0] << 24) | (data[1] << 16) | (data[2] << 8) | data[3];
 
 	this->processInstruction(instruction);
+
+	return true;
 }
 
 void ARM::onFIQ()
@@ -276,7 +276,7 @@ ProcessorState ARM::getProcessorState()
 	return (ProcessorState) ((this->getRegister(::CPSR) >> 5) & 0x01);
 }
 
-RAM* ARM::getRAM()
+MemoryMap* ARM::getMemory()
 {
-	return this->ds->getRAM();
+	return this->memoryMap;
 }

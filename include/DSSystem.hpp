@@ -5,7 +5,6 @@
 #include "ARM7.hpp"
 #include "BIOS.hpp"
 #include "DSCartridge.hpp"
-#include "RAM.hpp"
 
 using namespace CPU;
 using namespace Cartridge;
@@ -24,8 +23,6 @@ namespace DS
 
 		ARM7* getARM7();
 
-		RAM* getRAM();
-
 		void loadCartridge(DSCartridge* cartridge);
 
 		DSCartridge* getDSCartridge();
@@ -38,8 +35,6 @@ namespace DS
 		ARM9* arm9;
 
 		ARM7* arm7;
-
-		RAM* ram;
 
 		DSCartridge* cartridge;
 	};

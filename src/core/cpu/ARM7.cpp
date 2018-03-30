@@ -4,12 +4,17 @@
 
 ARM7::ARM7(DSSystem* ds) : ARM(ds)
 {
-
+	this->memoryMap->allocate(0x00000000, 0x00003FFF);
 }
 
 ARM7::~ARM7()
 {
 
+}
+
+void ARM7::init()
+{
+	ARM::init();
 }
 
 void ARM7::processPipeline()

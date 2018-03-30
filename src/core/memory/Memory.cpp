@@ -16,11 +16,18 @@ Memory::Memory(uint32_t startAddress, uint32_t endAddress)
 	this->endAddress = endAddress;
 
 	this->memory = new Pointer<uint8_t>(endAddress - startAddress);
+
+	this->mirroredAddresses = new vector<uint32_t>();
 }
 
 Memory::~Memory()
 {
 	Logger::log("Memory destroyed.");
+}
+
+void Memory::addMirroredAddress(uint32_t mirroredAddress)
+{
+	this->mirroredAddresses->push_back(mirroredAddress);
 }
 
 uint32_t Memory::getStartAddress()

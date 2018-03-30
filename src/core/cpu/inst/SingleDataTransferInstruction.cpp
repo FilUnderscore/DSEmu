@@ -119,7 +119,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 
 					uint8_t* valueBits = Bits::from32UBits(value); 
 
-					if(!arm->getRAM()->load(valueBits, sizeof(uint32_t), this->address))
+					if(!arm->getMemory()->load(valueBits, sizeof(uint32_t), this->address))
 					{
 						Logger::log("Failed to transfer word (Single Data Transfer) to out of range memory address: " + String::decToHex(this->address));
 
@@ -140,7 +140,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 
 					uint8_t* valueBits = Bits::from8UBits(value);
 
-					if(!arm->getRAM()->load(valueBits, sizeof(uint8_t), this->address))
+					if(!arm->getMemory()->load(valueBits, sizeof(uint8_t), this->address))
 					{
 						Logger::log("Failed to transfer byte (Single Data Transfer) to out of range memory address: " + String::decToHex(this->address));
 
@@ -164,7 +164,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 				{
 					// Transfer word quantity (32 bits)
 
-					Memory* memory = arm->getRAM()->getMemory(this->address);
+					Memory* memory = arm->getMemory()->getMemory(this->address);
 
 					if(memory == NULL)
 					{
@@ -185,7 +185,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 				{
 					// Transfer byte quantity (8 bits)
 
-					Memory* memory = arm->getRAM()->getMemory(this->address);
+					Memory* memory = arm->getMemory()->getMemory(this->address);
 
 					if(memory == NULL)
 					{
