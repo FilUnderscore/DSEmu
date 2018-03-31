@@ -10,7 +10,7 @@ ARM7::ARM7(DSSystem* ds) : ARM(ds)
 	this->memoryMap->allocate(0x03800000, 0x0380FFFF);
 
 	// Test of I/O interaction with Memory Map
-	std::function<void()> l = []() { Logger::log("Test"); exit(0); };
+	std::function<void()> l = []() { Logger::log("Test 1234"); };
 	SharedMemoryMap::getInstance()->allocate(0x4000304, 0x4000404, l);
 }
 

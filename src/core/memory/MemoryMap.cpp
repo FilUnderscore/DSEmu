@@ -110,7 +110,7 @@ bool MemoryMap::load(uint8_t* data, uint32_t dataLength, uint32_t destAddress)
 
 	if(destAddress + dataLength > memory->getMemory()->getSize())
 	{
-		Logger::log("Attempted to load into RAM at address: " + String::decToHex(memory->getStartAddress() + destAddress) + " to " + String::decToHex((memory->getStartAddress() + destAddress) + dataLength) + " (Max Memory: " + String::decToHex(memory->getMemory()->getSize() /* TODO: Calculate total RAM */) + ")");
+		Logger::log("Attempted to load into Memory at address: " + String::decToHex(memory->getStartAddress() + destAddress) + " to " + String::decToHex((memory->getStartAddress() + destAddress) + dataLength) + " (Max Memory: " + String::decToHex(memory->getMemory()->getSize() /* TODO: Calculate total RAM */) + ")");
 
 		return false;
 	}
@@ -125,9 +125,16 @@ bool MemoryMap::load(uint8_t* data, uint32_t dataLength, uint32_t destAddress)
 bool MemoryMap::write(uint32_t destAddress, uint8_t* data, uint32_t dataLength)
 {
 	// Handle any I/O at address (eg. video)
-	this->load(data, dataLength, destAddress);
-
 	Memory* memory = this->getMemory(destAddress);
+
+	if(memory == NULL)
+	{
+		Logger::log("Write Destination Memory Address out of range: " + String::decToHex(destAddress));
+
+		return false;
+	}
+
+	this->load(data, dataLength, destAddress);
 
 	memory->executeFunction();
 

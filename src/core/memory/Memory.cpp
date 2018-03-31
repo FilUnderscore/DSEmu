@@ -37,7 +37,10 @@ void Memory::addMirroredAddress(uint32_t mirroredAddress)
 
 void Memory::executeFunction()
 {
-	this->func();
+	if(this->func)
+	{
+		this->func();
+	}
 }
 
 uint32_t Memory::getStartAddress()
