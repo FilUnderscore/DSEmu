@@ -73,7 +73,7 @@ bool HalfwordDataTransferInstruction::execute(ARM* arm)
 
 		default:
 		{
-			return false;
+			break;
 		}
 	}
 

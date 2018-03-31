@@ -240,7 +240,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 
 		default:
 		{
-			return false;
+			break;
 		}
 	}
 

@@ -141,6 +141,9 @@ void ARM::processARMInstruction(uint32_t instruction)
 		BranchInstruction* branchInstruction = (BranchInstruction*) decodedInstruction;
 
 		Logger::log("Branch (With Link: " + to_string(branchInstruction->isWithLink()) + ")");
+
+		// Cause delay in Pipeline until Branch occurs
+		this->lockPipeline(true);
 	}
 	else if(dynamic_cast<HalfwordDataTransferInstruction*>(decodedInstruction))
 	{

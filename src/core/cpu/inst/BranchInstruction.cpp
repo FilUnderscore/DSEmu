@@ -33,6 +33,8 @@ bool BranchInstruction::execute(ARM* arm)
 	{
 		Logger::log("BranchInstruction cancelled.");
 
+		arm->lockPipeline(false);
+
 		return false;
 	}
 
@@ -47,9 +49,6 @@ bool BranchInstruction::execute(ARM* arm)
 			pc += this->offset;
 
 			this->offset = pc;
-
-			// Cause delay in Pipeline until Branch occurs
-			arm->lockPipeline(true);
 
 			break;
 		}
@@ -71,7 +70,7 @@ bool BranchInstruction::execute(ARM* arm)
 
 		default:
 		{
-			return false;
+			break;
 		}
 	}
 

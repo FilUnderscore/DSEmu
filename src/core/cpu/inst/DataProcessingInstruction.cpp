@@ -182,7 +182,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 		default:
 		{
-			return false;
+			break;
 		}
 	}
 
