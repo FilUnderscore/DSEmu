@@ -63,11 +63,11 @@ vector<Memory*>* MemoryMap::getMemoryMap()
 	return this->memoryMap;
 }
 
-bool MemoryMap::allocate(uint32_t startAddress, uint32_t endAddress)
+bool MemoryMap::allocate(uint32_t startAddress, uint32_t endAddress, std::function<void()> func)
 {
 	// Check if memory is already allocated in between both addresses.
 
-	Memory* memory = new Memory(startAddress, endAddress);
+	Memory* memory = new Memory(startAddress, endAddress, func);
 
 	this->memoryMap->push_back(memory);
 
@@ -77,6 +77,13 @@ bool MemoryMap::allocate(uint32_t startAddress, uint32_t endAddress)
 bool MemoryMap::mirror(uint32_t mirroredAddress, uint32_t address)
 {
 	Memory* memory = this->getMemory(address);
+
+	if(memory == NULL)
+	{
+		Logger::log("Mirror Destination Memory Address out of range: " + String::decToHex(address));
+
+		return false;
+	}
 
 	memory->addMirroredAddress(mirroredAddress);
 
@@ -118,6 +125,11 @@ bool MemoryMap::load(uint8_t* data, uint32_t dataLength, uint32_t destAddress)
 bool MemoryMap::write(uint32_t destAddress, uint8_t* data, uint32_t dataLength)
 {
 	// Handle any I/O at address (eg. video)
+	this->load(data, dataLength, destAddress);
+
+	Memory* memory = this->getMemory(destAddress);
+
+	memory->executeFunction();
 
 	return true;
 }

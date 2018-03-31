@@ -2,9 +2,16 @@
 
 #include <DSSystem.hpp>
 
+#include <SharedMemoryMap.hpp>
 ARM7::ARM7(DSSystem* ds) : ARM(ds)
 {
 	this->memoryMap->allocate(0x00000000, 0x00003FFF);
+
+	this->memoryMap->allocate(0x03800000, 0x0380FFFF);
+
+	// Test of I/O interaction with Memory Map
+	std::function<void()> l = []() { Logger::log("Test"); exit(0); };
+	SharedMemoryMap::getInstance()->allocate(0x4000304, 0x4000404, l);
 }
 
 ARM7::~ARM7()
@@ -15,6 +22,8 @@ ARM7::~ARM7()
 void ARM7::init()
 {
 	ARM::init();
+
+	Logger::log("I");
 }
 
 void ARM7::processPipeline()

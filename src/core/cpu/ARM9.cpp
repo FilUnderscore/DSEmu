@@ -5,7 +5,7 @@
 ARM9::ARM9(DSSystem* ds) : ARM(ds)
 {
 	this->memoryMap->allocate(0x00000000, 0x00007FFF);
-	this->memoryMap->mirror(0x1000000, 0x00000000); // Mirror-able to 1000000h
+	this->memoryMap->mirror(0x01000000, 0x00000000); // Mirror-able to 1000000h
 
 	this->memoryMap->allocate(0x0B000000, 0x0B003FFF);
 }

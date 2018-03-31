@@ -3,6 +3,8 @@
 #include <Logger.hpp>
 #include <String.hpp>
 
+#include <SharedMemoryMap.hpp>
+
 using DS::DSSystem;
 
 DSSystem::DSSystem()
@@ -11,6 +13,14 @@ DSSystem::DSSystem()
 
 	this->arm9 = new ARM9(this);
 	this->arm7 = new ARM7(this);
+
+	SharedMemoryMap::getInstance()->allocate(0x02000000, 0x023FFFFF); // Main Memory
+	SharedMemoryMap::getInstance()->mirror(0x02400000, 0x02000000);
+
+	SharedMemoryMap::getInstance()->allocate(0x03000000, 0x03003FFF); // Shared WRAM Bank 0
+	SharedMemoryMap::getInstance()->allocate(0x03004000, 0x03007FFF); // Shared WRAM Bank 1
+
+	SharedMemoryMap::getInstance()->print();
 }
 
 DSSystem::~DSSystem()

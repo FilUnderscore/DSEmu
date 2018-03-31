@@ -20,6 +20,11 @@ Memory::Memory(uint32_t startAddress, uint32_t endAddress)
 	this->mirroredAddresses = new vector<uint32_t>();
 }
 
+Memory::Memory(uint32_t startAddress, uint32_t endAddress, std::function<void()> func) : Memory(startAddress, endAddress)
+{
+	this->func = func;
+}
+
 Memory::~Memory()
 {
 	Logger::log("Memory destroyed.");
@@ -30,6 +35,11 @@ void Memory::addMirroredAddress(uint32_t mirroredAddress)
 	this->mirroredAddresses->push_back(mirroredAddress);
 }
 
+void Memory::executeFunction()
+{
+	this->func();
+}
+
 uint32_t Memory::getStartAddress()
 {
 	return this->startAddress;
@@ -38,6 +48,11 @@ uint32_t Memory::getStartAddress()
 uint32_t Memory::getEndAddress()
 {
 	return this->endAddress;
+}
+
+std::function<void()> Memory::getFunction()
+{
+	return this->func;	
 }
 
 Pointer<uint8_t>* Memory::getMemory()
