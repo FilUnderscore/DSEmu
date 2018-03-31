@@ -68,7 +68,7 @@ void ARM::print()
 
 void ARM::run()
 {
-	// executeAt(0x02);
+	// ARM program entry-point
 	this->setRegister(::PC, 0x02);
 
 	while(this->fetchNextInstruction())
