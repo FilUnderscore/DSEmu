@@ -13,6 +13,7 @@
 #include <thread>
 #include <chrono>
 #include <cstring>
+#include <cmath>
 
 ARM::ARM(DSSystem* ds)
 {
@@ -75,8 +76,8 @@ void ARM::run()
 		this->tick();
 
 		// Clock delay = milliseconds / Hz
-		// Clock delay = 1000ms / 66 Hz
-		this_thread::sleep_for(std::chrono::milliseconds(1000 / 66));
+		// Clock delay = 1000ms / (66 * 1^6) Hz
+		this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
 	}
 }
 
