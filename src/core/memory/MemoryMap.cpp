@@ -1,6 +1,7 @@
 #include <MemoryMap.hpp>
 
 #include <Logger.hpp>
+#include <SharedMemoryMap.hpp>
 #include <String.hpp>
 #include <cstring>
 
@@ -19,7 +20,7 @@ MemoryMap::MemoryMap()
 	//(*this->memoryMap)[2] = Memory(0x00000000, 0x00007FFF); // ITCM - 0x7FFF = 0x8000 (32KiB)
 	//(*this->memoryMap)[3] = Memory(0x0B000000, 0x0B003FFF); // DTCM - 0x3FFF = 0x4000 (16KiB)
 
-	// Shared between ARM 9 and ARM 7
+	// Shared between ARM 9 and ARM 7 (mirror is 0x02400000 - 0x027FFFFF)
 	//(*this->memoryMap)[0] = Memory(0x02000000, 0x023FFFFF); // Main Memory - 0x3FFFFF = 0x400000 (4MiB)
 
 	//one is (ARM 9 send / ARM 7 receive) and one is (ARM 7 send / ARM 9 receive)
@@ -175,10 +176,17 @@ Memory* MemoryMap::getMemory(uint32_t address)
 		}
 	}
 
+	Memory* memory = SharedMemoryMap::getInstance()->getMemory(address);
+	
+	if(memory != NULL)
+	{
+		return memory;
+	}
+
 	return NULL;
 }
 
-uint32_t MemoryMap::getTotalRAMSize()
+uint32_t MemoryMap::getTotalSize()
 {
 	uint32_t totalRamSize = 0;
 
@@ -194,19 +202,19 @@ uint32_t MemoryMap::getTotalRAMSize()
 
 Pointer<uint8_t>* MemoryMap::getMemory()
 {
-	Pointer<uint8_t>* ram = new Pointer<uint8_t>(this->getTotalRAMSize());
+	Pointer<uint8_t>* memoryMap = new Pointer<uint8_t>(this->getTotalSize());
 	uint32_t currentAddress = 0x0;
 
 	for(uint32_t index = 0; index < this->memoryMap->size(); index++)
 	{
 		Memory* memory = this->memoryMap->at(index);
 
-		memcpy(ram->get() + currentAddress, memory->getMemory()->get(), memory->getMemory()->getSize());
+		memcpy(memoryMap->get() + currentAddress, memory->getMemory()->get(), memory->getMemory()->getSize());
 
 		currentAddress += memory->getEndAddress();
 	}
 
-	return ram;
+	return memoryMap;
 }
 
 #include <algorithm>
@@ -216,8 +224,8 @@ Pointer<uint8_t>* MemoryMap::getMemory()
 void MemoryMap::print()
 {
 	Logger::log("");
-	Logger::log("RAM Memory Map");
-	Logger::log("Total RAM: " + to_string(this->getTotalRAMSize()) + "b");
+	Logger::log("Memory Map");
+	Logger::log("Total RAM: " + to_string(this->getTotalSize()) + "b");
 
 	//Logger::log(String::toHexString((char*) this->memory, this->memorySize));
 
