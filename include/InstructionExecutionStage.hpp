@@ -3,6 +3,8 @@
 
 enum InstructionExecutionStage
 {
+	IF,
+	
 	ID,
 
 	EX,

@@ -11,7 +11,7 @@ Instruction::Instruction(uint32_t instruction, uint8_t cond)
 
 	this->cond = (Condition) cond;
 
-	this->executionStage = ::ID;
+	this->executionStage = ::IF;
 }
 
 Instruction::~Instruction()

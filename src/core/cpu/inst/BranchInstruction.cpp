@@ -40,6 +40,14 @@ bool BranchInstruction::execute(ARM* arm)
 
 	switch(this->executionStage)
 	{
+		case ::ID:
+		{
+			// Cause delay in Pipeline until Branch occurs
+			arm->lockPipeline(true);
+
+			break;
+		}
+
 		case ::EX:
 		{	
 			uint32_t pc = arm->getRegister(::PC);

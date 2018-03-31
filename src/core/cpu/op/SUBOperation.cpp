@@ -24,7 +24,14 @@ void SUBOperation::execute()
 	Logger::log("RN: " + to_string(rn));
 	Logger::log("OP2: " + to_string(op2));
 
-	this->result = rn - op2;
+	if(rn != 0)
+	{
+		this->result = rn - op2;
+	}
+	else
+	{
+		this->result = 0;
+	}
 }
 
 void SUBOperation::memory()
