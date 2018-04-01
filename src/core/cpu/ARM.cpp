@@ -29,6 +29,8 @@ ARM::~ARM()
 
 void ARM::init()
 {
+	this->alu = new ALU();
+
 	this->memoryMap = new MemoryMap();
 
 	this->registerMap = new Pointer<uint32_t>(16 + 1);
@@ -37,8 +39,6 @@ void ARM::init()
 	this->registerShadowMap = new map<ProcessorMode, Pointer<uint32_t>*>();
 
 	this->pipeline = new vector<Instruction*>();
-
-	Operation::init();
 }
 
 void ARM::setRegister(Register reg, uint32_t value)
@@ -77,7 +77,9 @@ void ARM::run()
 
 		// Clock delay = milliseconds / Hz
 		// Clock delay = 1000ms / (66 * 1^6) Hz
-		this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
+		//this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
+
+		this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 
@@ -278,6 +280,11 @@ void ARM::onIRQ()
 ProcessorState ARM::getProcessorState()
 {
 	return (ProcessorState) ((this->getRegister(::CPSR) >> 5) & 0x01);
+}
+
+ALU* ARM::getALU()
+{
+	return this->alu;
 }
 
 MemoryMap* ARM::getMemory()

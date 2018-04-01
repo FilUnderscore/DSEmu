@@ -2,8 +2,7 @@
 
 #include <Bits.hpp>
 #include <ARM.hpp>
-
-using namespace CPU;
+#include <Logger.hpp>
 
 Instruction::Instruction(uint32_t instruction, uint8_t cond)
 {

@@ -1,7 +1,7 @@
 #include <DataProcessingInstruction.hpp>
 
-#include <Bits.hpp>
 #include <ARM.hpp>
+#include <Logger.hpp>
 #include <limits>
 
 using namespace CPU;
@@ -31,54 +31,6 @@ DataProcessingInstruction::~DataProcessingInstruction()
 
 }
 
-void DataProcessingInstruction::calculate(ARM* arm)
-{
-	if(((this->instruction >> 25) & 0x01) == 0x00)
-	{
-		uint32_t shiftValue;
-
-		if(((this->instruction >> 4) & 0x01) == 0x00)
-		{
-			shiftValue = this->shift;
-		}
-		else
-		{
-			// Shift amount specified in bottom byte of RS
-			shiftValue = this->rs & 0x0F;
-		}
-
-		uint32_t rm = arm->getRegister((Register) this->rm);
-
-		// Logical Left
-		if(this->sh == 0x00)
-		{
-			this->value = (rm << shiftValue);
-		}
-		// Logical Right
-		else if(this->sh == 0x01)
-		{
-			this->value = (rm >> shiftValue);
-		}
-		// Arithmetic Right
-		else if(this->sh == 0x02)
-		{
-			uint32_t cpsr = arm->getRegister(::CPSR);
-
-			// Set carry flag depending on Bit 31 of RM
-			cpsr |= ((rm >> 31) << 29);
-		}
-		//Rotate Right
-		else if(this->sh == 0x03)
-		{
-			this->value = Bits::ror32UBits(rm, shiftValue);
-		}
-	}
-	else
-	{
-		this->value = Bits::ror32UBits(this->immediate8, (this->rotate4 * 2));
-	}
-}
-
 bool DataProcessingInstruction::execute(ARM* arm)
 {
 	if(!Instruction::execute(arm))
@@ -92,35 +44,61 @@ bool DataProcessingInstruction::execute(ARM* arm)
 	{
 		case ::EX:
 		{
-			this->calculate(arm);
+			if(((this->instruction >> 25) & 0x01) == 0x00)
+			{
+				uint32_t rm = arm->getRegister((Register) this->rm);
 
-			this->operation = Operation::getOperation((Opcode) this->opcode);
+				if(((this->instruction >> 4) & 0x01) == 0x01)
+				{
+					// Calculate shift
+					uint32_t rs = arm->getRegister((Register) this->rs);
+					rs &= 0x0F;
+					arm->getALU()->calculateShiftRegister(rm, rs, this->sh);
 
-			this->operation->set(arm, this);
+					this->carry = arm->getALU()->getCarry();
+					this->operand2 = arm->getALU()->getResult();
+				}
+				else
+				{
+					arm->getALU()->calculateShiftAmount(rm, this->shift, this->sh);
+					
+					this->carry = arm->getALU()->getCarry();
+					this->operand2 = arm->getALU()->getResult();
+				}
+			}
+			else
+			{
+				arm->getALU()->calculateImmediate(this->immediate8, this->rotate4);
 
-			this->operation->execute();
-		
+				this->carry = arm->getALU()->getCarry();
+				this->operand2 = arm->getALU()->getResult();
+			}
+
+			// Calculate result and carry
+			uint32_t rn = arm->getRegister((Register) this->getFirstOperandRegister());
+			arm->getALU()->calculateOperation((Opcode) this->opcode, rn, this->getOperand2(), this->carry);
+
+			this->carry = arm->getALU()->getCarry();
+			this->result = arm->getALU()->getResult();
+
 			break;
 		}
 
 		case ::MEM:
 		{
-			this->operation->memory();
-		
 			break;
 		}
 
 		case ::WB:
 		{
-			uint32_t result = this->operation->getResult();
-
-			arm->setRegister((Register) this->getDestinationRegister(), result);
+			arm->setRegister((Register) this->getDestinationRegister(), this->result);
 		
 			if(this->s == 0x01)
 			{
 				// Set condition codes in CPSR
 				uint32_t cpsr = arm->getRegister(::CPSR);
 
+				/*
 				if(this->operation->getOptype() == ::LOGICAL)
 				{
 					//Bit 31 (Negative flag)
@@ -154,6 +132,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 						cpsr |= ((result >> 31) << 28);
 					}
 				}
+				*/
 
 				arm->setRegister(::CPSR, cpsr);
 			}
@@ -185,7 +164,7 @@ uint8_t DataProcessingInstruction::getFirstOperandRegister()
 	return this->rn;
 }
 
-uint32_t DataProcessingInstruction::getValue()
+uint32_t DataProcessingInstruction::getOperand2()
 {
-	return this->value;
+	return this->operand2;
 }

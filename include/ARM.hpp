@@ -1,27 +1,20 @@
 #ifndef INCLUDE_ARM_HPP_
 #define INCLUDE_ARM_HPP_
 
+#include "Register.hpp"
+#include "ProcessorState.hpp"
+#include "Instruction.hpp"
+#include "Pointer.hpp"
+#include "ProcessorMode.hpp"
+#include "MemoryMap.hpp"
+#include "ALU.hpp"
+#include "Logger.hpp"
+#include <vector>
 #include <cstdint>
 
-#include "Register.hpp"
-
-#include "ProcessorState.hpp"
-
-#include "Operation.hpp"
-
-#include <vector>
-
-#include "Instruction.hpp"
-
-#include "Pointer.hpp"
-
-#include "ProcessorMode.hpp"
-
-#include "MemoryMap.hpp"
+using std::vector;
 
 using namespace CPU;
-
-using namespace std;
 
 namespace DS
 {
@@ -70,9 +63,13 @@ namespace CPU
 
 		ProcessorState getProcessorState();
 
+		ALU* getALU();
+
 		MemoryMap* getMemory();
 	protected:
 		DSSystem* ds;
+
+		ALU* alu;
 
 		MemoryMap* memoryMap;
 
