@@ -13,7 +13,7 @@ using namespace Cartridge;
 
 using std::vector;
 
-class VideoGL;
+class GPU;
 
 namespace DS
 {
@@ -29,7 +29,7 @@ namespace DS
 
 		ARM7* getARM7();
 
-		VideoGL* getVideo();
+		GPU* getGPU();
 
 		void loadCartridge(DSCartridge* cartridge);
 
@@ -50,7 +50,7 @@ namespace DS
 
 		ARM7* arm7;
 
-		VideoGL* video;
+		GPU* gpu;
 
 		DSCartridge* cartridge;
 

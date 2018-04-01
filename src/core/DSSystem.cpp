@@ -5,7 +5,7 @@
 
 #include <SharedMemoryMap.hpp>
 
-#include <VideoGL.hpp>
+#include <GPU.hpp>
 
 using DS::DSSystem;
 
@@ -18,7 +18,7 @@ DSSystem::DSSystem()
 	this->arm9 = new ARM9(this);
 	this->arm7 = new ARM7(this);
 
-	this->video = new VideoGL(this);
+	this->gpu = new GPU(this);
 
 	SharedMemoryMap::getInstance()->allocate(0x02000000, 0x023FFFFF); // Main Memory
 	SharedMemoryMap::getInstance()->mirror(0x02400000, 0x02000000);
@@ -49,9 +49,9 @@ ARM7* DSSystem::getARM7()
 	return this->arm7;
 }
 
-VideoGL* DSSystem::getVideo()
+GPU* DSSystem::getGPU()
 {
-	return this->video;
+	return this->gpu;
 }
 
 void DSSystem::loadCartridge(DSCartridge* cartridge)
@@ -84,7 +84,7 @@ void DSSystem::run()
 
 	while(this->running)
 	{
-		this->video->tick();
+		this->gpu->getVideo()->tick();
 	}
 
 	this->terminate();

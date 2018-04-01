@@ -4,30 +4,25 @@
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 
-#include "Memory.hpp"
-#include "DSSystem.hpp"
-#include <vector>
-
-using std::vector;
+class GPU;
 
 class VideoGL
 {
 public:
-	VideoGL(DSSystem* ds);
+	VideoGL(GPU* gpu);
 	~VideoGL();
 
 	void init();
-	void power(Memory* memory);
-	void changeDisplayMode(Memory* memory);
-	void changeVRAMSettings(Memory* memory);
+
 	void createWindows();
+	
 	void tick();
 
 	GLFWwindow* getTopWindow();
 	GLFWwindow* getBottomWindow();
 
 private:
-	DSSystem* ds;
+	GPU* gpu;
 
 	GLFWwindow* topWindow;
 	GLFWwindow* bottomWindow;
