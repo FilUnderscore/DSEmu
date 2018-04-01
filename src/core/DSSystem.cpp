@@ -5,14 +5,20 @@
 
 #include <SharedMemoryMap.hpp>
 
+#include <VideoGL.hpp>
+
 using DS::DSSystem;
 
 DSSystem::DSSystem()
 {
+	this->threads = new vector<thread*>();
+
 	this->bios = new BIOS(this);
 
 	this->arm9 = new ARM9(this);
 	this->arm7 = new ARM7(this);
+
+	this->video = new VideoGL(this);
 
 	SharedMemoryMap::getInstance()->allocate(0x02000000, 0x023FFFFF); // Main Memory
 	SharedMemoryMap::getInstance()->mirror(0x02400000, 0x02000000);
@@ -43,6 +49,11 @@ ARM7* DSSystem::getARM7()
 	return this->arm7;
 }
 
+VideoGL* DSSystem::getVideo()
+{
+	return this->video;
+}
+
 void DSSystem::loadCartridge(DSCartridge* cartridge)
 {
 	this->cartridge = cartridge;
@@ -67,5 +78,33 @@ DSCartridge* DSSystem::getDSCartridge()
 void DSSystem::run()
 {
 	this->arm9->run();
-	this->arm9->print();
+
+	while(this->running)
+	{
+		this->video->tick();
+	}
+
+	this->terminate();
+}
+
+void DSSystem::registerThread(thread* thread)
+{
+	this->threads->push_back(thread);
+}
+
+void DSSystem::terminate()
+{
+	if(!this->running)
+	{
+		return;
+	}
+
+	this->running = false;
+
+	for(uint32_t index = 0; index < this->threads->size(); index++)
+	{
+		thread* thread = this->threads->at(index);
+
+		delete thread;
+	}
 }

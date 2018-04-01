@@ -46,8 +46,8 @@ $(OBJ_DL):
 .PHONY: all clean
 
 clean:
-	$(RM) -r $(BUILD_DIR)
 	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(BUILD_DIR)
 
 MKDIR_P = mkdir -p
 

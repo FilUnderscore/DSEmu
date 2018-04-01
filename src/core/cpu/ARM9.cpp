@@ -2,6 +2,8 @@
 
 #include <DSSystem.hpp>
 
+#include <SharedMemoryMap.hpp>
+
 ARM9::ARM9(DSSystem* ds) : ARM(ds)
 {
 	this->memoryMap->allocate(0x00000000, 0x00007FFF);

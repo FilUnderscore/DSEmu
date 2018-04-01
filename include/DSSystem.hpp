@@ -5,9 +5,15 @@
 #include "ARM7.hpp"
 #include "BIOS.hpp"
 #include "DSCartridge.hpp"
+#include <thread>
+#include <vector>
 
 using namespace CPU;
 using namespace Cartridge;
+
+using std::vector;
+
+class VideoGL;
 
 namespace DS
 {
@@ -23,11 +29,17 @@ namespace DS
 
 		ARM7* getARM7();
 
+		VideoGL* getVideo();
+
 		void loadCartridge(DSCartridge* cartridge);
 
 		DSCartridge* getDSCartridge();
 
 		void run();
+
+		void registerThread(thread* thread);
+
+		void terminate();
 
 	private:
 		BIOS* bios;
@@ -36,7 +48,13 @@ namespace DS
 
 		ARM7* arm7;
 
+		VideoGL* video;
+
 		DSCartridge* cartridge;
+
+		vector<thread*>* threads;
+
+		bool running;
 	};
 }
 

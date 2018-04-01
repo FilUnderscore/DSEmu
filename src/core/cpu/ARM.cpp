@@ -68,17 +68,24 @@ void ARM::print()
 
 void ARM::run()
 {
-	// ARM program entry-point
-	this->setRegister(::PC, 0x02);
+	std::thread* thread = new std::thread
+	{[this]{
+		// ARM program entry-point
+		this->setRegister(::PC, 0x02);
 
-	while(this->fetchNextInstruction())
-	{
-		this->tick();
+		while(this->fetchNextInstruction())
+		{
+			this->tick();
 
-		// Clock delay = milliseconds / Hz
-		// Clock delay = 1000ms / (66 * 1^6) Hz
-		this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
-	}
+			// Clock delay = milliseconds / Hz
+			// Clock delay = 1000ms / (66 * 1^6) Hz
+			this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
+		}
+	}};
+
+	thread->detach();
+
+	this->ds->registerThread(thread);
 }
 
 void ARM::processPipeline()
