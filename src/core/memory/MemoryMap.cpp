@@ -74,6 +74,15 @@ bool MemoryMap::allocate(uint32_t startAddress, uint32_t endAddress, std::functi
 	return true;
 }
 
+bool MemoryMap::link(uint32_t address, uint32_t size, std::function<void(Memory*)> func)
+{
+	Memory* memory = new Memory(address, address, size, func);
+
+	this->memoryMap->push_back(memory);
+
+	return true;
+}
+
 bool MemoryMap::mirror(uint32_t mirroredAddress, uint32_t address)
 {
 	Memory* memory = this->getMemory(address);

@@ -23,6 +23,7 @@ public:
 	~MemoryMap();
 
 	bool allocate(uint32_t startAddress, uint32_t endAddress, std::function<void(Memory*)> func = [](Memory* memory){});
+	bool link(uint32_t address, uint32_t size, std::function<void(Memory*)> func = [](Memory* memory){});
 	bool mirror(uint32_t mirroredAddress, uint32_t address);
 	bool load(uint8_t* data, uint32_t dataLength, uint32_t destAddress = 0x00);
 	bool write(uint32_t destAddress, uint8_t* data, uint32_t dataLength);

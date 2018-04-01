@@ -16,6 +16,8 @@ public:
 
 	Memory(uint32_t startAddress, uint32_t endAddress);
 	
+	Memory(uint32_t startAddress, uint32_t endAddress, uint32_t size, std::function<void(Memory*)> func);
+
 	Memory(uint32_t startAddress, uint32_t endAddress, std::function<void(Memory*)> func);
 
 	~Memory();

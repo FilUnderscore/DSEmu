@@ -20,6 +20,19 @@ Memory::Memory(uint32_t startAddress, uint32_t endAddress)
 	this->mirroredAddresses = new vector<uint32_t>();
 }
 
+Memory::Memory(uint32_t startAddress, uint32_t endAddress, uint32_t size, std::function<void(Memory*)> func)
+{
+	this->startAddress = startAddress;
+
+	this->endAddress = endAddress;
+
+	this->memory = new Pointer<uint8_t>(size);
+
+	this->mirroredAddresses = new std::vector<uint32_t>();
+
+	this->func = func;
+}
+
 Memory::Memory(uint32_t startAddress, uint32_t endAddress, std::function<void(Memory*)> func) : Memory(startAddress, endAddress)
 {
 	this->func = func;

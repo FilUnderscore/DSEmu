@@ -9,11 +9,11 @@ VideoGL::VideoGL(DSSystem* ds)
 
 	// POWCNT1
 	std::function<void(Memory*)> f = [ds](Memory* memory){ ds->getVideo()->power(memory); };
-	this->ds->getARM9()->getMemory()->allocate(0x04000304, 0x04000308, f);
+	this->ds->getARM9()->getMemory()->link(0x04000304, 4, f);
 
 	// DISPCNT
 	std::function<void(Memory*)> f2 = [ds](Memory* memory){ ds->getVideo()->changeDisplayMode(memory); };
-	this->ds->getARM9()->getMemory()->allocate(0x04000000, 0x04000004, f2);
+	this->ds->getARM9()->getMemory()->link(0x04000000, 4, f2);
 }
 
 VideoGL::~VideoGL()
@@ -65,7 +65,7 @@ void VideoGL::changeDisplayMode(Memory* memory)
 	// 2: Engine A only: VRAM Display (Bitmap from block selected in DISPCNT.18-19)
 	// 3: Engine A only: Main Memory Display (Bitmap DMA transfer from Main RAM)
 
-	// Mode 2-3 display raw direct color bitmap (15-bit RGB values, the upper bit in each halfword is unused) without any further BG, OBJ, 3D layers.	
+	// Mode 2-3 display raw direct color bitmap (15-bit RGB values, the upper bit in each halfword is unused) without any further BG, OBJ, 3D layers.
 }
 
 void error_callback(int error, const char* description)
