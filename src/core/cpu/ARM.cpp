@@ -77,9 +77,7 @@ void ARM::run()
 
 		// Clock delay = milliseconds / Hz
 		// Clock delay = 1000ms / (66 * 1^6) Hz
-		//this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
-
-		this_thread::sleep_for(std::chrono::seconds(1));
+		this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
 	}
 }
 

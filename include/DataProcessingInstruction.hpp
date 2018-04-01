@@ -40,6 +40,8 @@ namespace CPU
 		uint8_t sh;
 		uint8_t rm;
 
+		uint32_t cpsr;
+
 		uint32_t carry;
 		uint32_t result;
 	};

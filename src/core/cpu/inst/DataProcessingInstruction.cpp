@@ -44,6 +44,8 @@ bool DataProcessingInstruction::execute(ARM* arm)
 	{
 		case ::EX:
 		{
+			uint32_t cpsr = arm->getRegister(::CPSR);
+
 			if(((this->instruction >> 25) & 0x01) == 0x00)
 			{
 				uint32_t rm = arm->getRegister((Register) this->rm);
@@ -53,14 +55,14 @@ bool DataProcessingInstruction::execute(ARM* arm)
 					// Calculate shift
 					uint32_t rs = arm->getRegister((Register) this->rs);
 					rs &= 0x0F;
-					arm->getALU()->calculateShiftRegister(rm, rs, this->sh);
+					this->cpsr = arm->getALU()->calculateShiftRegister(rm, rs, this->sh, cpsr);
 
 					this->carry = arm->getALU()->getCarry();
 					this->operand2 = arm->getALU()->getResult();
 				}
 				else
 				{
-					arm->getALU()->calculateShiftAmount(rm, this->shift, this->sh);
+					this->cpsr = arm->getALU()->calculateShiftAmount(rm, this->shift, this->sh, cpsr);
 					
 					this->carry = arm->getALU()->getCarry();
 					this->operand2 = arm->getALU()->getResult();
@@ -76,7 +78,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 			// Calculate result and carry
 			uint32_t rn = arm->getRegister((Register) this->getFirstOperandRegister());
-			arm->getALU()->calculateOperation((Opcode) this->opcode, rn, this->getOperand2(), this->carry);
+			this->cpsr = arm->getALU()->calculateOperation((Opcode) this->opcode, rn, this->getOperand2(), this->carry, this->s, cpsr);
 
 			this->carry = arm->getALU()->getCarry();
 			this->result = arm->getALU()->getResult();
@@ -95,46 +97,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 		
 			if(this->s == 0x01)
 			{
-				// Set condition codes in CPSR
-				uint32_t cpsr = arm->getRegister(::CPSR);
-
-				/*
-				if(this->operation->getOptype() == ::LOGICAL)
-				{
-					//Bit 31 (Negative flag)
-					// Set to Bit 31 of the result.
-					cpsr |= ((result >> 31) << 31);
-
-					// Bit 30 (Zero flag)
-					// Set Zero flag if the result is 0.
-					cpsr |= ((result == 0x00) << 30);
-
-					// TODO: Bit 29 and Bit 28
-				}
-				else if(this->operation->getOptype() == ::ARITHMETIC)
-				{
-					// Bit 31 (Negative flag)
-					// Set to Bit 31 of the result.
-					cpsr |= ((result >> 31) << 31);
-
-					// Bit 30 (Zero flag)
-					// Set Zero flag if the result is 0.
-					cpsr |= ((result == 0x00) << 30);
-
-					// Bit 29 (Carry flag)
-					// Set Carry flag of carry out bit 31 in ALU (TODO)
-					cpsr |= ((result >> 31) << 29);
-
-					if(this->rd != ::PC)
-					{
-						// Bit 28 (Overflow flag)
-						// Set Overflow flag if RD is not R15 and bit 31 of result will set the CPSR if the result is overflow.
-						cpsr |= ((result >> 31) << 28);
-					}
-				}
-				*/
-
-				arm->setRegister(::CPSR, cpsr);
+				arm->setRegister(::CPSR, this->cpsr);
 			}
 
 			break;
