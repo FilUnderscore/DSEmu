@@ -20,7 +20,7 @@ Memory::Memory(uint32_t startAddress, uint32_t endAddress)
 	this->mirroredAddresses = new vector<uint32_t>();
 }
 
-Memory::Memory(uint32_t startAddress, uint32_t endAddress, std::function<void()> func) : Memory(startAddress, endAddress)
+Memory::Memory(uint32_t startAddress, uint32_t endAddress, std::function<void(Memory*)> func) : Memory(startAddress, endAddress)
 {
 	this->func = func;
 }
@@ -39,7 +39,7 @@ void Memory::executeFunction()
 {
 	if(this->func)
 	{
-		this->func();
+		this->func(this);
 	}
 }
 
@@ -53,7 +53,7 @@ uint32_t Memory::getEndAddress()
 	return this->endAddress;
 }
 
-std::function<void()> Memory::getFunction()
+std::function<void(Memory*)> Memory::getFunction()
 {
 	return this->func;	
 }

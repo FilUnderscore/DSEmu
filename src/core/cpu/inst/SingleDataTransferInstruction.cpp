@@ -46,7 +46,7 @@ void SingleDataTransferInstruction::calculateOffset()
 
 void SingleDataTransferInstruction::addOffset(ARM* arm)
 {
-	if(this->u == 0x00)
+	if(!this->u)
 	{
 		// Down; subtract offset from base register value
 				
@@ -54,7 +54,7 @@ void SingleDataTransferInstruction::addOffset(ARM* arm)
 
 		this->address = rn - this->offset;
 	}
-	else if(this->u == 0x01)
+	else if(this->u)
 	{
 		// Up; add offset to base register value
 

@@ -63,7 +63,7 @@ vector<Memory*>* MemoryMap::getMemoryMap()
 	return this->memoryMap;
 }
 
-bool MemoryMap::allocate(uint32_t startAddress, uint32_t endAddress, std::function<void()> func)
+bool MemoryMap::allocate(uint32_t startAddress, uint32_t endAddress, std::function<void(Memory*)> func)
 {
 	// Check if memory is already allocated in between both addresses.
 

@@ -52,7 +52,9 @@ bool DataProcessingInstruction::execute(ARM* arm)
 			{
 				uint32_t rm = arm->getRegister((Register) this->rm);
 
-				if(((this->instruction >> 4) & 0x01) == 0x01)
+				uint8_t bit4 = ((this->instruction >> 4) & 0x01);
+
+				if(bit4)
 				{
 					// Calculate shift
 					uint32_t rs = arm->getRegister((Register) this->rs);

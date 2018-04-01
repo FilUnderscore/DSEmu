@@ -16,7 +16,7 @@ public:
 
 	Memory(uint32_t startAddress, uint32_t endAddress);
 	
-	Memory(uint32_t startAddress, uint32_t endAddress, std::function<void()> func);
+	Memory(uint32_t startAddress, uint32_t endAddress, std::function<void(Memory*)> func);
 
 	~Memory();
 
@@ -28,7 +28,7 @@ public:
 
 	uint32_t getEndAddress();
 
-	std::function<void()> getFunction();
+	std::function<void(Memory*)> getFunction();
 
 	Pointer<uint8_t>* getMemory();
 
@@ -38,7 +38,7 @@ private:
 	uint32_t startAddress;
 	uint32_t endAddress;
 
-	std::function<void()> func;
+	std::function<void(Memory*)> func;
 
 	Pointer<uint8_t>* memory;
 

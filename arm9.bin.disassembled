@@ -12,7 +12,7 @@ main:
 	str r3, [r0, #0x240] 			; 	  VRAMCNT_A
 
 	mov r0, #0x06800000				; VRAM offset
-	mov r1, #31						; Write red pixels
+	mov r1, #31						; Write red pixels (Pixels are in little endian (16-bit))
 	mov r2, #0xC000  				; 49152 pixels on both screens (256 wide x 192 height)
  
 lp: strh r1, [r0], #2				; Write a pixel 
