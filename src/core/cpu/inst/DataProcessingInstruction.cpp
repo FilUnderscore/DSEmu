@@ -62,7 +62,10 @@ void DataProcessingInstruction::calculate(ARM* arm)
 		// Arithmetic Right
 		else if(this->sh == 0x02)
 		{
+			uint32_t cpsr = arm->getRegister(::CPSR);
 
+			// Set carry flag depending on Bit 31 of RM
+			cpsr |= ((rm >> 31) << 29);
 		}
 		//Rotate Right
 		else if(this->sh == 0x03)
@@ -109,10 +112,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 		case ::WB:
 		{
-			// Converted to uint32_t, int64_t is used for flag setting and it has a higher max value than an int32_t.
-			int64_t opResult = this->operation->getResult();
-
-			uint32_t result = (uint32_t) opResult;
+			uint32_t result = this->operation->getResult();
 
 			arm->setRegister((Register) this->getDestinationRegister(), result);
 		
@@ -121,58 +121,39 @@ bool DataProcessingInstruction::execute(ARM* arm)
 				// Set condition codes in CPSR
 				uint32_t cpsr = arm->getRegister(::CPSR);
 
-				// Bit 31 (Negative flag)
-				if(opResult < 0)
+				if(this->operation->getOptype() == ::LOGICAL)
 				{
-					// Set Bit 31 to 1
-					cpsr |= (1 << 31);
-				}
-				else
-				{
-					// Set Bit 31 to 0
-					cpsr |= (0 << 31);
-				}
+					//Bit 31 (Negative flag)
+					// Set to Bit 31 of the result.
+					cpsr |= ((result >> 31) << 31);
 
-				// Bit 30 (Zero flag)
-				if(result == 0x00)
-				{
-					// Set Bit 30 to 1
-					cpsr |= (1 << 30);
-				}
-				else
-				{
-					// Set Bit 30 to 0
-					cpsr |= (0 << 30);
-				}
+					// Bit 30 (Zero flag)
+					// Set Zero flag if the result is 0.
+					cpsr |= ((result == 0x00) << 30);
 
-				/*
-				 * TODO: Proper implementation
-				 *
-				// Bit 29 (Unsigned Overflow) Carry Flag
-				if(opResult > numeric_limits<uint32_t>::max())
-				{
-					// Set Bit 29 to 1
-					cpsr |= (1 << 29);
+					// TODO: Bit 29 and Bit 28
 				}
-				else
+				else if(this->operation->getOptype() == ::ARITHMETIC)
 				{
-					// Bit 28 (Signed) Overflow Flag
-					// Inside Carry Flag if statement, because max value of uint32_t is greater than int32_t.
-					if(opResult > numeric_limits<int32_t>::max())
+					// Bit 31 (Negative flag)
+					// Set to Bit 31 of the result.
+					cpsr |= ((result >> 31) << 31);
+
+					// Bit 30 (Zero flag)
+					// Set Zero flag if the result is 0.
+					cpsr |= ((result == 0x00) << 30);
+
+					// Bit 29 (Carry flag)
+					// Set Carry flag of carry out bit 31 in ALU (TODO)
+					cpsr |= ((result >> 31) << 29);
+
+					if(this->rd != ::PC)
 					{
-						// Set Bit 28 to 1
-						cpsr |= (1 << 28);
+						// Bit 28 (Overflow flag)
+						// Set Overflow flag if RD is not R15 and bit 31 of result will set the CPSR if the result is overflow.
+						cpsr |= ((result >> 31) << 28);
 					}
-					else
-					{
-						// Set Bit 28 to 0
-						cpsr |= (0 << 28);
-					}
-
-					// Set Bit 29 to 0
-					cpsr |= (0 << 29);
 				}
-				*/
 
 				arm->setRegister(::CPSR, cpsr);
 			}

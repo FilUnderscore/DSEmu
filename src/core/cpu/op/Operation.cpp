@@ -16,9 +16,10 @@ Operation::Operation()
 	this->instruction = NULL;
 }
 
-Operation::Operation(Opcode opcode) : Operation()
+Operation::Operation(Opcode opcode, OperationType optype) : Operation()
 {
 	this->opcode = opcode;
+	this->optype = optype;
 }
 
 Operation::~Operation()
@@ -54,7 +55,12 @@ Opcode Operation::getOpcode()
 	return this->opcode;
 }
 
-int64_t Operation::getResult()
+OperationType Operation::getOptype()
+{
+	return this->optype;
+}
+
+uint32_t Operation::getResult()
 {
 	return this->result;
 }

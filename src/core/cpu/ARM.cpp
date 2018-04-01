@@ -229,7 +229,7 @@ void ARM::onFIQ()
 	this->setRegister(::SPSR, cpsr);
 
 	// Clear bits 0-4 of CPSR (Mode bits) to 00000
-	cpsr &= ~0x11;
+	cpsr &= ~0x1F;
 
 	// Set bits 0-4 of CPSR (Mode bits) to 10001
 	cpsr |= (1 << 0);
@@ -259,7 +259,7 @@ void ARM::onIRQ()
 	this->setRegister(::SPSR, cpsr);
 
 	// Clear bits 0-4 of CPSR (Mode bits) to 00000
-	cpsr &= ~0x12;
+	cpsr &= ~0x1F;
 
 	// Set bits 0-4 of CPSR (Mode bits) to 10010
 	cpsr |= (1 << 1);

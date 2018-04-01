@@ -9,6 +9,8 @@
 
 #include "Logger.hpp"
 
+#include "OperationType.hpp"
+
 using namespace std;
 
 namespace CPU
@@ -24,7 +26,7 @@ namespace CPU
 	{
 	public:
 		Operation();
-		Operation(Opcode opcode);
+		Operation(Opcode opcode, OperationType optype);
 		virtual ~Operation();
 
 		void set(ARM* arm, DataProcessingInstruction* instruction);
@@ -35,20 +37,23 @@ namespace CPU
 
 		Opcode getOpcode();
 
+		OperationType getOptype();
+
 		static void init();
 
 		static Operation* getOperation(Opcode opcode);
 
-		int64_t getResult();
+		uint32_t getResult();
 
 	protected:
 		Opcode opcode;
+		OperationType optype;
 
 		ARM* arm;
 
 		DataProcessingInstruction* instruction;
 
-		int64_t result;
+		uint32_t result;
 
 	private:
 		static map<Opcode, Operation*(*)()>* operations;

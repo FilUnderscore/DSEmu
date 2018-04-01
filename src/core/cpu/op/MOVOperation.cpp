@@ -7,7 +7,7 @@
 
 using namespace CPU;
 
-MOVOperation::MOVOperation() : Operation(::MOV)
+MOVOperation::MOVOperation() : Operation(::MOV, ::LOGICAL)
 {
 
 }

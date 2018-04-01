@@ -5,7 +5,7 @@
 
 using namespace CPU;
 
-SUBOperation::SUBOperation() : Operation(::SUB)
+SUBOperation::SUBOperation() : Operation(::SUB, ::ARITHMETIC)
 {
 
 }
@@ -24,11 +24,9 @@ void SUBOperation::execute()
 	Logger::log("RN: " + to_string(rn));
 	Logger::log("OP2: " + to_string(op2));
 
-	if(rn != 0)
-	{
-		this->result = rn - op2;
-	}
-	else
+	this->result = rn - op2;
+
+	if(this->result == -1)
 	{
 		this->result = 0;
 	}

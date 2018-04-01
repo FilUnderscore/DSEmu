@@ -5,7 +5,7 @@
 
 using namespace CPU;
 
-CMPOperation::CMPOperation() : Operation(::CMP)
+CMPOperation::CMPOperation() : Operation(::CMP, ::ARITHMETIC)
 {
 
 }

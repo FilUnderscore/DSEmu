@@ -1,0 +1,11 @@
+#ifndef INCLUDE_OPERATIONTYPE_HPP_
+#define INCLUDE_OPERATIONTYPE_HPP_
+
+enum OperationType
+{
+	LOGICAL,
+
+	ARITHMETIC
+};
+
+#endif
