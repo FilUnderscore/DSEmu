@@ -33,6 +33,7 @@ void ARM9::processPipeline()
 			if(!instruction->execute(this))
 			{
 				this->pipeline->erase(this->pipeline->begin() + index);
+				index--;
 
 				delete instruction;
 				instruction = NULL;
@@ -41,6 +42,7 @@ void ARM9::processPipeline()
 		else
 		{
 			this->pipeline->erase(this->pipeline->begin() + index);
+			index--;
 
 			delete instruction;
 			instruction = NULL;

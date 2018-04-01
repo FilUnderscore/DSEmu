@@ -19,7 +19,7 @@ Instruction::~Instruction()
 }
 
 bool Instruction::execute(ARM* arm)
-{
+{	
 	this->executionStage = (InstructionExecutionStage) ((int)this->executionStage + 1);
 
 	if(this->executionStage == ::EX)

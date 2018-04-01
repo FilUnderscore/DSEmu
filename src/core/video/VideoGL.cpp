@@ -15,8 +15,7 @@ VideoGL::VideoGL(DSSystem* ds)
 	std::function<void(Memory*)> f2 = [ds](Memory* memory){ ds->getVideo()->changeDisplayMode(memory); };
 
 	// STR to 0x04000000 causes strange MOV behaviour in R2 (go from 49152 to 131072)?
-
-	//this->ds->getARM9()->getMemory()->allocate(0x04000000, 0x04000004, f2);
+	this->ds->getARM9()->getMemory()->allocate(0x04000000, 0x04000004, f2);
 }
 
 VideoGL::~VideoGL()

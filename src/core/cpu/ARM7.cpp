@@ -41,5 +41,6 @@ void ARM7::processPipeline()
 
 		delete instruction;
 		instruction = NULL;
+		index--;
 	}
 }
