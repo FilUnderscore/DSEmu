@@ -59,6 +59,9 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		uint8_t sh;
 		uint8_t rm;
 
+		// Bit 25 is Immediate Operand.
+		uint8_t i = (instruction >> 25) & 0x01;
+
 		// Bits 21-24 are opcode.
 		uint8_t opcode = (instruction >> 21) & 0x0F;
 
@@ -99,7 +102,7 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		}
 
 
-		DataProcessingInstruction* dataProcessingInstruction = new DataProcessingInstruction(instruction, cond, opcode, s, rd, rn, rotate4, immediate8, shift, rs, sh, rm);
+		DataProcessingInstruction* dataProcessingInstruction = new DataProcessingInstruction(instruction, cond, i, opcode, s, rd, rn, rotate4, immediate8, shift, rs, sh, rm);
 	
 		return dataProcessingInstruction;
 	}

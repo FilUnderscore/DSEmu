@@ -8,8 +8,10 @@ using namespace CPU;
 
 using std::numeric_limits;
 
-DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8_t cond, uint8_t opcode, uint8_t s, uint8_t rd, uint8_t rn, uint8_t rotate4, uint8_t immediate8, uint8_t shift, uint8_t rs, uint8_t sh, uint8_t rm) : Instruction(instruction, cond)
+DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8_t cond, uint8_t i, uint8_t opcode, uint8_t s, uint8_t rd, uint8_t rn, uint8_t rotate4, uint8_t immediate8, uint8_t shift, uint8_t rs, uint8_t sh, uint8_t rm) : Instruction(instruction, cond)
 {
+	this->i = i;
+
 	this->opcode = opcode;
 
 	this->s = s;
@@ -44,9 +46,9 @@ bool DataProcessingInstruction::execute(ARM* arm)
 	{
 		case ::EX:
 		{
-			uint32_t cpsr = arm->getRegister(::CPSR);
-
-			if(((this->instruction >> 25) & 0x01) == 0x00)
+			this->cpsr = arm->getRegister(::CPSR);
+			
+			if(!this->i)
 			{
 				uint32_t rm = arm->getRegister((Register) this->rm);
 
@@ -55,14 +57,14 @@ bool DataProcessingInstruction::execute(ARM* arm)
 					// Calculate shift
 					uint32_t rs = arm->getRegister((Register) this->rs);
 					rs &= 0x0F;
-					this->cpsr = arm->getALU()->calculateShiftRegister(rm, rs, this->sh, cpsr);
+					this->cpsr = arm->getALU()->calculateShiftRegister(rm, rs, this->sh, this->cpsr);
 
 					this->carry = arm->getALU()->getCarry();
 					this->operand2 = arm->getALU()->getResult();
 				}
 				else
 				{
-					this->cpsr = arm->getALU()->calculateShiftAmount(rm, this->shift, this->sh, cpsr);
+					this->cpsr = arm->getALU()->calculateShiftAmount(rm, this->shift, this->sh, this->cpsr);
 					
 					this->carry = arm->getALU()->getCarry();
 					this->operand2 = arm->getALU()->getResult();
@@ -93,7 +95,25 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 		case ::WB:
 		{
-			arm->setRegister((Register) this->getDestinationRegister(), this->result);
+			switch(this->opcode)
+			{
+				case ::TST:
+				case ::TEQ:
+				case ::CMP:
+				case ::CMN:
+				{
+					// Do not write result because only CPSR flags are set.
+
+					break;
+				}
+
+				default:
+				{
+					arm->setRegister((Register) this->getDestinationRegister(), this->result);
+
+					break;
+				}
+			}
 		
 			if(this->s == 0x01)
 			{
