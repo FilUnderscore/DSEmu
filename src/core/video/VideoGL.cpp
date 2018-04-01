@@ -7,9 +7,16 @@ VideoGL::VideoGL(DSSystem* ds)
 {
 	this->ds = ds;
 
-	// Test of I/O interaction with Memory Map
+	// POWCNT1
 	std::function<void(Memory*)> f = [ds](Memory* memory){ ds->getVideo()->power(memory); };
-	this->ds->getARM9()->getMemory()->allocate(0x4000304, 0x4000308, f);
+	this->ds->getARM9()->getMemory()->allocate(0x04000304, 0x04000308, f);
+
+	// DISPCNT
+	std::function<void(Memory*)> f2 = [ds](Memory* memory){ ds->getVideo()->changeDisplayMode(memory); };
+
+	// STR to 0x04000000 causes strange MOV behaviour in R2 (go from 49152 to 131072)?
+
+	//this->ds->getARM9()->getMemory()->allocate(0x04000000, 0x04000004, f2);
 }
 
 VideoGL::~VideoGL()
@@ -44,6 +51,11 @@ void VideoGL::power(Memory* memory)
 	{
 		this->createWindows();
 	}
+}
+
+void VideoGL::changeDisplayMode(Memory* memory)
+{
+	uint32_t dispcnt = Bits::to32UBits(memory->getMemory()->get());	
 }
 
 void error_callback(int error, const char* description)
@@ -85,6 +97,7 @@ void VideoGL::createWindows()
 
 void VideoGL::tick()
 {
+	// exit() will cause GLX error.
 	if(this->topWindow != NULL && this->bottomWindow != NULL)
 	{
 		glfwMakeContextCurrent(this->topWindow);

@@ -77,7 +77,10 @@ DSCartridge* DSSystem::getDSCartridge()
 
 void DSSystem::run()
 {
-	this->arm9->run();
+	this->running = true;
+
+	this->arm9->run(this->cartridge->getCartridgeHeader()->getARM9EntryAddress());
+	//this->arm7->run(this->cartridge->getCartridgeHeader()->getARM7EntryAddress());
 
 	while(this->running)
 	{
@@ -90,6 +93,11 @@ void DSSystem::run()
 void DSSystem::registerThread(thread* thread)
 {
 	this->threads->push_back(thread);
+}
+
+bool DSSystem::isRunning()
+{
+	return this->running;
 }
 
 void DSSystem::terminate()

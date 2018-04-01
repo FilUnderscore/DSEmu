@@ -39,6 +39,8 @@ namespace DS
 
 		void registerThread(thread* thread);
 
+		bool isRunning();
+
 		void terminate();
 
 	private:

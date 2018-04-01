@@ -4,7 +4,7 @@
 
 #include <SharedMemoryMap.hpp>
 
-ARM9::ARM9(DSSystem* ds) : ARM(ds)
+ARM9::ARM9(DSSystem* ds) : ARM(ds, 66)
 {
 	this->memoryMap->allocate(0x00000000, 0x00007FFF);
 	this->memoryMap->mirror(0x01000000, 0x00000000); // Mirror-able to 1000000h

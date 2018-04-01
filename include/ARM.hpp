@@ -28,7 +28,7 @@ namespace CPU
 	class ARM
 	{
 	public:
-		ARM(DSSystem* ds);
+		ARM(DSSystem* ds, uint32_t clockSpeed);
 		virtual ~ARM();
 
 		virtual void init();
@@ -39,7 +39,7 @@ namespace CPU
 
 		void print();
 
-		void run();
+		void run(uint32_t entrypoint);
 
 		virtual void processPipeline();
 
@@ -68,6 +68,8 @@ namespace CPU
 		MemoryMap* getMemory();
 	protected:
 		DSSystem* ds;
+		
+		uint32_t clockSpeed;
 
 		ALU* alu;
 

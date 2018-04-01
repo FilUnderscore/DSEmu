@@ -15,9 +15,11 @@
 #include <cstring>
 #include <cmath>
 
-ARM::ARM(DSSystem* ds)
+ARM::ARM(DSSystem* ds, uint32_t clockSpeed)
 {
 	this->ds = ds;
+
+	this->clockSpeed = clockSpeed;
 
 	this->init();
 }
@@ -66,20 +68,25 @@ void ARM::print()
 	Logger::log("");
 }
 
-void ARM::run()
+void ARM::run(uint32_t entrypoint)
 {
+	// ARM program entry-point
+	this->setRegister(::PC, entrypoint);
+
 	std::thread* thread = new std::thread
 	{[this]{
-		// ARM program entry-point
-		this->setRegister(::PC, 0x02);
-
-		while(this->fetchNextInstruction())
+		while(this->ds->isRunning())
 		{
+			if(!this->fetchNextInstruction())
+			{
+				continue;
+			}
+
 			this->tick();
 
 			// Clock delay = milliseconds / Hz
 			// Clock delay = 1000ms / (66 * 1^6) Hz
-			this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(66 * pow(10, 6)))));
+			this_thread::sleep_for(std::chrono::seconds(1 / ((uint32_t)(this->clockSpeed * pow(10, 6)))));
 		}
 	}};
 
