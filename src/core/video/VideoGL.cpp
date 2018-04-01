@@ -13,8 +13,6 @@ VideoGL::VideoGL(DSSystem* ds)
 
 	// DISPCNT
 	std::function<void(Memory*)> f2 = [ds](Memory* memory){ ds->getVideo()->changeDisplayMode(memory); };
-
-	// STR to 0x04000000 causes strange MOV behaviour in R2 (go from 49152 to 131072)?
 	this->ds->getARM9()->getMemory()->allocate(0x04000000, 0x04000004, f2);
 }
 
@@ -52,9 +50,22 @@ void VideoGL::power(Memory* memory)
 	}
 }
 
+#include <bitset>
+#include <String.hpp>
+
 void VideoGL::changeDisplayMode(Memory* memory)
 {
-	uint32_t dispcnt = Bits::to32UBits(memory->getMemory()->get());	
+	uint32_t dispcnt = (memory->getMemory()->get()[0] << 24) | (memory->getMemory()->get()[1] << 16) | (memory->getMemory()->get()[2] << 8) | memory->getMemory()->get()[3];
+
+	uint8_t displayMode = (dispcnt >> 16) & 0x03;
+
+	// Display Mode
+	// 0: Display off (Screen becomes white)
+	// 1: Graphics Display (normal BG and OBJ layers)
+	// 2: Engine A only: VRAM Display (Bitmap from block selected in DISPCNT.18-19)
+	// 3: Engine A only: Main Memory Display (Bitmap DMA transfer from Main RAM)
+
+	// Mode 2-3 display raw direct color bitmap (15-bit RGB values, the upper bit in each halfword is unused) without any further BG, OBJ, 3D layers.	
 }
 
 void error_callback(int error, const char* description)

@@ -38,9 +38,9 @@ void ARM7::processPipeline()
 		}
 
 		this->pipeline->erase(this->pipeline->begin() + index);
+		index--;
 
 		delete instruction;
 		instruction = NULL;
-		index--;
 	}
 }
