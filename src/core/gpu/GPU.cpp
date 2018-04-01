@@ -30,10 +30,8 @@ void GPU::init()
 {
 	// POWCNT1
 	this->ds->getARM9()->getMemory()->link(0x04000304, 4, [this](Memory* memory) { this->powerControl(memory); });
-
 	// DISPCNT
 	this->ds->getARM9()->getMemory()->link(0x04000000, 4, [this](Memory* memory) { this->displayControl(memory); });
-
 	// VRAMCNT_A
 	this->ds->getARM9()->getMemory()->link(0x04000240, 4, [this](Memory* memory) { this->vramControl(memory); });
 }
@@ -117,15 +115,58 @@ void GPU::vramControl(Memory* memory)
 
 	// TODO: Handle VRAM properly as Memory (Video)
 	// Possibly create GPU class for these tasks
-	if(vram_enable)
+	switch((VRAM) vram)
 	{
-		if(vram_index == 0)
+		case ::A:
 		{
+			break;
+		}
 
+		case ::B:
+		{
+			break;
+		}
+
+		case ::C:
+		{
+			break;
+		}
+
+		case ::D:
+		{
+			break;
+		}
+
+		case ::E:
+		{
+			break;
+		}
+
+		case ::F:
+		{
+			break;
+		}
+
+		case ::G:
+		{
+			break;
+		}
+
+		case ::H:
+		{
+			break;
+		}
+
+		case ::I:
+		{
+			break;
+		}
+
+		default:
+		{
+			break;
 		}
 	}
-
-	//this->ds->terminate();
 }
 
 VideoGL* GPU::getVideo()

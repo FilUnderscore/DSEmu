@@ -4,8 +4,9 @@
 #include <SharedMemoryMap.hpp>
 #include <String.hpp>
 #include <cstring>
+#include <algorithm>
 
-using namespace std;
+using std::remove;
 
 MemoryMap::MemoryMap()
 {
@@ -127,6 +128,23 @@ bool MemoryMap::load(uint8_t* data, uint32_t dataLength, uint32_t destAddress)
 	Logger::log("Dest Addr: " + to_string(destAddress));
 
 	memcpy(memory->getMemory()->get() + destAddress, data, dataLength);
+
+	return true;
+}
+
+bool MemoryMap::deallocate(uint32_t address)
+{
+	Memory* memory = this->getMemory(address);
+
+	if(memory == NULL)
+	{
+		return false;
+	}
+
+	this->memoryMap->erase(remove(this->memoryMap->begin(), this->memoryMap->end(), memory), this->memoryMap->end());
+
+	delete memory;
+	memory = NULL;
 
 	return true;
 }
