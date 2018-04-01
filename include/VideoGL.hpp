@@ -19,6 +19,7 @@ public:
 	void init();
 	void power(Memory* memory);
 	void changeDisplayMode(Memory* memory);
+	void changeVRAMSettings(Memory* memory);
 	void createWindows();
 	void tick();
 
