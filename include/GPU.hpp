@@ -30,6 +30,8 @@ public:
 
 	void vramControl(Memory* memory);
 
+	void vramWrite(Memory* memory);
+
 	VideoGL* getVideo();
 
 private:

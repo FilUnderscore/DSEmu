@@ -115,10 +115,23 @@ void GPU::vramControl(Memory* memory)
 
 	// TODO: Handle VRAM properly as Memory (Video)
 	// Possibly create GPU class for these tasks
-	switch((VRAM) vram)
+	switch((VRAM) vram_index)
 	{
 		case ::A:
 		{
+			if(vram_enable)
+			{
+				if(VRAM_A == NULL)
+				{
+					if(vram_mst == 0)
+					{
+						// Plain ARM9-CPU Access
+						this->ds->getARM9()->getMemory()->allocate(0x6800000, 0x681FFFF, [this](Memory* memory){ this->vramWrite(memory); });
+						VRAM_A = this->ds->getARM9()->getMemory()->getMemory(0x6800000);
+					}
+				}
+			}
+
 			break;
 		}
 
@@ -167,6 +180,11 @@ void GPU::vramControl(Memory* memory)
 			break;
 		}
 	}
+}
+
+void GPU::vramWrite(Memory* memory)
+{
+
 }
 
 VideoGL* GPU::getVideo()
