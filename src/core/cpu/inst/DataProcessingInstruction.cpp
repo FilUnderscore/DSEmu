@@ -78,7 +78,7 @@ bool DataProcessingInstruction::execute(ARM* arm)
 
 			// Calculate result and carry
 			uint32_t rn = arm->getRegister((Register) this->getFirstOperandRegister());
-			this->cpsr = arm->getALU()->calculateOperation((Opcode) this->opcode, rn, this->getOperand2(), this->carry, this->s, cpsr);
+			this->cpsr = arm->getALU()->calculateOperation((Opcode) this->opcode, rn, this->getOperand2(), this->carry, this->s, this->cpsr);
 
 			this->carry = arm->getALU()->getCarry();
 			this->result = arm->getALU()->getResult();
