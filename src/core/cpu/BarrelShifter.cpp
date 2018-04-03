@@ -6,8 +6,9 @@ BarrelShifter::BarrelShifter(CPU::ARM* arm)
 {
 	this->arm = arm;
 
-	// Shift by 16 bits left
-	shift(0xFFFF, 0x88);
+	// Shift by 16 (10001) bits left (00) right (01)
+	// Shift by 17 (10001) bits left (00) right (01)
+	shift(0xFFFF0000, 0b10001010);
 
 	exit(0);
 }
@@ -48,8 +49,14 @@ void BarrelShifter::shift(uint32_t rm, uint8_t shift)
 		{
 			this->result = (rm << shiftAmount);
 
+			Logger::log("Result: " + to_string(this->result));
+			Logger::log("Bitset: " + std::bitset<32>(this->result).to_string());
+
 			// LSB discarded bit is carry out
 			this->carry = (rm >> (32 - shiftAmount)) & 0x01;
+
+			Logger::log("Carry: " + to_string(this->carry));
+			Logger::log("Bitset: " + std::bitset<32>(this->carry).to_string());
 
 			break;
 		}
@@ -57,10 +64,19 @@ void BarrelShifter::shift(uint32_t rm, uint8_t shift)
 		// Logical right
 		case 0x01:
 		{
+			Logger::log("RM: " + to_string(rm));
+			Logger::log("Bitset: " + std::bitset<32>(rm).to_string());
+
 			this->result = (rm >> shiftAmount);
 
+			Logger::log("Result: " + to_string(this->result));
+			Logger::log("Bitset: " + std::bitset<32>(this->result).to_string());
+
 			// MSB discarded bit is carry out
-			this->carry = 0;
+			this->carry = (rm >> (31 + shiftAmount)) & 0x01;
+
+			Logger::log("Carry: " + to_string(this->carry));
+			Logger::log("Bitset: " + std::bitset<32>(this->carry).to_string());
 
 			break;
 		}
