@@ -18,80 +18,6 @@ void ALU::calculateImmediate(uint8_t immediate8, uint8_t rotate4)
 	this->result = Bits::ror32UBits(immediate8, (rotate4 * 2));
 }
 
-uint32_t ALU::calculateShiftAmount(uint8_t rm, uint8_t shiftAmount, uint8_t shiftType, uint32_t cpsr)
-{
-	switch(shiftType)
-	{
-		// Logical left
-		case 0x00:
-		{
-			break;
-		}
-
-		// Logical right
-		case 0x01:
-		{
-			break;
-		}
-
-		// Arithmetic right
-		case 0x02:
-		{
-			break;
-		}
-
-		// Rotate right
-		case 0x03:
-		{
-			break;
-		}
-
-		default:
-		{
-			break;
-		}
-	}
-
-	return cpsr;
-}
-
-uint32_t ALU::calculateShiftRegister(uint8_t rm, uint8_t rs, uint8_t shiftType, uint32_t cpsr)
-{
-	switch(shiftType)
-	{
-		// Logical left
-		case 0x00:
-		{
-			break;
-		}
-
-		// Logical right
-		case 0x01:
-		{
-			break;
-		}
-
-		// Arithmetic right
-		case 0x02:
-		{
-			break;
-		}
-
-		// Rotate right
-		case 0x03:
-		{
-			break;
-		}
-
-		default:
-		{
-			break;
-		}
-	}
-
-	return cpsr;
-}
-
 uint32_t ALU::calculateOperation(Opcode opcode, uint32_t operand1, uint32_t operand2, uint32_t carry, bool s, uint32_t cpsr)
 {
 	// TODO: Implement CPSR flags
@@ -259,10 +185,10 @@ uint32_t ALU::calculateOperation(Opcode opcode, uint32_t operand1, uint32_t oper
 				// Overflow flag (Bit28)
 				// Only if operands were considered signed
 				// Ignored if operands were considered unsigned
-				if((operand1 >> 31) & 0x01 == ((operand2) >> 31) & 0x01)
+				if(((operand1 >> 31) & 0x01) == (((operand2) >> 31) & 0x01))
 				{
 					// If the result does not match the same signs as the operands, overflow has occurred.
-					cpsr |= (((this->result >> 31) & 0x01 != (operand1 >> 31) & 0x01) << 28);
+					cpsr |= ((((this->result >> 31) & 0x01) != ((operand1 >> 31) & 0x01)) << 28);
 				}
 				else
 				{
