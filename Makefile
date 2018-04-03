@@ -20,5 +20,5 @@ lib:
 .PHONY: win32 windows linux lib clean
 
 clean:
-	$(RM) -r $(BUILD_DIR)
 	$(RM) -r $(OBJ_DIR)
+	$(RM) -r $(BUILD_DIR)

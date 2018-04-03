@@ -31,7 +31,8 @@ ARM::~ARM()
 
 void ARM::init()
 {
-	this->alu = new ALU();
+	this->alu = new ALU(this);
+	this->barrelShifter = new BarrelShifter(this);
 
 	this->memoryMap = new MemoryMap();
 

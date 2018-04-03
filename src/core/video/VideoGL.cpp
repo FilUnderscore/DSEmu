@@ -32,6 +32,11 @@ void error_callback(int error, const char* description)
 	Logger::log("Err: " + string(description));
 }
 
+void close_callback(GLFWwindow* window)
+{
+	
+}
+
 void VideoGL::createWindows()
 {
 	this->topWindow = glfwCreateWindow(256, 192, "DSEmu Top Window", NULL, NULL);
@@ -49,6 +54,8 @@ void VideoGL::createWindows()
 	}
 
 	glfwSetErrorCallback(error_callback);
+	glfwSetWindowCloseCallback(this->topWindow, close_callback);
+	glfwSetWindowCloseCallback(this->bottomWindow, close_callback);
 
 	glfwMakeContextCurrent(this->topWindow);
 

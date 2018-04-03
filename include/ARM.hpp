@@ -1,13 +1,14 @@
 #ifndef INCLUDE_ARM_HPP_
 #define INCLUDE_ARM_HPP_
 
+#include "ALU.hpp"
+#include "BarrelShifter.hpp"
 #include "Register.hpp"
 #include "ProcessorState.hpp"
 #include "Instruction.hpp"
 #include "Pointer.hpp"
 #include "ProcessorMode.hpp"
 #include "MemoryMap.hpp"
-#include "ALU.hpp"
 #include "Logger.hpp"
 #include <vector>
 #include <cstdint>
@@ -22,6 +23,8 @@ namespace DS
 }
 
 using DS::DSSystem;
+
+class BarrelShifter;
 
 namespace CPU
 {
@@ -72,6 +75,7 @@ namespace CPU
 		uint32_t clockSpeed;
 
 		ALU* alu;
+		BarrelShifter* barrelShifter;
 
 		MemoryMap* memoryMap;
 

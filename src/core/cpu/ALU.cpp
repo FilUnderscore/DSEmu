@@ -1,10 +1,11 @@
 #include <ALU.hpp>
 
+#include <ARM.hpp>
 #include <Bits.hpp>
 
-ALU::ALU()
+ALU::ALU(CPU::ARM* arm)
 {
-
+	this->arm = arm;
 }
 
 ALU::~ALU()

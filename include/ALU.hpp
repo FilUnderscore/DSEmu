@@ -1,15 +1,20 @@
 #ifndef INCLUDE_ALU_HPP_
 #define INCLUDE_ALU_HPP_
 
-#include <Opcode.hpp>
+#include "Opcode.hpp"
 #include <cstdint>
+
+namespace CPU
+{
+	class ARM;
+}
 
 using namespace CPU;
 
 class ALU
 {
 public:
-	ALU();
+	ALU(ARM* arm);
 	~ALU();
 
 	void calculateImmediate(uint8_t immediate8, uint8_t rotate4);
@@ -29,6 +34,8 @@ public:
 	uint32_t getResult();
 
 private:
+	ARM* arm;
+
 	uint32_t aluResult;
 
 	uint32_t operand1;
