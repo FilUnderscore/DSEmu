@@ -8,7 +8,7 @@ using namespace CPU;
 
 using std::numeric_limits;
 
-DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8_t cond, uint8_t i, uint8_t opcode, uint8_t s, uint8_t rd, uint8_t rn, uint8_t rotate4, uint8_t immediate8, uint8_t shift, uint8_t rs, uint8_t sh, uint8_t rm) : Instruction(instruction, cond)
+DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8_t cond, uint8_t i, uint8_t opcode, uint8_t s, uint8_t rd, uint8_t rn, uint8_t rotate4, uint8_t immediate8, uint8_t shift, uint8_t rm) : Instruction(instruction, cond)
 {
 	this->i = i;
 
@@ -23,8 +23,7 @@ DataProcessingInstruction::DataProcessingInstruction(uint32_t instruction, uint8
 	this->immediate8 = immediate8;
 
 	this->shift = shift;
-	this->rs = rs;
-	this->sh = sh;
+
 	this->rm = rm;
 }
 
@@ -52,25 +51,10 @@ bool DataProcessingInstruction::execute(ARM* arm)
 			{
 				uint32_t rm = arm->getRegister((Register) this->rm);
 
-				uint8_t bit4 = ((this->instruction >> 4) & 0x01);
+				arm->getBarrelShifter()->shift(rm, this->shift);
 
-				if(bit4)
-				{
-					// Calculate shift
-					uint32_t rs = arm->getRegister((Register) this->rs);
-					rs &= 0x0F;
-					this->cpsr = arm->getALU()->calculateShiftRegister(rm, rs, this->sh, this->cpsr);
-
-					this->carry = arm->getALU()->getCarry();
-					this->operand2 = arm->getALU()->getResult();
-				}
-				else
-				{
-					this->cpsr = arm->getALU()->calculateShiftAmount(rm, this->shift, this->sh, this->cpsr);
-					
-					this->carry = arm->getALU()->getCarry();
-					this->operand2 = arm->getALU()->getResult();
-				}
+				this->carry = arm->getBarrelShifter()->getCarry();
+				this->operand2 = arm->getBarrelShifter()->getResult();
 			}
 			else
 			{

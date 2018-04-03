@@ -68,6 +68,8 @@ namespace CPU
 
 		ALU* getALU();
 
+		BarrelShifter* getBarrelShifter();
+
 		MemoryMap* getMemory();
 	protected:
 		DSSystem* ds;

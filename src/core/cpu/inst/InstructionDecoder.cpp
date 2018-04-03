@@ -55,8 +55,6 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		uint8_t immediate8;
 
 		uint8_t shift;
-		uint8_t rs;
-		uint8_t sh;
 		uint8_t rm;
 
 		// Bit 25 is Immediate Operand.
@@ -85,24 +83,13 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		}
 		else
 		{
-			// Check if Immediate Shift Length or Register Shift Length is used
-			if(((instruction >> 4) & 0x01) == 0x01)
-			{
-				shift = (instruction >> 7) & 0x1F;
-			}
-			else
-			{
-				rs = (instruction >> 8) & 0x0F;
-			}
-
-
-			sh = (instruction >> 5) & 0x03;
+			shift = (instruction >> 4) & 0xFF;
 
 			rm = instruction & 0x0F;
 		}
 
 
-		DataProcessingInstruction* dataProcessingInstruction = new DataProcessingInstruction(instruction, cond, i, opcode, s, rd, rn, rotate4, immediate8, shift, rs, sh, rm);
+		DataProcessingInstruction* dataProcessingInstruction = new DataProcessingInstruction(instruction, cond, i, opcode, s, rd, rn, rotate4, immediate8, shift, rm);
 	
 		return dataProcessingInstruction;
 	}

@@ -300,6 +300,11 @@ ALU* ARM::getALU()
 	return this->alu;
 }
 
+BarrelShifter* ARM::getBarrelShifter()
+{
+	return this->barrelShifter;
+}
+
 MemoryMap* ARM::getMemory()
 {
 	return this->memoryMap;

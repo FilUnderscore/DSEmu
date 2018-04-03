@@ -12,9 +12,6 @@ BarrelShifter::~BarrelShifter()
 
 }
 
-#include <Logger.hpp>
-#include <bitset>
-
 void BarrelShifter::shift(uint32_t rm, uint8_t shift)
 {
 	uint8_t isRegister = shift & 0x01;
@@ -90,4 +87,14 @@ void BarrelShifter::shift(uint32_t rm, uint8_t shift)
 			break;
 		}
 	}
+}
+
+uint8_t BarrelShifter::getCarry()
+{
+	return this->carry;
+}
+
+uint32_t BarrelShifter::getResult()
+{
+	return this->result;
 }

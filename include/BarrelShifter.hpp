@@ -18,14 +18,14 @@ public:
 	
 	void shift(uint32_t rm, uint8_t shift);
 
-	uint32_t getCarry();
+	uint8_t getCarry();
 	uint32_t getResult();
 
 private:
 	ARM* arm;
 
 	// Carry can be uint8_t?
-	uint32_t carry;
+	uint8_t carry;
 	uint32_t result;
 };
 
