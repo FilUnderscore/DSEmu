@@ -254,7 +254,7 @@ uint32_t ALU::calculateOperation(Opcode opcode, uint32_t operand1, uint32_t oper
 				// Overflow flag (Bit28)
 				// Only if operands were considered signed
 				// Ignored if operands were considered unsigned
-				//cpsr |= ((this->result >> 31) << 28);
+				cpsr |= (((((operand1 >> 31) & 0x01) == 0x01) || (((operand2 >> 31) & 0x01) == 0x01)) << 28);
 
 				break;
 			}
