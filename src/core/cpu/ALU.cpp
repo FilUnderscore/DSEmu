@@ -225,8 +225,11 @@ uint32_t ALU::calculateOperation(Opcode opcode, uint32_t operand1, uint32_t oper
 				cpsr |= ((this->result == 0x00) << 30);
 
 				// Carry flag (Bit29)
+				// Set from barrel shifter carry value
+				cpsr |= (carry << 29);
 
 				// Overflow flag (Bit28)
+				// TODO: If the S bit is set (and Rd is not R15), the V (Overflow) flag in the CPSR will be unaffected.
 
 				break;
 			}
@@ -243,18 +246,30 @@ uint32_t ALU::calculateOperation(Opcode opcode, uint32_t operand1, uint32_t oper
 				// Arithmetic operations
 
 				// Negative flag (Bit31)
+				// Set to bit31 of the result
 				cpsr |= ((this->result >> 31) << 31);
 
 				// Zero flag (Bit30)
 				cpsr |= ((this->result == 0x00) << 30);
 
 				// Carry flag (Bit29)
+				// Set to carry out of bit31 of the ALU
 				cpsr |= ((this->aluResult >> 31) << 29);
 
 				// Overflow flag (Bit28)
 				// Only if operands were considered signed
 				// Ignored if operands were considered unsigned
-				cpsr |= (((((operand1 >> 31) & 0x01) == 0x01) || (((operand2 >> 31) & 0x01) == 0x01)) << 28);
+				if((operand1 >> 31) & 0x01 == ((operand2) >> 31) & 0x01)
+				{
+					// If the result does not match the same signs as the operands, overflow has occurred.
+					cpsr |= (((this->result >> 31) & 0x01 != (operand1 >> 31) & 0x01) << 28);
+				}
+				else
+				{
+					// Both operands have different signs, indicating overflow.
+
+					cpsr |= (1 << 28);
+				}
 
 				break;
 			}
