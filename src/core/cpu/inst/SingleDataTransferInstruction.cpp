@@ -5,8 +5,6 @@
 #include <String.hpp>
 #include <cstring>
 
-using namespace std;
-
 SingleDataTransferInstruction::SingleDataTransferInstruction(uint32_t instruction, uint8_t cond, uint8_t i, uint8_t p, uint8_t u, uint8_t b, uint8_t w, uint8_t l, uint8_t rn, uint8_t rd, uint16_t immediate12, uint8_t shift, uint8_t rm) : Instruction(instruction, cond)
 {
 	this->i = i;
@@ -29,18 +27,23 @@ SingleDataTransferInstruction::~SingleDataTransferInstruction()
 
 }
 
-void SingleDataTransferInstruction::calculateOffset()
+void SingleDataTransferInstruction::calculateOffset(ARM* arm)
 {
 	if(this->i == 0x00)
 	{
 		// Offset is an immediate value.
+		
 		this->offset = this->immediate12;
-
-		Logger::log("OFFSET: " + to_string(this->immediate12));
 	}	
 	else if(this->i == 0x01)
 	{
 		// Offset is a register.
+
+		uint32_t rm = arm->getRegister((Register) this->rm);
+
+		arm->getBarrelShifter()->shift(rm, this->shift);
+
+		this->offset = arm->getBarrelShifter()->getResult();
 	}
 }
 
@@ -77,7 +80,7 @@ bool SingleDataTransferInstruction::execute(ARM* arm)
 	{
 		case ::EX:
 		{
-			this->calculateOffset();
+			this->calculateOffset(arm);
 
 			// Calculate address
 
