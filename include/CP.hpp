@@ -3,6 +3,8 @@
 
 #include "ARM.hpp"
 
+using CPU::ARM;
+
 namespace CPU
 {
 	/*

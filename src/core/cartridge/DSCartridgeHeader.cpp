@@ -1,8 +1,8 @@
-#include <DSCartridgeHeader.hpp>
+#include "include\DSCartridgeHeader.hpp"
 
-#include <Logger.hpp>
-#include <Bits.hpp>
-#include <String.hpp>
+#include "include\Logger.hpp"
+#include "include\Bits.hpp"
+#include "include\String.hpp"
 
 #include <cstring>
 
@@ -204,7 +204,7 @@ void DSCartridgeHeader::print()
 	Logger::log("Gamecode: " + this->gamecode);
 
 	Logger::log("Implement String To Hex");
-	Logger::log("Makercode: " + String::toHexString((uint8_t*) strdup(this->makercode.c_str()), sizeof(this->makercode)));
+	Logger::log("Makercode: " + String::toHexString((uint8_t*) _strdup(this->makercode.c_str()), sizeof(this->makercode)));
 
 	Logger::log("Unitcode: " + String::toHexString(Bits::from8UBits(this->unitcode), sizeof(this->unitcode)));
 

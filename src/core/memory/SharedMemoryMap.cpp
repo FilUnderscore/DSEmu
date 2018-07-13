@@ -1,6 +1,6 @@
-#include <SharedMemoryMap.hpp>
+#include "include\SharedMemoryMap.hpp"
 
-#include <Logger.hpp>
+#include "include\Logger.hpp"
 
 SharedMemoryMap* SharedMemoryMap::instance = NULL;
 

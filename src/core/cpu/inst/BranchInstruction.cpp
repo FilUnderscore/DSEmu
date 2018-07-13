@@ -1,8 +1,8 @@
-#include <BranchInstruction.hpp>
+#include "include\BranchInstruction.hpp"
 
-#include <ARM.hpp>
+#include "include\ARM.hpp"
 
-#include <String.hpp>
+#include "include\String.hpp"
 
 using namespace CPU;
 
@@ -27,7 +27,7 @@ void BranchInstruction::calculate()
 	Logger::log("Branch to memory address: " + String::decToHex(this->offset));
 }
 
-bool BranchInstruction::execute(ARM* arm)
+bool BranchInstruction::execute(CPU::ARM* arm)
 {
 	if(!Instruction::execute(arm))
 	{

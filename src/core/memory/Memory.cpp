@@ -1,7 +1,7 @@
-#include <Memory.hpp>
+#include "include\Memory.hpp"
 
-#include <Logger.hpp>
-#include <String.hpp>
+#include "include\Logger.hpp"
+#include "include\String.hpp"
 #include <cstring>
 
 Memory::Memory() : Memory(0, 0)

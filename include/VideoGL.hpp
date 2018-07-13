@@ -1,8 +1,8 @@
 #ifndef INCLUDE_VIDEOGL_HPP_
 #define INCLUDE_VIDEOGL_HPP_
 
-#include <GL/gl3w.h>
-#include <GLFW/glfw3.h>
+#include "include\GL\gl3w.h"
+#include "include\GLFW\glfw3.h"
 
 class GPU;
 

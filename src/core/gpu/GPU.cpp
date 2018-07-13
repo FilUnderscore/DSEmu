@@ -1,6 +1,10 @@
-#include <GPU.hpp>
+#include "include\GPU.hpp"
+#include "include\Bits.hpp"
+#include "include\Logger.hpp"
+#include "include\ARM9.hpp"
 
-#include <Bits.hpp>
+using namespace CPU;
+using namespace DS;
 
 Memory* GPU::VRAM_A = NULL;
 Memory* GPU::VRAM_B = NULL;

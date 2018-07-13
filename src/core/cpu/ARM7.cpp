@@ -1,8 +1,10 @@
-#include <ARM7.hpp>
+#include "include\ARM7.hpp"
+#include "include\DSSystem.hpp"
+#include "include\SharedMemoryMap.hpp"
+#include "include\Instruction.hpp"
 
-#include <DSSystem.hpp>
+using namespace CPU;
 
-#include <SharedMemoryMap.hpp>
 ARM7::ARM7(DSSystem* ds) : ARM(ds, 33)
 {
 	this->memoryMap->allocate(0x00000000, 0x00003FFF);

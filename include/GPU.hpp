@@ -6,6 +6,8 @@
 #include "DSSystem.hpp"
 #include "VideoGL.hpp"
 
+using DS::DSSystem;
+
 class GPU
 {
 public:

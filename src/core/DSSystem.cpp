@@ -1,13 +1,16 @@
-#include <DSSystem.hpp>
+#include "include\DSSystem.hpp"
 
-#include <Logger.hpp>
-#include <String.hpp>
-
-#include <SharedMemoryMap.hpp>
-
-#include <GPU.hpp>
+#include "include\Logger.hpp"
+#include "include\String.hpp"
+#include "include\SharedMemoryMap.hpp"
+#include "include\GPU.hpp"
+#include "include\ARM9.hpp"
+#include "include\ARM7.hpp"
+#include "include\BIOS.hpp"
 
 using DS::DSSystem;
+using CPU::ARM7;
+using CPU::ARM9;
 
 DSSystem::DSSystem()
 {

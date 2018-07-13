@@ -1,7 +1,10 @@
-#include <DataProcessingInstruction.hpp>
+#include "include\DataProcessingInstruction.hpp"
 
-#include <ARM.hpp>
-#include <Logger.hpp>
+#include "include\Logger.hpp"
+#include "include\Opcode.hpp"
+#include "include\ARM.hpp"
+#include "include\BarrelShifter.hpp"
+#include "include\ALU.hpp"
 #include <limits>
 
 using namespace CPU;
@@ -32,7 +35,7 @@ DataProcessingInstruction::~DataProcessingInstruction()
 
 }
 
-bool DataProcessingInstruction::execute(ARM* arm)
+bool DataProcessingInstruction::execute(CPU::ARM* arm)
 {
 	if(!Instruction::execute(arm))
 	{

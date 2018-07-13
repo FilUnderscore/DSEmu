@@ -1,11 +1,8 @@
 #ifndef INCLUDE_ARM_HPP_
 #define INCLUDE_ARM_HPP_
 
-#include "ALU.hpp"
-#include "BarrelShifter.hpp"
 #include "Register.hpp"
 #include "ProcessorState.hpp"
-#include "Instruction.hpp"
 #include "Pointer.hpp"
 #include "ProcessorMode.hpp"
 #include "MemoryMap.hpp"
@@ -15,8 +12,6 @@
 
 using std::vector;
 
-using namespace CPU;
-
 namespace DS
 {
 	class DSSystem;
@@ -24,7 +19,15 @@ namespace DS
 
 using DS::DSSystem;
 
+class ALU;
 class BarrelShifter;
+
+namespace CPU
+{
+	class Instruction;
+}
+
+using CPU::Instruction;
 
 namespace CPU
 {

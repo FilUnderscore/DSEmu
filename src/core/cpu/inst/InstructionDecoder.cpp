@@ -1,12 +1,12 @@
-#include <InstructionDecoder.hpp>
+#include "include\InstructionDecoder.hpp"
 
-#include <Opcode.hpp>
-#include <BranchInstruction.hpp>
-#include <DataProcessingInstruction.hpp>
-#include <HalfwordDataTransferInstruction.hpp>
-#include <SingleDataTransferInstruction.hpp>
-#include <String.hpp>
-#include <Logger.hpp>
+#include "include\Opcode.hpp"
+#include "include\BranchInstruction.hpp"
+#include "include\DataProcessingInstruction.hpp"
+#include "include\HalfwordDataTransferInstruction.hpp"
+#include "include\SingleDataTransferInstruction.hpp"
+#include "include\String.hpp"
+#include "include\Logger.hpp"
 #include <string>
 #include <iostream>
 #include <bitset>
@@ -51,11 +51,11 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 	// Data Processing / PSR Transfer
 	if(((instruction >> 26) & 0x03) == 0x00)
 	{
-		uint8_t rotate4;
-		uint8_t immediate8;
+		uint8_t rotate4 = 0;
+		uint8_t immediate8 = 0;
 
-		uint8_t shift;
-		uint8_t rm;
+		uint8_t shift = 0;
+		uint8_t rm = 0;
 
 		// Bit 25 is Immediate Operand.
 		uint8_t i = (instruction >> 25) & 0x01;
@@ -168,10 +168,10 @@ Instruction* InstructionDecoder::decode(uint32_t instruction)
 		uint8_t rn = (instruction >> 16) & 0x0F;
 		uint8_t rd = (instruction >> 12) & 0x0F;
 
-		uint16_t immediate12;
+		uint16_t immediate12 = 0;
 
-		uint8_t shift;
-		uint8_t rm;
+		uint8_t shift = 0;
+		uint8_t rm = 0;
 
 		if(i == 0x00)
 		{

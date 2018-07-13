@@ -3,7 +3,7 @@
 
 #include "CP.hpp"
 
-using namespace CPU;
+using CPU::CP;
 
 namespace CPU
 {

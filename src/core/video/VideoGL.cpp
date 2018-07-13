@@ -1,9 +1,9 @@
-#include <VideoGL.hpp>
+#include "include\VideoGL.hpp"
 
-#include <Logger.hpp>
-#include <Bits.hpp>
+#include "include\Logger.hpp"
+#include "include\Bits.hpp"
 
-#include <GPU.hpp>
+#include "include\GPU.hpp"
 
 VideoGL::VideoGL(GPU* gpu)
 {

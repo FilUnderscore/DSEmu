@@ -1,8 +1,8 @@
-#include <MemoryMap.hpp>
+#include "include\MemoryMap.hpp"
 
-#include <Logger.hpp>
-#include <SharedMemoryMap.hpp>
-#include <String.hpp>
+#include "include\Logger.hpp"
+#include "include\SharedMemoryMap.hpp"
+#include "include\String.hpp"
 #include <cstring>
 #include <algorithm>
 
@@ -265,7 +265,7 @@ Pointer<uint8_t>* MemoryMap::getMemory()
 
 #include <algorithm>
 
-#include <Bits.hpp>
+#include "include\Bits.hpp"
 
 void MemoryMap::print()
 {

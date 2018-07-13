@@ -1,8 +1,8 @@
-#include <DSEmu.hpp>
+#include "include\DSEmu.hpp"
 
-#include <DSSystem.hpp>
-#include <DSCartridgeLoader.hpp>
-#include <Logger.hpp>
+#include "include\DSSystem.hpp"
+#include "include\DSCartridgeLoader.hpp"
+#include "include\Logger.hpp"
 #include <string>
 
 using namespace std;

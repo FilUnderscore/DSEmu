@@ -1,7 +1,9 @@
-#include <ALU.hpp>
+#include "include\ALU.hpp"
 
-#include <ARM.hpp>
-#include <Bits.hpp>
+#include "include\ARM.hpp"
+#include "include\Bits.hpp"
+
+using namespace CPU;
 
 ALU::ALU(CPU::ARM* arm)
 {

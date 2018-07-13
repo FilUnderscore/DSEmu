@@ -1,8 +1,10 @@
-#include <Instruction.hpp>
+#include "include\Instruction.hpp"
 
-#include <Bits.hpp>
-#include <ARM.hpp>
-#include <Logger.hpp>
+#include "include\Bits.hpp"
+#include "include\ARM.hpp"
+#include "include\Logger.hpp"
+
+using namespace CPU;
 
 Instruction::Instruction(uint32_t instruction, uint8_t cond)
 {
@@ -24,7 +26,7 @@ bool Instruction::execute(ARM* arm)
 
 	if(this->executionStage == ::EX)
 	{
-		uint32_t cpsr = arm->getRegister(::CPSR);
+		uint32_t cpsr = arm->getRegister(Register::CPSR);
 
 		uint8_t negative_flag = (cpsr >> 31) & 0x01;
 		uint8_t zero_flag = (cpsr >> 30) & 0x01;
@@ -36,7 +38,7 @@ bool Instruction::execute(ARM* arm)
 		// Check conditions
 		switch(this->cond)
 		{
-			case ::EQ:
+			case Condition::EQ:
 			{
 				// Zero flag is not set.
 				if(!zero_flag)
@@ -47,7 +49,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::NE:
+			case Condition::NE:
 			{
 				// Zero flag is not clear.
 				if(zero_flag)
@@ -58,7 +60,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::CS:
+			case Condition::CS:
 			{
 				// Carry flag is not set.
 				if(!carry_flag)
@@ -69,7 +71,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::CC:
+			case Condition::CC:
 			{
 				// Carry flag is not clear.
 				if(carry_flag)
@@ -80,7 +82,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::MI:
+			case Condition::MI:
 			{
 				// Negative flag is not set.
 				if(!negative_flag)
@@ -91,7 +93,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::PL:
+			case Condition::PL:
 			{
 				// Negative flag is not clear.
 				if(negative_flag)
@@ -102,7 +104,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::VS:
+			case Condition::VS:
 			{
 				// Overflow flag is not set.
 				if(!overflow_flag)
@@ -113,7 +115,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::VC:
+			case Condition::VC:
 			{
 				// Overflow flag is not clear.
 				if(overflow_flag)
@@ -124,7 +126,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::HI:
+			case Condition::HI:
 			{
 				// Carry is not set and Z is not clear.
 				if(!carry_flag || zero_flag)
@@ -135,7 +137,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::LS:
+			case Condition::LS:
 			{
 				// Carry flag is not set.
 				if(!carry_flag)
@@ -154,7 +156,7 @@ bool Instruction::execute(ARM* arm)
 				return false;
 			}
 
-			case ::GE:
+			case Condition::GE:
 			{
 				// Negative flag is not equal to Overflow flag
 				if(negative_flag != overflow_flag)
@@ -165,7 +167,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::LT:
+			case Condition::LT:
 			{
 				// Negative flag is equal to Overflow flag
 				if(negative_flag == overflow_flag)
@@ -176,7 +178,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::GT:
+			case Condition::GT:
 			{
 				// Zero flag is not clear or Negative flag is not equal to Overflow flag
 				if(zero_flag || negative_flag != overflow_flag)
@@ -187,7 +189,7 @@ bool Instruction::execute(ARM* arm)
 				break;
 			}
 
-			case ::LE:
+			case Condition::LE:
 			{
 				// Zero flag is set.
 				if(zero_flag)
@@ -206,12 +208,12 @@ bool Instruction::execute(ARM* arm)
 				return false;
 			}
 
-			case ::AL:
+			case Condition::AL:
 			{
 				return true;
 			}
 
-			case ::NV:
+			case Condition::NV:
 			{
 				return false;
 			}

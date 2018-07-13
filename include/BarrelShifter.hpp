@@ -1,19 +1,15 @@
 #ifndef INCLUDE_BARRELSHIFTER_HPP_
 #define INCLUDE_BARRELSHIFTER_HPP_
 
+#include "ARM.hpp"
 #include <cstdint>
-
-namespace CPU
-{
-	class ARM;
-}
 
 using CPU::ARM;
 
 class BarrelShifter
 {
 public:
-	BarrelShifter(ARM* arm);
+	BarrelShifter(CPU::ARM* arm);
 	~BarrelShifter();
 	
 	void shift(uint32_t rm, uint8_t shift);
@@ -22,7 +18,7 @@ public:
 	uint32_t getResult();
 
 private:
-	ARM* arm;
+	CPU::ARM* arm;
 
 	// Carry can be uint8_t?
 	uint8_t carry;

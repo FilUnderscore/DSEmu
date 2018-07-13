@@ -9,10 +9,9 @@
   */
 
 #include "ARM.hpp"
-
 #include "CP15.hpp"
 
-using namespace CPU;
+using CPU::ARM;
 
 namespace CPU
 {

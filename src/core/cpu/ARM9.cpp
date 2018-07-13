@@ -1,8 +1,9 @@
-#include <ARM9.hpp>
+#include "include\ARM9.hpp"
+#include "include\DSSystem.hpp"
+#include "include\SharedMemoryMap.hpp"
+#include "include\Instruction.hpp"
 
-#include <DSSystem.hpp>
-
-#include <SharedMemoryMap.hpp>
+using namespace CPU;
 
 ARM9::ARM9(DSSystem* ds) : ARM(ds, 66)
 {

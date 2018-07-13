@@ -1,18 +1,23 @@
 #ifndef INCLUDE_DS_HPP_
 #define INCLUDE_DS_HPP_
 
-#include "ARM9.hpp"
-#include "ARM7.hpp"
-#include "BIOS.hpp"
 #include "DSCartridge.hpp"
 #include <thread>
 #include <vector>
 
-using namespace CPU;
 using namespace Cartridge;
 
 using std::vector;
 
+namespace CPU
+{
+	class ARM9;
+	class ARM7;
+}
+
+using namespace CPU;
+
+class BIOS;
 class GPU;
 
 namespace DS

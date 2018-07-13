@@ -1,19 +1,24 @@
-#include <ARM.hpp>
+#include "include\ARM.hpp"
 
-#include <DSSystem.hpp>
-#include <Logger.hpp>
-#include <Bits.hpp>
-#include <String.hpp>
-#include <InstructionDecoder.hpp>
-#include <BranchInstruction.hpp>
-#include <DataProcessingInstruction.hpp>
-#include <HalfwordDataTransferInstruction.hpp>
-#include <SingleDataTransferInstruction.hpp>
+#include "include\DSSystem.hpp"
+#include "include\Logger.hpp"
+#include "include\Bits.hpp"
+#include "include\String.hpp"
+#include "include\InstructionDecoder.hpp"
+#include "include\BranchInstruction.hpp"
+#include "include\DataProcessingInstruction.hpp"
+#include "include\HalfwordDataTransferInstruction.hpp"
+#include "include\SingleDataTransferInstruction.hpp"
+#include "include\ALU.hpp"
+#include "include\BarrelShifter.hpp"
+#include "include\Instruction.hpp"
 
 #include <thread>
 #include <chrono>
 #include <cstring>
 #include <cmath>
+
+using CPU::ARM;
 
 ARM::ARM(DSSystem* ds, uint32_t clockSpeed)
 {
@@ -127,11 +132,11 @@ bool ARM::fetchNextInstruction()
 
 void ARM::processInstruction(uint32_t instruction)
 {
-	if(this->getProcessorState() == ::ARM)
+	if(this->getProcessorState() == ProcessorState::ARM)
 	{
 		processARMInstruction(instruction);
 	}	
-	else if(this->getProcessorState() == ::THUMB)
+	else if(this->getProcessorState() == ProcessorState::THUMB)
 	{
 		processTHUMBInstruction((uint16_t) instruction);
 	}

@@ -5,21 +5,20 @@
 #include "Register.hpp"
 #include "Condition.hpp"
 #include "Logger.hpp"
+#include "ARM.hpp"
 #include <cstdint>
 
-using namespace CPU;
+using CPU::ARM;
 
 namespace CPU
 {
-	class ARM;
-
 	class Instruction
 	{
 	public:
 		Instruction(uint32_t instruction, uint8_t cond);
 		virtual ~Instruction();
 
-		virtual bool execute(ARM* arm);
+		virtual bool execute(CPU::ARM* arm);
 
 		uint32_t getInstruction();
 

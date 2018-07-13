@@ -1,7 +1,7 @@
-#include <DSCartridgeLoader.hpp>
+#include "include\DSCartridgeLoader.hpp"
 
-#include <Logger.hpp>
-#include <String.hpp>
+#include "include\Logger.hpp"
+#include "include\String.hpp"
 #include <vector>
 #include <fstream>
 

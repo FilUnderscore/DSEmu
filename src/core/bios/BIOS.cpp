@@ -1,6 +1,6 @@
-#include <BIOS.hpp>
+#include "include\BIOS.hpp"
 
-#include <DSSystem.hpp>
+#include "include\DSSystem.hpp"
 
 BIOS::BIOS(DSSystem* ds)
 {

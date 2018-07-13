@@ -1,6 +1,8 @@
-#include <BarrelShifter.hpp>
+#include "include\BarrelShifter.hpp"
 
-#include <ARM.hpp>
+#include "include\ARM.hpp"
+
+using namespace CPU;
 
 BarrelShifter::BarrelShifter(CPU::ARM* arm)
 {

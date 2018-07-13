@@ -1,6 +1,6 @@
-#include <Pointer.hpp>
+#include "include\Pointer.hpp"
 
-#include <Memory.hpp>
+#include "include\Memory.hpp"
 
 template <typename T>
 Pointer<T>::Pointer(T* pointer, uint32_t size)
