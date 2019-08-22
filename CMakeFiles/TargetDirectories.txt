@@ -1,9 +1,0 @@
-D:/DSEmu/CMakeFiles/DSEmu.dir
-D:/DSEmu/CMakeFiles/INSTALL.dir
-D:/DSEmu/CMakeFiles/ALL_BUILD.dir
-D:/DSEmu/CMakeFiles/ZERO_CHECK.dir
-D:/DSEmu/lib/glfw/CMakeFiles/uninstall.dir
-D:/DSEmu/lib/glfw/CMakeFiles/INSTALL.dir
-D:/DSEmu/lib/glfw/CMakeFiles/ALL_BUILD.dir
-D:/DSEmu/lib/glfw/src/CMakeFiles/glfw.dir
-D:/DSEmu/lib/glfw/src/CMakeFiles/INSTALL.dir
