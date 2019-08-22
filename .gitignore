@@ -2,3 +2,11 @@
 /bin/
 /obj/
 /build/
+/CMakeFiles/
+/DSEmu.dir/
+/Win32/
+*.vcxproj
+*.cmake
+*.sln
+*.filters
+/.vs/
