@@ -59,7 +59,7 @@ void VideoGL::createWindows()
 
 	glfwMakeContextCurrent(this->topWindow);
 
-	if(gl3wInit())
+	if (gl3wInit())
 	{
 		Logger::log("Failed to initialize OpenGL (GL3W).");
 
