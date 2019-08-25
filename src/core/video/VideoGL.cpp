@@ -7,6 +7,9 @@
 
 VideoGL::VideoGL(GPU* gpu)
 {
+	this->topWindow = nullptr;
+	this->bottomWindow = nullptr;
+
 	this->gpu = gpu;
 }
 
