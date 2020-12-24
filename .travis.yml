@@ -2,3 +2,9 @@ language: cpp
 install: cmake .
 os: windows
 script: cmake --build .
+deploy:
+    provider: releases
+    api_key: BUILD_KEY
+    file: "Debug/DSEmu.exe"
+    skip_cleanup: true
+    draft: false
