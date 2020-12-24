@@ -22,4 +22,4 @@ add_definitions(-DGLFW_INCLUDE_NONE)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 
-target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} glfw ${GLFW_LIBRARIES} OpenGL32.lib glu32.lib)
