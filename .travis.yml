@@ -1,2 +1,2 @@
 language: cpp
-install: make
+install: cmake .
