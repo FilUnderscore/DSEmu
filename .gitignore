@@ -12,3 +12,4 @@
 /.vs/
 *.user
 /Debug/
+CMakeCache.txt
