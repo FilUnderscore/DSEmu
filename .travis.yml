@@ -1,3 +1,4 @@
 language: cpp
 install: cmake .
 os: windows
+script: make
